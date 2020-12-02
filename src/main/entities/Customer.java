@@ -1,8 +1,13 @@
-package entities;
+package main.entities;
 
 public class Customer implements User {
     private int id;
     private String email;
+
+    public Customer(int id, String email) {
+        this.id = id;
+        this.email = email;
+    }
 
     public String toString() {
         return "ID: " + id + "\nEmail: " + email + "\n";

@@ -1,4 +1,4 @@
-package entities;
+package main.entities;
 
 interface User {
     // Stringify the entity
