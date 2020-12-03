@@ -1,5 +1,7 @@
 package main.entities;
 
+import org.bson.Document;
+
 interface User {
     // Stringify the entity
     public String toString();

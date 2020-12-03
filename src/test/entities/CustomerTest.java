@@ -1,9 +1,8 @@
 package test.entities;
 
+import org.bson.types.ObjectId;
 import org.junit.*;
 import static org.junit.Assert.*;
-
-import java.util.*;
 
 import main.entities.Customer;
 
@@ -11,7 +10,7 @@ public class CustomerTest {
   @Test
   public void test_to_string() {
 
-    int customerID = 1;
+    ObjectId customerID = new ObjectId();
     String customerEmail = "customer@mail.com";
 
     Customer customer = new Customer(customerID, customerEmail);

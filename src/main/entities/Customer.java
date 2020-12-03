@@ -1,10 +1,14 @@
 package main.entities;
 
-public class Customer implements User {
-    private int id;
-    private String email;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
-    public Customer(int id, String email) {
+public class Customer implements User {
+    private ObjectId id;
+    private String email;
+    private String password;
+
+    public Customer(ObjectId id, String email) {
         this.id = id;
         this.email = email;
     }
@@ -19,5 +23,9 @@ public class Customer implements User {
 
     public void fromJson() {
         // Create a new Customer entity given a json string/map
+    }
+
+    public static Customer fromDocument(Document document) {
+        return new Customer(document.getObjectId("_id"), document.getString("email"));
     }
 }
