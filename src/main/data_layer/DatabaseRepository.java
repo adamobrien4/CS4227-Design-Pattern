@@ -34,4 +34,23 @@ public class DatabaseRepository {
 
         return database.getCollection("users").find(whereQuery).first();
     }
+
+    public void test() {
+        // BasicDBObject whereQuery = new BasicDBObject();
+        // whereQuery.put("name", "adam");
+
+        Document menu = database.getCollection("menu").find().first();
+
+        System.out.println(menu.get("menu"));
+    }
+
+    public boolean close() {
+        try {
+            mongoClient.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Problem closing DatabaseRepository: " + e.toString());
+        }
+        return false;
+    }
 }

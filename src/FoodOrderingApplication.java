@@ -5,8 +5,12 @@ public class FoodOrderingApplication {
     public static void main(String args[]) {
         DatabaseRepository db = new DatabaseRepository();
 
-        Customer c1 = Customer.fromDocument(db.getUserByName("Adam"));
+        db.test();
 
-        System.out.println(c1.toString());
+
+
+        // Customer c1 = Customer.fromDocument(db.getUserByName("Adam"));
+
+        // System.out.println(c1.toString());
     }
 }
