@@ -14,7 +14,7 @@ public class ConnectToDB {
 
 	public static void main(String args[]) {
 
-		MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:cs4125_user@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
+		MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
 
 		MongoClient mongoClient = new MongoClient(uri);
 		MongoDatabase database = mongoClient.getDatabase("cs4125");
