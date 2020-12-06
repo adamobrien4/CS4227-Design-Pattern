@@ -16,7 +16,7 @@
    <children>
       <Pane prefHeight="50.0" prefWidth="1000.0">
          <children>
-            <Button fx:id="go_back_btn" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" text="Go Back" />
+            <Button fx:id="go_back_btn" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleGoBackButton" text="Go Back" />
             <Text layoutX="489.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />

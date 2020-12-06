@@ -2,6 +2,7 @@ package main.presentation_layer.create_order;
 
 import main.entities.FoodItem;
 import main.entities.Order;
+import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
 
@@ -150,6 +151,24 @@ public class CreateOrderController {
     };
 
     @FXML
+    private void handleGoBackButton(ActionEvent evt) {
+        Button btn = (Button) evt.getSource();
+        Scene scene = btn.getScene();
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../browse_restaurants/BrowseRestaurant.fxml"));
+            Stage stage = (Stage) scene.getWindow();
+            Scene scene2 = new Scene(root);
+            stage.setScene(scene2);
+        } catch (IOException io) {
+            System.out.println("Error loading Checkout");
+            System.out.println(io.toString());
+        }
+
+        evt.consume();
+    }
+
+    @FXML
     private void handleCheckout(ActionEvent evt) {
         System.out.println("Handling Checkout");
 
@@ -157,7 +176,7 @@ public class CreateOrderController {
 
         ArrayList<String> orderItems = new ArrayList<String>();
 
-        for(BasketItem item : basket.values()) {
+        for (BasketItem item : basket.values()) {
             String s = item.getName();
             if (item.getQuantity() > 0) {
                 s += " * " + item.getQuantity();
@@ -166,14 +185,15 @@ public class CreateOrderController {
         }
 
         if (discountTotal > 0) {
-            order = new Order(basketTotal, discountCode, discountTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
+            order = new Order(basketTotal, discountCode, discountTotal, deliveryCost,
+                    orderItems.toArray(new String[orderItems.size()]));
         } else {
             order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
         }
 
         db.insertOrder(order);
 
-        Button btn = (Button)evt.getSource();
+        Button btn = (Button) evt.getSource();
         Scene scene = btn.getScene();
 
         try {
@@ -297,8 +317,8 @@ public class CreateOrderController {
 
         BasketItem[] items = basket.values().toArray(new BasketItem[basket.size()]);
         String[] keys = basket.keySet().toArray(new String[basket.size()]);
-        
-        for(int i = items.length-1; i >= 0; i--) {
+
+        for (int i = items.length - 1; i >= 0; i--) {
             BasketItem item = items[i];
             String key = keys[i];
             String title = item.getName();

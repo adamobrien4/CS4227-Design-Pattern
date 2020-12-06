@@ -6,6 +6,11 @@ public class Menu {
     private String menuName;
     private ArrayList<Course> listOfCourses;
 
+    // TODO : Delete, this is for testing
+    public Menu() {
+        
+    }
+
     Menu(String menuName, ArrayList<Course> listOfCourses){
         this.menuName = menuName;
         this.listOfCourses = listOfCourses;
