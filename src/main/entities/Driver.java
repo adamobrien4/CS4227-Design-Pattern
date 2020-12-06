@@ -24,12 +24,6 @@ public class Driver  implements User{
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public void fromJson() {
-        // TODO Auto-generated method stub
-
-    }
     
     public void AcceptOrder(Order order){
         order.setDriver(id);

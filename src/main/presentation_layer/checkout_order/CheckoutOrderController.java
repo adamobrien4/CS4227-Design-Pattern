@@ -22,6 +22,9 @@ public class CheckoutOrderController {
 
         Alert a = new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed");
         a.showAndWait();
+
+        // TODO: Mark customers order as paid
+        
         evt.consume();
     }
 
