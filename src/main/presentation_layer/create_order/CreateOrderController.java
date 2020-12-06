@@ -1,21 +1,26 @@
 package main.presentation_layer.create_order;
 
 import main.entities.FoodItem;
+import main.entities.Order;
+import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
+
+import org.bson.Document;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,6 +62,8 @@ public class CreateOrderController {
     @FXML
     private ResourceBundle resources;
 
+    DatabaseRepository db;
+
     FoodItem[] mainCourses;
     FoodItem[] desserts;
     FoodItem[] sides;
@@ -64,6 +71,7 @@ public class CreateOrderController {
 
     Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
 
+    double basketTotal;
     double deliveryCost = 4.00;
     String discountCode = "";
     double discountTotal = 0.00;
@@ -144,6 +152,46 @@ public class CreateOrderController {
     @FXML
     private void handleCheckout(ActionEvent evt) {
         System.out.println("Handling Checkout");
+
+        // TODO: Write order to database
+
+        Order order;
+
+        ArrayList<String> orderItems = new ArrayList<String>();
+
+        for(BasketItem item : basket.values()) {
+            String s = item.getName();
+            if (item.getQuantity() > 0) {
+                s += " * " + item.getQuantity();
+            }
+            orderItems.add(s);
+        }
+
+        if (discountTotal > 0) {
+            order = new Order(basketTotal, discountCode, discountTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
+        } else {
+            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
+        }
+
+        // TODO: Pass order to DBRepo
+        System.out.println(order.toDocument());
+
+        /*
+        Button btn = (Button)evt.getSource();
+        Scene scene = btn.getScene();
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../checkout_order/CheckoutOrder.fxml"));
+            Stage stage = (Stage) scene.getWindow();
+            Scene scene2 = new Scene(root);
+            stage.setScene(scene2);
+        } catch (IOException io) {
+            System.out.println("Error loading Checkout");
+            System.out.println(io.toString());
+        }
+        */
+
+
         evt.consume();
     }
 
@@ -152,7 +200,8 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
-        // Query DB for restaurant menu
+        // TODO : Query DB for restaurant menu
+        db = new DatabaseRepository();
 
         // Testing
         mainCourses = new FoodItem[] { new FoodItem("Burger", 45.99),
@@ -295,7 +344,7 @@ public class CreateOrderController {
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountTotal));
 
-        double basketTotal = basketSubTotalPrice + deliveryCost - discountTotal;
+        basketTotal = basketSubTotalPrice + deliveryCost - discountTotal;
         if (basketTotal < 0) {
             discountTotal = 0.00;
         }

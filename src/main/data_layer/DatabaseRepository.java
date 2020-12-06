@@ -5,6 +5,8 @@ import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
+import main.entities.Order;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -33,6 +35,14 @@ public class DatabaseRepository {
         whereQuery.put("name", username);
 
         return database.getCollection("users").find(whereQuery).first();
+    }
+
+    public void insertOrder(Order order) {
+        System.out.println("Inserting Order");
+
+        // TODO : Insert order into DB
+        database.getCollection("orders").insertOne(order.toDocument());
+        System.out.println("Inserted Order Docment");
     }
 
     public void test() {

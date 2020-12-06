@@ -21,11 +21,11 @@ public class Customer implements User {
         return "Customer Entity formatted in Json";
     }
 
-    public void fromJson() {
-        // Create a new Customer entity given a json string/map
-    }
-
     public static Customer fromDocument(Document document) {
         return new Customer(document.getObjectId("_id"), document.getString("email"));
+    }
+
+    public ObjectId getId() {
+        return this.id;
     }
 }
