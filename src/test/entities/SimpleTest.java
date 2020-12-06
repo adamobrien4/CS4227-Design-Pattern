@@ -1,8 +1,11 @@
 package test.entities;
 
-import org.junit.*;
 import static org.junit.Assert.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.junit.*;
 
 public class SimpleTest {
     private Collection<Object> collection;
