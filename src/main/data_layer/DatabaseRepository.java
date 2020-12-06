@@ -1,6 +1,5 @@
 package main.data_layer;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
@@ -13,8 +12,8 @@ import com.mongodb.MongoClientURI;
 
 public class DatabaseRepository {
 
-    MongoClient mongoClient;
-    MongoDatabase database;
+    private MongoClient mongoClient;
+    private MongoDatabase database;
 
     public DatabaseRepository() {
         MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
@@ -27,6 +26,10 @@ public class DatabaseRepository {
             System.exit(0);
         }
         
+    }
+
+    public MongoDatabase getDB() {
+        return database;
     }
 
     public Document getUserByName(String username) {

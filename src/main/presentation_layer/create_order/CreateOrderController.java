@@ -153,8 +153,6 @@ public class CreateOrderController {
     private void handleCheckout(ActionEvent evt) {
         System.out.println("Handling Checkout");
 
-        // TODO: Write order to database
-
         Order order;
 
         ArrayList<String> orderItems = new ArrayList<String>();
@@ -173,10 +171,8 @@ public class CreateOrderController {
             order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
         }
 
-        // TODO: Pass order to DBRepo
-        System.out.println(order.toDocument());
+        db.insertOrder(order);
 
-        /*
         Button btn = (Button)evt.getSource();
         Scene scene = btn.getScene();
 
@@ -189,8 +185,6 @@ public class CreateOrderController {
             System.out.println("Error loading Checkout");
             System.out.println(io.toString());
         }
-        */
-
 
         evt.consume();
     }

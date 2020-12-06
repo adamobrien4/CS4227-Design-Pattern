@@ -69,7 +69,7 @@ public class Order {
             .append("restaurant_id", Globals.getRestaurant())
             .append("total_cost", totalCost)
             .append("delivery_cost", deliveryCost)
-            .append("order_items", Arrays.toString(orderItems))
+            .append("order_items", Arrays.asList(orderItems))
             .append("status", "pending_payment");
 
         if (discountAmount > 0) {
