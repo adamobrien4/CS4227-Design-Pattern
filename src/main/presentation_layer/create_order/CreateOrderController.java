@@ -1,6 +1,10 @@
 package main.presentation_layer.create_order;
 
+import main.entities.FoodItem;
+import main.entities.BasketItem;
+
 import java.net.URL;
+import java.util.*;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
@@ -20,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.entities.FoodItem;
 
 public class CreateOrderController {
     @FXML
@@ -46,6 +49,8 @@ public class CreateOrderController {
     private AnchorPane sides_tab_pane;
     @FXML
     private AnchorPane drinks_tab_pane;
+    @FXML
+    private AnchorPane basket_pane;
 
     @FXML
     private URL location;
@@ -57,12 +62,46 @@ public class CreateOrderController {
     FoodItem[] sides;
     FoodItem[] drinks;
 
+    Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
+
+    double deliveryCost = 4.00;
+    String discountCode = "";
+    double discountTotal = 0.00;
+
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent evt) {
             Button btn = (Button) evt.getSource();
-            System.out.println(btn.getId());
+            String btnId = btn.getId();
+            int index = Integer.parseInt(btnId.substring(2));
 
+            if (basket.containsKey(btnId)) {
+                System.out.println("Increasing Quantity");
+                basket.get(btnId).incrementQuantity();
+            } else {
+                System.out.println("Adding new item");
+                basket.put(btnId, BasketItem.fromFoodItem(mainCourses[index]));
+            }
+
+            updateBasket();
+            evt.consume();
+        }
+    };
+
+    EventHandler<ActionEvent> removeFromBasketHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent evt) {
+            Button btn = (Button) evt.getSource();
+            String btnId = btn.getId();
+
+            if (basket.containsKey(btnId)) {
+                System.out.println("Decreasing Quantity");
+                if (basket.get(btnId).decrementQuantity()) {
+                    basket.remove(btnId);
+                }
+            }
+
+            updateBasket();
             evt.consume();
         }
     };
@@ -94,10 +133,19 @@ public class CreateOrderController {
 
     @FXML
     private void handleApplyDiscount(ActionEvent evt) {
-        System.out.println("Apply Discount Code");
+        discountCode = discount_code_entry_field.getText();
+        System.out.println("Apply Discount Code : " + discountCode);
+        discountTotal = 23.00;
 
         evt.consume();
+        updateBasket();
     };
+
+    @FXML
+    private void handleCheckout(ActionEvent evt) {
+        System.out.println("Handling Checkout");
+        evt.consume();
+    }
 
     @FXML
     public void initialize() {
@@ -169,11 +217,10 @@ public class CreateOrderController {
         name.setOnMouseClicked(nameClickHandler);
 
         Text alg = new Text();
-        String[] allergens = item.getAllergens();
-        if (allergens != null && allergens.length > 0) {
+        if (item.hasAllergens()) {
             alg.setLayoutX(163.0);
             alg.setLayoutY(y);
-            alg.setText("Allergens: " + String.join(", ", allergens));
+            alg.setText("Allergens: " + String.join(", ", item.getAllergens()));
         }
 
         Text prc = new Text();
@@ -195,5 +242,63 @@ public class CreateOrderController {
         noFoodListingsMessage.setLayoutX(299.0);
         noFoodListingsMessage.setLayoutY(365.0);
         return noFoodListingsMessage;
+    }
+
+    private void updateBasket() {
+        ObservableList<Node> children = basket_pane.getChildren();
+
+        children.clear();
+
+        int index = 0;
+        double basketSubTotalPrice = 0.0;
+
+        BasketItem[] items = basket.values().toArray(new BasketItem[basket.size()]);
+        String[] keys = basket.keySet().toArray(new String[basket.size()]);
+        
+        for(int i = items.length-1; i >= 0; i--) {
+            BasketItem item = items[i];
+            String key = keys[i];
+            String title = item.getName();
+            if (item.getQuantity() > 1) {
+                title += " * " + item.getQuantity();
+            }
+            double itemSubTotal = item.getPrice() * item.getQuantity();
+            title += " (€" + String.format("%.2f", itemSubTotal) + ")";
+
+            basketSubTotalPrice += itemSubTotal;
+
+            Text txt = new Text(title);
+            txt.setLayoutX(14.0);
+            txt.setLayoutY(27.0 + (33.0 * index));
+
+            Button btn = new Button("-");
+            btn.setLayoutX(231.0);
+            btn.setLayoutY(10.0 + (33.0 * index));
+            btn.setId(key);
+            btn.setPrefWidth(40.0);
+            btn.setOnAction(removeFromBasketHandler);
+
+            Button btn2 = new Button("+");
+            btn2.setLayoutX(191.0);
+            btn2.setLayoutY(10.0 + (33.0 * index));
+            btn2.setId(key);
+            btn2.setPrefWidth(40.0);
+            btn2.setOnAction(addToBasketHandler);
+
+            children.addAll(txt, btn, btn2);
+            index++;
+        }
+
+        // Update Cost details
+        String NUM_FORMAT = "€%.2f";
+        basket_sub_total.setText(String.format(NUM_FORMAT, basketSubTotalPrice));
+        delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
+        discount_amount.setText(String.format(NUM_FORMAT, discountTotal));
+
+        double basketTotal = basketSubTotalPrice + deliveryCost - discountTotal;
+        if (basketTotal < 0) {
+            discountTotal = 0.00;
+        }
+        basket_total.setText(String.format(NUM_FORMAT, basketTotal));
     }
 }

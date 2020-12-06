@@ -35,13 +35,7 @@
                   </Pane>
                   <ScrollPane prefHeight="420.0" prefWidth="300.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="280.0">
-                           <children>
-                              <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chicken Tikka (€10.00) x 2" />
-                              <Button layoutX="191.0" layoutY="10.0" mnemonicParsing="false" prefWidth="40.0" text="+" />
-                              <Button layoutX="231.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" text="-" />
-                           </children>
-                        </AnchorPane>
+                      <AnchorPane fx:id="basket_pane" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="280.0" />
                     </content>
                   </ScrollPane>
                   <Pane prefHeight="300.0" prefWidth="300.0">
@@ -69,17 +63,17 @@
                         </Text>
                         <TextField fx:id="discount_code_entry_field" layoutX="102.0" layoutY="41.0" prefHeight="25.0" prefWidth="150.0" promptText="Discount Code" />
                         <Button fx:id="discount_code_apply_btn" layoutX="253.0" layoutY="41.0" maxWidth="70.0" mnemonicParsing="false" onAction="#handleApplyDiscount" text="Apply" />
-                        <Button layoutX="16.0" layoutY="236.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: green;" text="Checkout" textAlignment="CENTER" textFill="WHITE">
+                        <Button layoutX="16.0" layoutY="236.0" mnemonicParsing="false" onAction="#handleCheckout" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: green;" text="Checkout" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Text fx:id="basket_total" layoutX="229.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€15.00" textAlignment="RIGHT" wrappingWidth="56.671875">
+                        <Text fx:id="basket_total" layoutX="190.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€15.00" textAlignment="RIGHT" wrappingWidth="98.671875">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <Text fx:id="delivery_total" layoutX="239.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€4.00" textAlignment="RIGHT" wrappingWidth="46.5625">
+                        <Text fx:id="delivery_total" layoutX="218.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="€4.00" textAlignment="RIGHT" wrappingWidth="70.5625">
                            <font>
                               <Font size="16.0" />
                            </font>
