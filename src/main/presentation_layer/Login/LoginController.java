@@ -1,10 +1,7 @@
 package main.presentation_layer.login;
 
 import java.io.IOException;
-import java.util.*;
 import java.util.ResourceBundle;
-
-import org.bson.Document;
 
 import main.data_layer.DatabaseRepository;
 import javafx.event.ActionEvent;

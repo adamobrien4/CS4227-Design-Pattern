@@ -7,6 +7,7 @@ public class Menu {
     public ArrayList<FoodItem> listOfMainCoursesItems;
     public ArrayList<FoodItem> listOfDesertItems;
     public ArrayList<FoodItem> listOfSideItems;
+    public ArrayList<FoodItem> listOfDrinkItems;
 
 
     // TODO : Delete, this is for testing
@@ -16,11 +17,12 @@ public class Menu {
 
 
     public Menu(String menuName, ArrayList<FoodItem> listOfMainCoursesItems, ArrayList<FoodItem> listOfDesertItems,
-                ArrayList<FoodItem> listOfSideItems){
+                ArrayList<FoodItem> listOfSideItems, ArrayList<FoodItem> listOfDrinkItems){
         this.menuName = menuName;
         this.listOfMainCoursesItems = listOfMainCoursesItems;
         this.listOfDesertItems = listOfDesertItems;
         this.listOfSideItems = listOfSideItems;
+        this.listOfDrinkItems = listOfDrinkItems;
     }
 
     public String getMenuName() {

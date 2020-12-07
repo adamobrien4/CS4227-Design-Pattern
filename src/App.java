@@ -4,7 +4,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.data_layer.DatabaseRepository;
-import main.entities.Course;
 import main.entities.FoodItem;
 import main.entities.Menu;
 import main.entities.Restaurant;
@@ -56,12 +55,16 @@ public class App extends Application {
         listOfSideItems.add(item5);
         listOfSideItems.add(item6);
 
+        ArrayList<FoodItem>  listOfDrinkItems = new ArrayList<>();
+        listOfSideItems.add(item5);
+        listOfSideItems.add(item6);
+
 
         System.out.println("creating restaurant");
 
 
 
-        Menu menu = new Menu("the menu",listOfMainCoursesItems,listOfDesertItems,listOfSideItems);
+        Menu menu = new Menu("the menu",listOfMainCoursesItems,listOfDesertItems,listOfSideItems, listOfDrinkItems);
         Restaurant restaurant = new Restaurant( new ObjectId(),"The best restaurant",menu,"best");
 
 

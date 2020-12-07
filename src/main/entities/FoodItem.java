@@ -1,5 +1,9 @@
 package main.entities;
 
+import java.util.ArrayList;
+
+import org.bson.Document;
+
 public class FoodItem {
     private String name;
     private boolean hasAllergens = false;
@@ -32,5 +36,10 @@ public class FoodItem {
 
     public boolean hasAllergens() {
         return hasAllergens;
+    }
+
+    public static FoodItem fromDocument(Document document) {
+        ArrayList<String> alg = document.get("allergens", ArrayList.class);
+        return new FoodItem(document.get("name", String.class), alg.toArray(new String[0]), document.get("price", Double.class));
     }
 }
