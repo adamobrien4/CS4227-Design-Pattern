@@ -8,9 +8,10 @@ public class Customer implements User {
     private String email;
     private String password;
 
-    public Customer(ObjectId id, String email) {
+    public Customer(ObjectId id, String email, String password) {
         this.id = id;
         this.email = email;
+        this.password = password;
     }
 
     public String toString() {
@@ -22,7 +23,7 @@ public class Customer implements User {
     }
 
     public static Customer fromDocument(Document document) {
-        return new Customer(document.getObjectId("_id"), document.getString("email"));
+        return new Customer(document.getObjectId("_id"), document.getString("email"), document.getString("password"));
     }
 
     public ObjectId getId() {

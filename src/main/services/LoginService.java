@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.Customer;
+import main.entities.Driver;
 import main.entities.User;
 import main.utils.PasswordUtils;
 
@@ -35,9 +36,25 @@ public class LoginService {
             System.out.println(userDoc);
         }
 
-        Customer c = Customer.fromDocument(userDoc);
-        System.out.println(c);
-        Globals.setLoggedInUser(c);
+        User usr = null;
+
+        switch(userDoc.getString("type")) {
+            case "customer":
+                usr = Customer.fromDocument(userDoc);
+            break;
+            case "restaurant_owner":
+                usr = Customer.fromDocument(userDoc);
+            break;
+            case "admin":
+            break;
+            case "delivery_driver":
+                usr = Driver.fromDocument(userDoc);
+            break;
+        }
+
+        
+        System.out.println(usr);
+        Globals.setLoggedInUser(usr);
 
         return true;
     }
