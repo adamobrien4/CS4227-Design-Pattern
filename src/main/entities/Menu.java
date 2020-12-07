@@ -3,27 +3,41 @@ package main.entities;
 import java.util.ArrayList;
 // Menu has a Composition('Has a') relationship with Restaurant
 public class Menu {
-    private String menuName;
-    private ArrayList<Course> listOfCourses;
+    public String menuName;
+    public ArrayList<FoodItem> listOfMainCoursesItems;
+    public ArrayList<FoodItem> listOfDesertItems;
+    public ArrayList<FoodItem> listOfSideItems;
+
 
     // TODO : Delete, this is for testing
     public Menu() {
         
     }
 
-    Menu(String menuName, ArrayList<Course> listOfCourses){
+
+    public Menu(String menuName, ArrayList<FoodItem> listOfMainCoursesItems, ArrayList<FoodItem> listOfDesertItems,
+                ArrayList<FoodItem> listOfSideItems){
         this.menuName = menuName;
-        this.listOfCourses = listOfCourses;
+        this.listOfMainCoursesItems = listOfMainCoursesItems;
+        this.listOfDesertItems = listOfDesertItems;
+        this.listOfSideItems = listOfSideItems;
     }
 
     public String getMenuName() {
         return menuName;
     }
-    public ArrayList<Course> getListOfCourses() {
-        return listOfCourses;
+
+    public ArrayList<FoodItem> getListOfMainCoursesItems() {
+        return listOfMainCoursesItems;
     }
-    public void addCourse(Course course) {
-        listOfCourses.add(course);
+
+    public ArrayList<FoodItem> getListOfDesertItems() {
+        return listOfDesertItems;
     }
+
+    public ArrayList<FoodItem> getListOfSideItems() {
+        return listOfSideItems;
+    }
+
 
 }
