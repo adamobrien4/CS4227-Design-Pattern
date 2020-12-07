@@ -1,4 +1,4 @@
-package main.presentation_layer.login;
+package main.presentation_layer.signup;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,16 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginMain extends Application {
+public class SignupMain extends Application {
 
     public void start(Stage primaryStage) throws Exception{
-        System.out.println(getClass().getResource("LoginFX.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("LoginFX.fxml"));
+        System.out.println(getClass().getResource("SignupFX.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("SignupFX.fxml"));
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
+    
 
 
     public static void main(String[] args) {
