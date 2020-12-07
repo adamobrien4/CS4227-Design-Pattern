@@ -32,10 +32,11 @@ public class DatabaseRepository {
         return database;
     }
 
-    public Document getUserByName(String username) {
+    public Document getUserByEmailAndPwd(String email, String password) {
 
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("name", username);
+        whereQuery.put("email", email);
+        whereQuery.put("password", password);
 
         return database.getCollection("users").find(whereQuery).first();
     }

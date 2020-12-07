@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.Globals;
 import main.entities.Customer;
+import main.services.LoginService;
 
 public class BrowseRestaurantMain extends Application {
 
@@ -17,12 +18,16 @@ public class BrowseRestaurantMain extends Application {
         System.out.println(getClass().getResource("BrowseRestaurant.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("BrowseRestaurant.fxml"));
 
+        LoginService ls = new LoginService();
+
+        ls.verifyLogin("adam@gmail.com", "my_password");
+
         Customer u = new Customer(new ObjectId(), "adam@gmail.com");
         Globals.setLoggedInUser(u);
 
-        primaryStage.setTitle("Hello World");
+        /*primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 600));
-        primaryStage.show();
+        primaryStage.show();*/
     }
 
 
