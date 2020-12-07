@@ -66,10 +66,10 @@ public class Order {
     public Document toDocument() {
         Customer loggedInUser = (Customer)Globals.getLoggedInUser();
         Document doc = new Document("customer_id", loggedInUser.getId())
-            .append("restaurant_id", Globals.getRestaurant())
+            .append("restaurant_id", Globals.getRestaurant().getId())
             .append("total_cost", totalCost)
             .append("delivery_cost", deliveryCost)
-            .append("order_items", Arrays.toString(orderItems))
+            .append("order_items", Arrays.asList(orderItems))
             .append("status", "pending_payment");
 
         if (discountAmount > 0) {
