@@ -17,7 +17,7 @@ public class CreateOrderMain extends Application {
         System.out.println(getClass().getResource("CreateOrder.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("CreateOrder.fxml"));
 
-        Customer u = new Customer(new ObjectId(), "adam@gmail.com");
+        Customer u = new Customer(new ObjectId(), "adam@gmail.com", "paswd");
         Globals.setLoggedInUser(u);
 
         primaryStage.setTitle("Hello World");

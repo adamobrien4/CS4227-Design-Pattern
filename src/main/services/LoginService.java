@@ -9,6 +9,7 @@ import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.Customer;
 import main.entities.Driver;
+import main.entities.RestaurantOwner;
 import main.entities.User;
 import main.utils.PasswordUtils;
 
@@ -43,7 +44,7 @@ public class LoginService {
                 usr = Customer.fromDocument(userDoc);
             break;
             case "restaurant_owner":
-                usr = Customer.fromDocument(userDoc);
+                usr = RestaurantOwner.fromDocument(userDoc);
             break;
             case "admin":
             break;

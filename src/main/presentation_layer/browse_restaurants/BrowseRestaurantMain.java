@@ -22,7 +22,7 @@ public class BrowseRestaurantMain extends Application {
 
         ls.verifyLogin("adam@gmail.com", "my_password");
 
-        Customer u = new Customer(new ObjectId(), "adam@gmail.com");
+        Customer u = new Customer(new ObjectId(), "adam@gmail.com", "paswd");
         Globals.setLoggedInUser(u);
 
         /*primaryStage.setTitle("Hello World");
