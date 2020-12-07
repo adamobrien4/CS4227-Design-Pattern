@@ -1,14 +1,22 @@
 package main.data_layer;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import main.entities.*;
 import org.bson.Document;
-
-import main.entities.Order;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class DatabaseRepository {
 
@@ -57,6 +65,56 @@ public class DatabaseRepository {
 
         System.out.println(menu.get("menu"));
     }
+
+    public List<Document> createListFoodItemDocuments( ArrayList<FoodItem> listOfFoodItems) {
+        List<Document> listFoodItemDocuments = new ArrayList<>();
+        for(FoodItem item : listOfFoodItems) {
+
+            String[] arrAllergens = item.getAllergens();
+
+            listFoodItemDocuments.add(new Document().append("name",item.getName())
+                    .append("allergens",asList(arrAllergens))
+                    .append("price",item.getPrice()));
+        }
+
+        return listFoodItemDocuments;
+    }
+
+
+    public Document createMenuDocument(Menu menu) {
+        ArrayList<FoodItem> listOfMainCoursesItems = menu.getListOfMainCoursesItems();
+        ArrayList<FoodItem> listOfDesertItemsItems = menu.getListOfDesertItems();
+        ArrayList<FoodItem> listOfSideItems = menu.getListOfSideItems();
+
+        List<Document> mainCourseItemsDocuments = createListFoodItemDocuments(listOfMainCoursesItems);
+        List<Document> desertItemsDocuments = createListFoodItemDocuments(listOfDesertItemsItems);
+        List<Document> sideItemsDocuments = createListFoodItemDocuments(listOfSideItems);
+
+        Document menuDocument = new Document();
+        menuDocument.append("name",menu.getMenuName());
+        menuDocument.append("main course",mainCourseItemsDocuments);
+        menuDocument.append("desert",desertItemsDocuments);
+        menuDocument.append("sides",sideItemsDocuments);
+
+        return menuDocument;
+    }
+
+    public void createRestaurant(Restaurant restaurant, ObjectId id) {
+        MongoCollection<Document> restaurantCollection = database.getCollection("restaurants");
+
+        Menu menu = restaurant.getMenu();
+        Document menuDocument = createMenuDocument(menu);
+
+        Document restaurantDocument= new Document("_id", id);
+        restaurantDocument.append("name", restaurant.getName())
+                .append("menu", menuDocument);
+
+        restaurantCollection.insertOne(restaurantDocument);
+    }
+
+
+
+
 
     public boolean close() {
         try {

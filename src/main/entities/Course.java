@@ -7,7 +7,7 @@ public class Course {
     private ArrayList<FoodItem> listOfItems;
 
 
-    Course(String name, ArrayList<FoodItem> listOfItems) {
+    public Course(String name, ArrayList<FoodItem> listOfItems) {
         this.name = name;
         this.listOfItems = listOfItems;
     }

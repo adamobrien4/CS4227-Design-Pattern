@@ -10,6 +10,7 @@ import java.util.Iterator;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+
 public class ConnectToDB {
 
 	public static void main(String args[]) {
