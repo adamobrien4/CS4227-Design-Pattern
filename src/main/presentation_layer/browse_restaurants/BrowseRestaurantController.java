@@ -5,6 +5,9 @@ import main.entities.FoodItem;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.mongodb.client.FindIterable;
+
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import javafx.event.ActionEvent;
@@ -14,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
+import main.data_layer.DatabaseRepository;
 import main.entities.Menu;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
@@ -23,6 +27,7 @@ public class BrowseRestaurantController {
     private AnchorPane restaurant_list_anchor_pane;
 
     ArrayList<Restaurant> restaurants;
+    DatabaseRepository db;
 
     @FXML
     EventHandler<ActionEvent> handleBrowseRestaurant = new EventHandler<ActionEvent>() {
@@ -45,26 +50,18 @@ public class BrowseRestaurantController {
     public void initialize() {
         System.out.println("Initialising Checkout Screen");
 
-        // Read restaurants from Database
-
         restaurants = new ArrayList<Restaurant>();
 
-        Restaurant r1 = new Restaurant(new ObjectId(), "R1", new Menu("1", new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>()), "BBq");
-        Restaurant r2 = new Restaurant(new ObjectId(), "R2", new Menu("2", new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>()), "Asian");
-        Restaurant r3 = new Restaurant(new ObjectId(), "R3", new Menu("3", new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>(), new ArrayList<FoodItem>()), "American");
+        // Read restaurants from Database
+        db = new DatabaseRepository();
+        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
 
-        restaurants.add(r1);
-        restaurants.add(r2);
-        restaurants.add(r3);
-        restaurants.add(r1);
-        restaurants.add(r2);
-        restaurants.add(r3);
-        restaurants.add(r1);
-        restaurants.add(r2);
-        restaurants.add(r3);
-        restaurants.add(r1);
-        restaurants.add(r2);
-        restaurants.add(r3);
+        System.out.println("Got restaurant documents");
+
+        for(Document r : restDocs) {
+            System.out.println(r);
+            restaurants.add( Restaurant.fromDocument(r) );
+        }
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
 
