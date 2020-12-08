@@ -196,8 +196,6 @@ public class CreateOrderController {
 
         Restaurant r = Globals.getRestaurant();
 
-        System.out.println("Got Restaurant");
-
         // Testing
         mainCourses = r.getMenu().getListOfMainCoursesItems();
         desserts = r.getMenu().getListOfDessertItems();

@@ -53,8 +53,8 @@ public class Restaurant {
                 mainCourse.add(FoodItem.fromDocument(d));
             }
         }
-        if (menu.containsKey("desserts")) {
-            ArrayList<Document> dc = menu.get("desserts", ArrayList.class);
+        if (menu.containsKey("dessert")) {
+            ArrayList<Document> dc = menu.get("dessert", ArrayList.class);
             System.out.println(dc);
 
             for(Document d : dc) {
