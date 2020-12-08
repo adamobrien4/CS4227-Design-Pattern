@@ -39,7 +39,12 @@ public class FoodItem {
     }
 
     public static FoodItem fromDocument(Document document) {
-        ArrayList<String> alg = document.get("allergens", ArrayList.class);
-        return new FoodItem(document.get("name", String.class), alg.toArray(new String[0]), document.get("price", Double.class));
+        if (document.containsKey("allergens")) {
+            ArrayList<String> alg = document.get("allergens", ArrayList.class);
+            return new FoodItem(document.get("name", String.class), alg.toArray(new String[0]), document.get("price", Double.class));
+        } else {
+            return new FoodItem(document.get("name", String.class), document.get("price", Double.class));
+        }
+        
     }
 }

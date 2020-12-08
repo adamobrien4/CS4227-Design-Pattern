@@ -2,6 +2,8 @@ package main.presentation_layer.create_order;
 
 import main.entities.FoodItem;
 import main.entities.Order;
+import main.entities.Restaurant;
+import main.presentation_layer.PresentationLoader;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
@@ -65,10 +67,10 @@ public class CreateOrderController {
 
     DatabaseRepository db;
 
-    FoodItem[] mainCourses;
-    FoodItem[] desserts;
-    FoodItem[] sides;
-    FoodItem[] drinks;
+    ArrayList<FoodItem> mainCourses;
+    ArrayList<FoodItem> desserts;
+    ArrayList<FoodItem> sides;
+    ArrayList<FoodItem> drinks;
 
     Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
 
@@ -89,7 +91,7 @@ public class CreateOrderController {
                 basket.get(btnId).incrementQuantity();
             } else {
                 System.out.println("Adding new item");
-                basket.put(btnId, BasketItem.fromFoodItem(mainCourses[index]));
+                basket.put(btnId, BasketItem.fromFoodItem(mainCourses.get(index)));
             }
 
             updateBasket();
@@ -152,19 +154,7 @@ public class CreateOrderController {
 
     @FXML
     private void handleGoBackButton(ActionEvent evt) {
-        Button btn = (Button) evt.getSource();
-        Scene scene = btn.getScene();
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../browse_restaurants/BrowseRestaurant.fxml"));
-            Stage stage = (Stage) scene.getWindow();
-            Scene scene2 = new Scene(root);
-            stage.setScene(scene2);
-        } catch (IOException io) {
-            System.out.println("Error loading Checkout");
-            System.out.println(io.toString());
-        }
-
+        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
         evt.consume();
     }
 
@@ -193,19 +183,7 @@ public class CreateOrderController {
 
         db.insertOrder(order);
 
-        Button btn = (Button) evt.getSource();
-        Scene scene = btn.getScene();
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../checkout_order/CheckoutOrder.fxml"));
-            Stage stage = (Stage) scene.getWindow();
-            Scene scene2 = new Scene(root);
-            stage.setScene(scene2);
-        } catch (IOException io) {
-            System.out.println("Error loading Checkout");
-            System.out.println(io.toString());
-        }
-
+        PresentationLoader.display(PresentationLoader.CHECKOUT_ORDER);
         evt.consume();
     }
 
@@ -214,62 +192,68 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
-        // TODO : Query DB for restaurant menu
         db = new DatabaseRepository();
 
+        Restaurant r = Globals.getRestaurant();
+
+        System.out.println("Got Restaurant");
+
         // Testing
-        mainCourses = new FoodItem[] { new FoodItem("Burger", 45.99),
-                new FoodItem("Kebab", new String[] { "Wheat", "Soya" }, 24.99), };
-        desserts = new FoodItem[] {};
-        sides = new FoodItem[] {};
-        drinks = new FoodItem[] {};
+        mainCourses = r.getMenu().getListOfMainCoursesItems();
+        desserts = r.getMenu().getListOfDessertItems();
+        sides = r.getMenu().getListOfSideItems();
+        drinks = r.getMenu().getListOfDrinksItems();
+
+        System.out.println("Got Restaurant 3");
 
         // Main Course
-        if (mainCourses.length == 0) {
+        if (mainCourses.isEmpty()) {
             main_course_tab_pane.getChildren().add(noFoodItemsMessage());
         }
-        for (int i = 0; i < mainCourses.length; i++) {
+        for (int i = 0; i < mainCourses.size(); i++) {
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
-            Node[] foodListing = makeFoodListing(mainCourses[i], y, "mc", i);
+            Node[] foodListing = makeFoodListing(mainCourses.get(i), y, "mc", i);
             main_course_tab_pane.getChildren().addAll(foodListing[0], foodListing[1], foodListing[2], foodListing[3]);
         }
 
         // Desserts
-        if (desserts.length == 0) {
+        if (desserts.isEmpty()){
             desserts_tab_pane.getChildren().add(noFoodItemsMessage());
         }
-        for (int i = 0; i < desserts.length; i++) {
+        for (int i = 0; i < desserts.size(); i++) {
 
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
-            Node[] foodListing = makeFoodListing(desserts[i], y, "ds", i);
+            Node[] foodListing = makeFoodListing(desserts.get(i), y, "ds", i);
             desserts_tab_pane.getChildren().addAll(foodListing[0], foodListing[1], foodListing[2], foodListing[3]);
         }
 
         // Sides
-        if (sides.length == 0) {
+        if (sides.isEmpty()) {
             sides_tab_pane.getChildren().add(noFoodItemsMessage());
         }
-        for (int i = 0; i < sides.length; i++) {
+        for (int i = 0; i < sides.size(); i++) {
 
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
-            Node[] foodListing = makeFoodListing(sides[i], y, "sd", i);
+            Node[] foodListing = makeFoodListing(sides.get(i), y, "sd", i);
             sides_tab_pane.getChildren().addAll(foodListing[0], foodListing[1], foodListing[2], foodListing[3]);
         }
 
         // Drinks
-        if (drinks.length == 0) {
+        if (drinks.isEmpty()) {
             drinks_tab_pane.getChildren().add(noFoodItemsMessage());
         }
-        for (int i = 0; i < drinks.length; i++) {
+        for (int i = 0; i < drinks.size(); i++) {
 
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
-            Node[] foodListing = makeFoodListing(drinks[i], y, "dk", i);
+            Node[] foodListing = makeFoodListing(drinks.get(i), y, "dk", i);
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
+
+        System.out.println("Got Restaurant 2");
     }
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {

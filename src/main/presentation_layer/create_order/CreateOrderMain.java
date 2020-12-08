@@ -20,16 +20,21 @@ public class CreateOrderMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        DatabaseRepository.setup();
+
         db = new DatabaseRepository();
 
-        System.out.println(getClass().getResource("CreateOrder.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("CreateOrder.fxml"));
+        System.out.println("Getting restaurant doc from db");
+        Document restDoc = db.getDB().getCollection("restaurants").find().first();
+        System.out.println("Got restaurant doc from db");
+        System.out.println(restDoc);
+        Globals.setRestaurant(Restaurant.fromDocument(restDoc));
 
         Customer u = new Customer(new ObjectId(), "adam@gmail.com", "paswd");
         Globals.setLoggedInUser(u);
 
-        Document restDoc = db.getDB().getCollection("restaurants").find().first();
-        Restaurant.fromDocument(restDoc);
+        System.out.println(getClass().getResource("CreateOrder.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("CreateOrder.fxml"));
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1000, 800));
