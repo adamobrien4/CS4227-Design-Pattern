@@ -1,9 +1,6 @@
 package main.services;
 
-import com.mongodb.DBRef;
-
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import main.Globals;
 import main.data_layer.DatabaseRepository;
@@ -14,10 +11,10 @@ import main.entities.User;
 import main.utils.PasswordUtils;
 
 public class LoginService {
-    private DatabaseRepository dbRepo;
+    DatabaseRepository dbRepo;
 
-    public LoginService() {
-        dbRepo = new DatabaseRepository();
+    public LoginService(DatabaseRepository dbRepo) {
+        this.dbRepo = dbRepo;
     }
 
     public boolean verifyLogin(String email, String password) {

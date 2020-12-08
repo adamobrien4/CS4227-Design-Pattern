@@ -2,6 +2,8 @@ package main.presentation_layer.login;
 
 import main.data_layer.*;
 import main.services.LoginService;
+import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.browse_restaurants.*;
 
 import com.mongodb.DBRef;
 
@@ -44,26 +46,37 @@ public class LoginController {
     private Button FXsignuphereButton;
     @FXML
     private AnchorPane FXsignupPane;
-    private ResourceBundle resources;
 
     DatabaseRepository db;
     LoginService loginService;
+   
+
 
     @FXML
     // Handles login
     public void handleLogin(ActionEvent event) {
+        
         System.out.println("Button pressed");
-        boolean isloggedin = true;
 
-        isloggedin = loginService.verifyLogin(FXusernameField.getText(),FXpasswordField.getText());
+        String email = FXusernameField.getText();
+        String password = FXpasswordField.getText();
+
+        System.out.println("email is "+ email);
+        System.out.println("password is "+ password);
+
+        loginService.verifyLogin(email, password);
 
         if (Globals.getLoggedInUser() == null) {
             System.out.println("User is not loggged in");
+            // enter a label
         } else {
+
             System.out.println("User is loggged in");
-
+            System.out.println("I am in a try block I am running");
+            PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+    
+            event.consume();
         }
-
     }
 
     public void handleSignup(ActionEvent event) throws IOException {
@@ -90,7 +103,9 @@ public class LoginController {
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-        loginService = new LoginService();
+        db = new DatabaseRepository();
+
+        loginService = new LoginService(db);
     }
 
 }

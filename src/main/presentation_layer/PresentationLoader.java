@@ -33,6 +33,11 @@ public class PresentationLoader {
 
     public static void display(int screen){
 
+        if (PresentationLoader.stage == null) {
+            System.out.println("Please setup stage before continuing");
+            System.exit(0);
+        }
+
         double prefWidth = 800.0;
         double prefHeight = 600.0;
 

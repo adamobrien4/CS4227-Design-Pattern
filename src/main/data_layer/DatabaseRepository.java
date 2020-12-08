@@ -24,12 +24,20 @@ public class DatabaseRepository {
 
     public DatabaseRepository() {
         System.out.println("Repo");
+
+        if (isSetup) {
+            System.out.println("Database is already setup");
+        } else {
+            System.out.println("Database is NOT setup");
+        }
     }
 
     public static void setup() {
         if (isSetup) {
             return;
         }
+
+        System.out.println("Setting up DB");
 
         MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
 
