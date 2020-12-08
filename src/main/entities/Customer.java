@@ -8,6 +8,11 @@ public class Customer implements User {
     private String email;
     private String password;
 
+    public Customer(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public Customer(ObjectId id, String email, String password) {
         this.id = id;
         this.email = email;
@@ -28,5 +33,12 @@ public class Customer implements User {
 
     public ObjectId getId() {
         return this.id;
+    }
+
+    public Document toDocument() {
+        Document doc = new Document("email", this.email)
+        .append("password", this.password);
+    
+        return doc;
     }
 }

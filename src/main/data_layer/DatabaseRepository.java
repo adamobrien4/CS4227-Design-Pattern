@@ -49,6 +49,7 @@ public class DatabaseRepository {
         return database.getCollection("users").find(whereQuery).first();
     }
 
+    
     public void insertOrder(Order order) {
         System.out.println("Inserting Order");
 

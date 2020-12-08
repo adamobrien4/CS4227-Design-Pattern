@@ -3,15 +3,22 @@ package main.presentation_layer.signup;
 
 import main.entities.FoodItem;
 import main.entities.Order;
+import main.utils.PasswordUtils;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
+import main.entities.Customer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
-
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import org.bson.Document;
+
+
+
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,11 +45,11 @@ public class SignupController {
     @FXML
     private TextField FXusernameField;
     @FXML
-    private TextField FXpasswordField;
+    private PasswordField FXpasswordField;
     @FXML
     private TextField FXAddressField;
     @FXML
-    private TextField FXconfirmpasswordField;
+    private PasswordField FXconfirmpasswordField;
     @FXML
     private Button FXalreadyauserButton;
     @FXML
@@ -50,6 +58,8 @@ public class SignupController {
     private ResourceBundle resources;
 
     private boolean createAccount;
+
+    DatabaseRepository db;
 
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
@@ -67,25 +77,42 @@ public class SignupController {
         }
         event.consume();
     }
+
+
+
+    
     public void handleCreateanAccount(ActionEvent event)throws IOException {
+        System.out.println("Button pressed");
         createAccount=false;
-        String username = FXusernameField.getText();
+        String email = FXusernameField.getText();
         String address = FXAddressField.getText();
         String password = FXpasswordField.getText();
         String confirm_password = FXconfirmpasswordField.getText();
+        BasicDBObject whereQuery = new BasicDBObject();
+
 
         if(password.equals(confirm_password)== false){
             System.out.println("mismatch password");
-            
+            createAccount=false;
+        }
+        else{
+             password = PasswordUtils.encryptPassword(password);
 
         }
+        Customer c = new Customer(email, password);
+        //db.getDB().getCollection("users").insertOne(c.toDocument());
+        System.out.println("Result for first test   " +db.getDB().getCollection("users").find(new Document(whereQuery)));
+
+        System.out.println("Result for empty document   "+db.getDB().getCollection("users").find(whereQuery).first());
+
 
     }
-
         @FXML
         public void initialize() {
             // Initialise the controller
             System.out.println("Initialise");
+
+            db = new DatabaseRepository();
         }
     
     }
