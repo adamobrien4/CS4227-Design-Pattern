@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.Globals;
+import main.data_layer.DatabaseRepository;
 import main.entities.Customer;
 import main.services.LoginService;
 
@@ -18,6 +19,8 @@ public class BrowseRestaurantMain extends Application {
         System.out.println(getClass().getResource("BrowseRestaurant.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("BrowseRestaurant.fxml"));
 
+        DatabaseRepository.setup();
+
         LoginService ls = new LoginService();
 
         ls.verifyLogin("adam@gmail.com", "my_password");
@@ -25,9 +28,9 @@ public class BrowseRestaurantMain extends Application {
         Customer u = new Customer(new ObjectId(), "adam@gmail.com", "paswd");
         Globals.setLoggedInUser(u);
 
-        /*primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 600));
-        primaryStage.show();*/
+        primaryStage.show();
     }
 
 

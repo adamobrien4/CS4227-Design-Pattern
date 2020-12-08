@@ -1,7 +1,5 @@
 package main.data_layer;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -20,20 +18,29 @@ import static java.util.Arrays.asList;
 
 public class DatabaseRepository {
 
-    private MongoClient mongoClient;
-    private MongoDatabase database;
+    private static MongoClient mongoClient;
+    private static MongoDatabase database;
+    private static boolean isSetup = false;
 
     public DatabaseRepository() {
+        System.out.println("Repo");
+    }
+
+    public static void setup() {
+        if (isSetup) {
+            return;
+        }
+
         MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
 
         try {
             mongoClient = new MongoClient(uri);
             database = mongoClient.getDatabase("cs4125");
+            isSetup = true;
         } catch (Exception e) {
             System.out.println("Unable to connect to MongoDB");
             System.exit(0);
         }
-        
     }
 
     public MongoDatabase getDB() {
@@ -81,10 +88,9 @@ public class DatabaseRepository {
         return listFoodItemDocuments;
     }
 
-
     public Document createMenuDocument(Menu menu) {
         ArrayList<FoodItem> listOfMainCoursesItems = menu.getListOfMainCoursesItems();
-        ArrayList<FoodItem> listOfDesertItemsItems = menu.getListOfDesertItems();
+        ArrayList<FoodItem> listOfDesertItemsItems = menu.getListOfDessertItems();
         ArrayList<FoodItem> listOfSideItems = menu.getListOfSideItems();
 
         List<Document> mainCourseItemsDocuments = createListFoodItemDocuments(listOfMainCoursesItems);

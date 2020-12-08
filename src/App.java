@@ -1,31 +1,30 @@
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.data_layer.DatabaseRepository;
 import main.entities.FoodItem;
 import main.entities.Menu;
 import main.entities.Restaurant;
+import main.presentation_layer.PresentationLoader;
+
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
-        stage.setScene(scene);
-        stage.show();
-
-
+    public void start(Stage primaryStage) throws IOException {
+        PresentationLoader.setStage(primaryStage);
+        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
     }
 
     public static void main(String[] args) {
+
+        DatabaseRepository.setup();
 
         String[] allergens1 = {"gluten","nuts"};
         String[] allergens2 = {"soya","milk"};
