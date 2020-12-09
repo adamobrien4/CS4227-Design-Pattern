@@ -112,16 +112,19 @@ public class DatabaseRepository {
         ArrayList<FoodItem> listOfMainCoursesItems = menu.getListOfMainCoursesItems();
         ArrayList<FoodItem> listOfDesertItemsItems = menu.getListOfDessertItems();
         ArrayList<FoodItem> listOfSideItems = menu.getListOfSideItems();
+        ArrayList<FoodItem> listOfDrinkItems = menu.getListOfDrinksItems();
 
         List<Document> mainCourseItemsDocuments = createListFoodItemDocuments(listOfMainCoursesItems);
         List<Document> desertItemsDocuments = createListFoodItemDocuments(listOfDesertItemsItems);
         List<Document> sideItemsDocuments = createListFoodItemDocuments(listOfSideItems);
+        List<Document> drinkItemsDocuments = createListFoodItemDocuments(listOfDrinkItems);
 
         Document menuDocument = new Document();
         menuDocument.append("name",menu.getMenuName());
         menuDocument.append("main course",mainCourseItemsDocuments);
         menuDocument.append("desert",desertItemsDocuments);
         menuDocument.append("sides",sideItemsDocuments);
+        menuDocument.append("drinks",drinkItemsDocuments);
 
         return menuDocument;
     }
@@ -134,10 +137,26 @@ public class DatabaseRepository {
 
         Document restaurantDocument= new Document("_id", id);
         restaurantDocument.append("name", restaurant.getName())
+                .append("genre",restaurant.getGenre())
                 .append("menu", menuDocument);
 
         restaurantCollection.insertOne(restaurantDocument);
+        System.out.println("Added restaurant to the DB");
     }
+
+    public void createRestaurantAccount(RestaurantOwner restaurantOwner) {
+        MongoCollection<Document> usersCollection = database.getCollection("users");
+
+        Document userDocument = new Document();
+        userDocument.append("email",restaurantOwner.getEmail())
+                .append("password",restaurantOwner.getPassword())
+                .append("type","owner");
+
+        usersCollection.insertOne(userDocument);
+
+        System.out.println("account has been created");
+    }
+
 
 
 

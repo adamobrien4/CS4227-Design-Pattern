@@ -3,14 +3,18 @@ package main.entities;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.Objects;
+
 public class RestaurantOwner implements User {
     private ObjectId id;
+    private ObjectId restaurantId;
     private String email;
     private String password;
     private static final String TYPE = "restaurantOwner";
 
-    public RestaurantOwner(ObjectId id, String email, String password) {
+    public RestaurantOwner(ObjectId id, ObjectId restaurantId, String email, String password) {
         this.id = id;
+        this.restaurantId = restaurantId;
         this.email = email;
         this.password = password;
     }
@@ -24,7 +28,7 @@ public class RestaurantOwner implements User {
     }
 
     public static RestaurantOwner fromDocument(Document document) {
-        return new RestaurantOwner(document.getObjectId("_id"), document.getString("email"), document.getString("password"));
+        return new RestaurantOwner(document.getObjectId("_id"), document.getObjectId("restaurant_id"),document.getString("email"), document.getString("password"));
     }
 
     public ObjectId getId() {
@@ -37,5 +41,9 @@ public class RestaurantOwner implements User {
 
     public String getType() {
         return RestaurantOwner.TYPE;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
