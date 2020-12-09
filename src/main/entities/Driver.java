@@ -5,7 +5,7 @@ import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-public class Driver  implements User {
+public class Driver implements User {
     private ObjectId id;
     private String email;
     private String password;
@@ -15,7 +15,6 @@ public class Driver  implements User {
         this.id=id;
         this.email=email;
         this.password=password;
-        this.RestaurantId= RestaurantId;
     }
 
     @Override
