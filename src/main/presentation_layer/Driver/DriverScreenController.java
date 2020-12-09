@@ -1,213 +1,131 @@
 package main.presentation_layer.Driver;
 
-import main.entities.FoodItem;
-import main.entities.Order;
-import main.data_layer.DatabaseRepository;
-import main.entities.BasketItem;
-import org.bson.types.ObjectId;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.ResourceBundle;
-
-import org.bson.Document;
-
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
 
+public class DriverScreenController extends Application implements EventHandler<ActionEvent> {
+    Button btn;
+    Label lab;
+    CheckBox cbx;
+    //StackPane DetailsStack;
+    HBox root;
+    VBox OrderTab;
+    VBox AcceptTab;
+    VBox DetailsTab;
+    //Testing
+    int[] Id = { 1, 2, 3, 4, 5, 6, 7 };
+    int[] unId = { 1, 2, 3, 4, 5, 6, 7 };
+    int[] Price = { 10, 20, 40, 20, 50, 20, 15 };
+    String[] Rest = {"mcdonalds","KFC","roB jAY CAFE","Adam O brien Fine wine","james'","Andys","Boomer"};
+    String [] addr = {"add1","add2","add3","add4","add5","add6","add7"};
+    String[] Cust = {"Andrew","Rob","James","Adam","Ted","Olie","Vanco"};
+    String temp = "";
 
-public class DriverScreenController{
-    @FXML
-    private Text ViewOrderId;
-    @FXML
-    private Text RestaurntLocation;
-    @FXML
-    private Text  CustomerName;
-    @FXML
-    private Text CustomerAddress;
-    @FXML 
-    private Text Cost;
-    @FXML
-    private AnchorPane ViewOrderScreen;
-    @FXML
-    private AnchorPane ViewAcceptedScreen;
-    @FXML
-    private Button CompleteButton;
-    @FXML
-    private CheckBox ParkedAtRestaurantCheck;
-    @FXML
-    private CheckBox EnrouteCheck;
-    @FXML 
-    private Button AcceptButton;
-
-    DatabaseRepository db;
-    Order[] Ord; 
-    double OrderTotal;
-    String CustName ="";
-    String AddressName ="";
-    String RestaurantAddress ="";
-    ObjectId OrderId;
-    Order[] UnOrd;
-    EventHandler<ActionEvent> acceptOrdeHandler = new EventHandler<ActionEvent>(){
-
-        @Override
-        public void handle(ActionEvent arg0) {
-            //To Do AssignDriverId to Order
-
-        }
-        
-    };
-    EventHandler<ActionEvent> completeOrderHandler = new EventHandler<ActionEvent>(){
-        @Override
-        public void handle(ActionEvent arg0){
-            //TO DO set status to complete
-        }
-    };
-    EventHandler<ActionEvent>viewOrderHandler = new EventHandler<ActionEvent>(){
-
-        @Override
-        public void handle(ActionEvent arg0) {
-            //Display Order Details
-
-        }
-
-    };
-    EventHandler<ActionEvent>checkEnrouteBoxHandler = new EventHandler<ActionEvent>(){
-
-        @Override
-        public void handle(ActionEvent arg0) {
-            // TODO Set status to enroute
-
-        }
-        
-    };
-    EventHandler<ActionEvent>checkParkedBoxHandler = new EventHandler<ActionEvent>(){
-
-        @Override
-        public void handle(ActionEvent arg0) {
-            // TODO Set status to at restuarant
-
-
-        }
-        
-    };
-    @FXML
-    public void initialize(){
-        db = new DatabaseRepository();
-        //TO do Get Orders from DB
-        String [] unfoodarray={"Big Burger","Cheesy Fies","A brick on toast"};
-        String [] foodarray={"Chicken curry","chips","pepsi max"};
-        Ord = new Order[]{
-            new Order(OrderId, foodarray)
-        
-        };
-        UnOrd=new Order[]{
-            new Order(OrderId,unfoodarray)
-        };
-
-        for (int i=0; i<Ord.length; i++){
-            double y = 27.0+(33.0*i);
-            ViewAcceptedScreen.getChildren().addAll(makeOrderListing(Ord[i],y,i));
-            
-        }
-        for (int i=0; i<UnOrd.length; i++){
-            double y =27.0+(33.0*i);
-            ViewOrderScreen.getChildren().addAll(acceptOrderListing(UnOrd[i], y, i));
-        }
-        if (Ord.length>0){
-        ViewOrderScreen.getChildren().addAll(displayOrderDetails(Ord[0]));
-        }else{
-            ViewOrderScreen.getChildren().add(displayNoOrder());
-        }
-
+    public static void main(String[] args) {
+        launch(args);
     }
-    private Node displayNoOrder(){
-        String NoOrders = "You Have No Active Orders";
-        Text NorderTxtBox = new Text();
-        NorderTxtBox.setLayoutX(1000.0);
-        NorderTxtBox.setLayoutY(14.0);
-        NorderTxtBox.setText(NoOrders);
 
-        return NorderTxtBox;
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Driver Screen");
+        HBox root = new HBox();
+        VBox OrderTab = new VBox();
+        VBox AcceptTab = new VBox();
+        VBox DetailsTab = new VBox();
+        for (int i = 0; i < Id.length; i++) {
+            temp = Integer.toString(Id[i]);
+            btn = new Button("Complete Order: #" + temp);
+            btn.setLayoutY(i * 100);
+            btn.setLayoutX(1);
+            btn.setId("Order"+temp);
+            btn.setOnAction(this);
+            OrderTab.getChildren().add(btn);
+
+        }
+        for (int i = 0; i < unId.length; i++) {
+            temp = Integer.toString(Id[i]);
+            btn = new Button("Accept: #" + temp);
+            btn.setLayoutY(i * 100);
+            btn.setLayoutX(1);
+            btn.setId("NewOrder"+temp);
+            btn.setOnAction(this);
+            AcceptTab.getChildren().add(btn);
+
+        }
+        
+        AcceptTab.setPadding(new Insets(10, 20, 10, 5));
+        DetailsTab.setPadding(new Insets(10, 20, 10, 5));
+        OrderTab.setPadding(new Insets(10, 20, 10, 5));
+        root.setPadding(new Insets(10, 10, 10, 5));
+        TabPane detailsTabPane= new TabPane();
+
+
+        for(int i = 0; i<Cust.length; i++){
+        VBox Tabv= new VBox();
+        Tabv.getChildren().addAll( new Label("Name: "+Cust[i]),new Label("Address: "+addr[i]),new Label("Name: "+Rest[i]),new Label("Price: "+Price[i]));
+        Tab tab= new Tab("Order: #"+i,Tabv);
+        detailsTabPane.getTabs().add(tab);
     }
-    private Node[] makeOrderListing(Order order, double y,int btnIndex){
-        String ObjID="INSERT ID HERE";
-        Text name = new Text();
-        name.setLayoutX(14.0);
-        name.setLayoutY(y);
-        name.setText(ObjID);
+        
+        
+        
 
-        Button btn = new Button("View");
-        btn.setLayoutX(596.0);
-        btn.setLayoutY(y-17.0);
-        btn.setId("ViewOrderButton"+btnIndex);
-        btn.setOnAction(viewOrderHandler);
+        HBox check1 = new HBox();
+        cbx = new CheckBox();
+        cbx.setId("cbxAtRest");
+        //cbx.setOnAction(checkHandler);
+        lab = new Label();
+        lab.setText("Parked At Restaurant");
+        check1.getChildren().addAll(cbx, lab);
+
+        HBox check2 = new HBox();
+        cbx = new CheckBox();
+        cbx.setId("cbxEnRoute");
+        //cbx.setOnAction(checkHandler);
+        lab = new Label();
+        lab.setText("Enroute");
+        check2.getChildren().addAll(cbx, lab);
+
+        btn = new Button("Complete");
+        btn.setOnAction(this);
+
+        DetailsTab.getChildren().addAll(check1, check2, btn);
+
+        root.getChildren().addAll(AcceptTab, detailsTabPane, OrderTab);
+
+        Scene orderScene = new Scene(root, 1920, 1000);
+        primaryStage.setScene(orderScene);
+
+        primaryStage.show();
+    }
+
+    //button handler
+    @Override
+    public void handle(ActionEvent arg0){
+        System.out.println(arg0);
+    Button sourceButton = (Button) arg0.getSource();
+    String id = sourceButton.getId();
     
-    
-        return new Node[] {name,btn};
+    if(id.substring(0,5)=="Order"){
+    // To Do: Complete Orders
     }
-    private Node[] displayOrderDetails(Order order){
-        String ObjID="INSERT ID HERE";
-        Text ViewingOrderId = new Text();
-        ViewingOrderId.setText(ObjID);
-        ViewingOrderId.setLayoutX(1000.0);
-        ViewingOrderId.setLayoutY(14.0);
-
-        AddressName="Insert Adress Here";
-        CustName="Insert Name here";
-        RestaurantAddress="Insert Restaurant Address";
-
-        Text ViewCustName=new Text();
-        Text ViewRestAddress=new Text();
-        Text ViewCustAddress=new Text();
-        
-        ViewCustAddress.setLayoutX(1000.0);
-        ViewCustAddress.setLayoutY(28.0);
-
-        ViewRestAddress.setLayoutX(1000.0);
-        ViewRestAddress.setLayoutY(35.0);
-
-        ViewCustName.setLayoutX(1000.0);
-        ViewCustName.setLayoutY(21.0);
-
-        CheckBox EnrouteBox= new CheckBox();
-        CheckBox ParkedAtRestaurantCheck= new CheckBox();
-        
-        EnrouteBox.setOnAction(checkEnrouteBoxHandler);
-        ParkedAtRestaurantCheck.setOnAction(checkParkedBoxHandler);
-        return new Node[]{ViewCustName, ViewRestAddress, ViewCustAddress,EnrouteBox,ParkedAtRestaurantCheck};
-
+    if(id.substring(0,5)=="NewOr"){
+        //To Do: Accept Orders
     }
-    private Node[] acceptOrderListing(Order order, double y,int btnIndex){
-        String ObjID="INSERT ID HERE";
-        Text name = new Text();
-        name.setLayoutX(1500);
-        name.setLayoutY(y);
-        name.setText(ObjID);
-
-        Button btn = new Button("Accept");
-        btn.setLayoutX(2000);
-        btn.setLayoutY(y-17.0);
-        btn.setId("ViewOrderButton"+btnIndex);
-        btn.setOnAction(acceptOrdeHandler);
-    
-    
-        return new Node[] {name,btn};
     }
-}
+
+    
+} 
