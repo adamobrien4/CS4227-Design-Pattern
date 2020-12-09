@@ -1,24 +1,26 @@
 package main.presentation_layer.signup;
 
-
 import main.entities.FoodItem;
 import main.entities.Order;
+import main.entities.User;
+import main.services.LoginService;
+import main.services.SingupService;
 import main.utils.PasswordUtils;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
 import main.entities.Customer;
+import main.data_layer.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import org.bson.Document;
-
-
-
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -38,10 +41,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 public class SignupController {
     @FXML
     private Button fXsignupButton;
-      
+
     @FXML
     private TextField FXusernameField;
     @FXML
@@ -56,11 +60,11 @@ public class SignupController {
     private URL location;
     @FXML
     private ResourceBundle resources;
-
-    private boolean createAccount;
+    @FXML
+    private Label FXsignupmeesageField;
 
     DatabaseRepository db;
-
+    SingupService ss;
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
@@ -78,48 +82,68 @@ public class SignupController {
         event.consume();
     }
 
-
-
-    
-    public void handleCreateanAccount(ActionEvent event)throws IOException {
+    public void handleCreateanAccount(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
-        createAccount=false;
+
         String email = FXusernameField.getText();
-        String address = FXAddressField.getText();
         String password = FXpasswordField.getText();
-        String confirm_password = FXconfirmpasswordField.getText();
+        String address = FXAddressField.getText();
+        String confirmPassword = FXconfirmpasswordField.getText();
+
+        Label msg = (Label)FXsignupmeesageField;
+
+        if (email.isEmpty()){
+            msg.setText("Email is empty");
+        } else if(password.isEmpty()) {
+            msg.setText("Password is empty");
+        } /*else if() {
+            
+        } else if() {
+            
+        } else if() {
+            
+        } else if() {
+            
+        } else if() {
+            
+        } else if() {
+            
+        }
+        
+        
+        
+        || FXpasswordField.getText().isEmpty()
+                || ) {
+            FXsignupmeesageField.setText("empty field(s)");
+        } else if (FXpasswordField.getText().equals(FXconfirmpasswordField.getText()) == false) {
+            FXsignupmeesageField.setText("mismatch password");
+        } else if (whereQuery.put("email", FXusernameField.getText()) != null) {
+            FXsignupmeesageField.setText("user exsits");
+        }*/
+
+        // From login service
+        String ePwd = PasswordUtils.encryptPassword(FXconfirmpasswordField.getText());
         BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("email", email);
 
+        Document d = db.getDB().getCollection("users").find(whereQuery).first();
 
-        if(password.equals(confirm_password)== false){
-            System.out.println("mismatch password");
-            createAccount=false;
-        }
-        else{
-             password = PasswordUtils.encryptPassword(password);
+        if (d != null) {
+            // Email is already taken
 
         }
-        Customer c = new Customer(email, password);
-        //db.getDB().getCollection("users").insertOne(c.toDocument());
-        System.out.println("Result for first test   " +db.getDB().getCollection("users").find(new Document(whereQuery)));
-
-        System.out.println("Result for empty document   "+db.getDB().getCollection("users").find(whereQuery).first());
-
+        // db.getDB().getCollection("users").insertOne(c.toDocument());
+        System.out.println("Result for first test   " + db.getDB().getCollection("users").find(whereQuery));
 
     }
-        @FXML
-        public void initialize() {
-            // Initialise the controller
-            System.out.println("Initialise");
 
-            db = new DatabaseRepository();
-        }
-    
+    @FXML
+    public void initialize() {
+        // Initialise the controller
+        System.out.println("Initialise");
+
+        db = new DatabaseRepository();
+        ss = new SingupService();
     }
-    
 
-
-
-
-
-
+}

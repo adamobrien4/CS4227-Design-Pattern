@@ -23,11 +23,9 @@ public class DatabaseRepository {
     private static boolean isSetup = false;
 
     public DatabaseRepository() {
-        MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
-        System.out.println("Repo");
 
         if (isSetup) {
-            System.out.println("Database is already setup");
+            System.out.println("Database is setup");
         } else {
             System.out.println("Database is NOT setup");
         }
@@ -70,7 +68,6 @@ public class DatabaseRepository {
     public void insertOrder(Order order) {
         System.out.println("Inserting Order");
 
-        // TODO : Insert order into DB
         database.getCollection("orders").insertOne(order.toDocument());
         System.out.println("Inserted Order Docment");
     }

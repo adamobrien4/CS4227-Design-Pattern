@@ -27,12 +27,14 @@ import main.utils.PasswordUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
+import javafx.scene.effect.DropShadow;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginController {
@@ -46,6 +48,8 @@ public class LoginController {
     private Button FXsignuphereButton;
     @FXML
     private AnchorPane FXsignupPane;
+    @FXML
+    private Label FXmessageField;
 
     DatabaseRepository db;
     LoginService loginService;
@@ -67,8 +71,11 @@ public class LoginController {
         loginService.verifyLogin(email, password);
 
         if (Globals.getLoggedInUser() == null) {
-            System.out.println("User is not loggged in");
-            // enter a label
+            FXmessageField.setEffect(new DropShadow(2.0, Color.BLACK));
+            FXmessageField.setTextFill(Color.RED);
+            FXmessageField.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+            FXmessageField.setText("User is not loggged in");
+            
         } else {
 
             System.out.println("User is loggged in");
@@ -78,6 +85,8 @@ public class LoginController {
             event.consume();
         }
     }
+
+
 
     public void handleSignup(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
