@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
+import main.presentation_layer.login.LoginController;
+import main.presentation_layer.signup.SignupController;
 
 public class PresentationLoader {
 
@@ -22,8 +24,7 @@ public class PresentationLoader {
 
     private static Stage stage;
 
-
-    private PresentationLoader(){
+    private PresentationLoader() {
         System.out.println("new PresentationLoader");
     }
 
@@ -31,7 +32,7 @@ public class PresentationLoader {
         PresentationLoader.stage = stage;
     }
 
-    public static void display(int screen){
+    public static void display(int screen) {
 
         if (PresentationLoader.stage == null) {
             System.out.println("Please setup stage before continuing");
@@ -42,26 +43,30 @@ public class PresentationLoader {
         double prefHeight = 600.0;
 
         try {
-            switch(screen) {
+            switch (screen) {
                 case LOGIN:
-                    root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
-                break;
+                    prefWidth = 640.0;
+                    prefHeight = 400.0;
+                    root = FXMLLoader.load(LoginController.class.getResource("LoginFX.fxml"));
+                    break;
                 case SIGNUP:
-                    root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
-                break;
+                    prefWidth = 640.0;
+                    prefHeight = 400.0;
+                    root = FXMLLoader.load(SignupController.class.getResource("SignupFX.fxml"));
+                    break;
                 case BROWSE_RESTAURANT:
                     root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
-                break;
+                    break;
                 case CREATE_ORDER:
                     root = FXMLLoader.load(CreateOrderController.class.getResource("CreateOrder.fxml"));
                     prefWidth = 1000.0;
                     prefHeight = 800.0;
-                break;
+                    break;
                 case CHECKOUT_ORDER:
                     root = FXMLLoader.load(CheckoutOrderController.class.getResource("CheckoutOrder.fxml"));
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
         } catch (IOException ex) {
             System.out.println("Could not load screen");

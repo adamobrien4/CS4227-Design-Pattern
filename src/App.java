@@ -10,12 +10,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         PresentationLoader.setStage(primaryStage);
-        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+        PresentationLoader.display(PresentationLoader.LOGIN);
     }
 
     public static void main(String[] args) {
 
         DatabaseRepository.setup();
+
+        
 
         launch();
     }

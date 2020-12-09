@@ -84,7 +84,7 @@ public class SignupController {
 
     public void handleCreateanAccount(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
-
+        createAccount = false;
         String email = FXusernameField.getText();
         String password = FXpasswordField.getText();
         String address = FXAddressField.getText();
