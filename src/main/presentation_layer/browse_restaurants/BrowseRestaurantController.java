@@ -18,7 +18,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
-import main.entities.Menu;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
 
@@ -38,8 +37,6 @@ public class BrowseRestaurantController {
 
             Globals.setRestaurant(restaurants.get(btnId));
 
-            System.out.println("Yeet");
-
             PresentationLoader.display(PresentationLoader.CREATE_ORDER);
 
             evt.consume();
@@ -56,10 +53,7 @@ public class BrowseRestaurantController {
         db = new DatabaseRepository();
         FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
 
-        System.out.println("Got restaurant documents");
-
         for(Document r : restDocs) {
-            System.out.println(r);
             restaurants.add( Restaurant.fromDocument(r) );
         }
 

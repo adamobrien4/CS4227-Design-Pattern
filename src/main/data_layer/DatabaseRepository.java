@@ -73,6 +73,19 @@ public class DatabaseRepository {
         System.out.println("Inserted Order Docment");
     }
 
+    public Discount verifyDiscountCode(String code) {
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("code", code);
+
+        Document doc = database.getCollection("discounts").find(whereQuery).first();
+
+        if (doc == null) {
+            return null;
+        }
+
+        return Discount.fromDocument(doc);
+    }
+
     public void test() {
         // BasicDBObject whereQuery = new BasicDBObject();
         // whereQuery.put("name", "adam");

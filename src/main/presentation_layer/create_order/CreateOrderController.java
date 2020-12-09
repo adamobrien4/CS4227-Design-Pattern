@@ -7,6 +7,7 @@ import main.presentation_layer.PresentationLoader;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
+import main.entities.Discount;
 
 import java.io.IOException;
 import java.net.URL;
@@ -76,22 +77,43 @@ public class CreateOrderController {
 
     double basketTotal;
     double deliveryCost = 4.00;
-    String discountCode = "";
-    double discountTotal = 0.00;
+    Discount discount = null;
+    double discountValue = 0;
 
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent evt) {
             Button btn = (Button) evt.getSource();
             String btnId = btn.getId();
+            String abb = btnId.substring(0, 2);
             int index = Integer.parseInt(btnId.substring(2));
+
+            ArrayList<FoodItem> course = null;
+
+            switch(abb) {
+                case "mc":
+                    course = mainCourses;
+                break;
+                case "ds":
+                    course = desserts;
+                break;
+                case "sd":
+                    course = sides;
+                break;
+                case "dk":
+                    course = drinks;
+                break;
+                default:
+                break;
+            }
+
 
             if (basket.containsKey(btnId)) {
                 System.out.println("Increasing Quantity");
                 basket.get(btnId).incrementQuantity();
             } else {
                 System.out.println("Adding new item");
-                basket.put(btnId, BasketItem.fromFoodItem(mainCourses.get(index)));
+                basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
             }
 
             updateBasket();
@@ -144,9 +166,15 @@ public class CreateOrderController {
 
     @FXML
     private void handleApplyDiscount(ActionEvent evt) {
-        discountCode = discount_code_entry_field.getText();
-        System.out.println("Apply Discount Code : " + discountCode);
-        discountTotal = 23.00;
+        System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
+
+        Discount d = db.verifyDiscountCode(discount_code_entry_field.getText());
+
+        if (d == null) {
+            System.out.println("Discount code is invalid");
+        } else {
+            discount = d;
+        }
 
         evt.consume();
         updateBasket();
@@ -174,8 +202,8 @@ public class CreateOrderController {
             orderItems.add(s);
         }
 
-        if (discountTotal > 0) {
-            order = new Order(basketTotal, discountCode, discountTotal, deliveryCost,
+        if (discountValue > 0) {
+            order = new Order(basketTotal, discount.getCode(), discountValue, deliveryCost,
                     orderItems.toArray(new String[orderItems.size()]));
         } else {
             order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
@@ -334,16 +362,39 @@ public class CreateOrderController {
             index++;
         }
 
+        basketTotal = basketSubTotalPrice + deliveryCost;
+        discountValue = 0.0;
+
+        if (discount != null) {
+            switch(discount.getType()) {
+                case Discount.FOOD_DISCOUNT:
+                if (discount.getAmount() > (basketTotal + deliveryCost - 10)) {
+                    discountValue = (basketTotal + deliveryCost - 10);
+                } else {
+                    discountValue = discount.getAmount();
+                }
+                discountValue = Math.max(0.0, discountValue);
+                break;
+                case Discount.DELIVERY_DISCOUNT:
+                    deliveryCost = deliveryCost - discount.getAmount();
+                    deliveryCost = Math.max(0, deliveryCost);
+                break;
+                default:
+                break;
+            }
+        } else {
+            discountValue = 0.0;
+        }
+        
+
         // Update Cost details
         String NUM_FORMAT = "€%.2f";
         basket_sub_total.setText(String.format(NUM_FORMAT, basketSubTotalPrice));
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
-        discount_amount.setText(String.format(NUM_FORMAT, discountTotal));
+        discount_amount.setText(String.format(NUM_FORMAT, discountValue));
 
-        basketTotal = basketSubTotalPrice + deliveryCost - discountTotal;
-        if (basketTotal < 0) {
-            discountTotal = 0.00;
-        }
+        double basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
+        
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
     }
 }
