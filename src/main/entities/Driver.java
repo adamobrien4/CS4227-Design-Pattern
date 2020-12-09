@@ -15,6 +15,7 @@ public class Driver  implements User {
         this.id=id;
         this.email=email;
         this.password=password;
+        this.RestaurantId= RestaurantId;
     }
 
     @Override

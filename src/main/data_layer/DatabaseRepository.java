@@ -1,10 +1,18 @@
 package main.data_layer;
 
 import com.mongodb.client.MongoCollection;
+<<<<<<< Updated upstream
+=======
+import com.mongodb.client.FindIterable;
+>>>>>>> Stashed changes
 import com.mongodb.client.MongoDatabase;
 
 import main.entities.*;
 import org.bson.Document;
+<<<<<<< Updated upstream
+=======
+import org.bson.types.ObjectId;
+>>>>>>> Stashed changes
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
@@ -23,6 +31,11 @@ public class DatabaseRepository {
     private static boolean isSetup = false;
 
     public DatabaseRepository() {
+<<<<<<< Updated upstream
+=======
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
+>>>>>>> Stashed changes
         System.out.println("Repo");
 
         if (isSetup) {
@@ -49,6 +62,10 @@ public class DatabaseRepository {
             System.out.println("Unable to connect to MongoDB");
             System.exit(0);
         }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
 
     public MongoDatabase getDB() {

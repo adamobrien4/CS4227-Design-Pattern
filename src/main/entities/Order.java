@@ -21,17 +21,21 @@ public class Order {
 
     private String discountCode;
     private double discountAmount;
-
+    private String[] Food;
     private String[] orderItems;
 
     private boolean IsCompleted;
     public static List PendingOrders;
 
-    public Order(ObjectId id){
+    public Order(ObjectId id,String[] food){
         this.id=id;
         this.driver=null;
         this.IsCompleted=false;
         PendingOrders.add(id);
+        this.Food=food;
+    }
+    public ObjectId getId() {
+        return id;
     }
 
     public Order(double totalCost, double deliveryCost, String[] orderItems) {
