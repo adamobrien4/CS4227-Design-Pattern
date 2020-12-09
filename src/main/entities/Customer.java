@@ -7,6 +7,7 @@ public class Customer implements User {
     private ObjectId id;
     private String email;
     private String password;
+    private static final String TYPE = "customer";
 
     public Customer(String email, String password) {
         this.email = email;
@@ -40,5 +41,13 @@ public class Customer implements User {
         .append("password", this.password);
     
         return doc;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getType() {
+        return Customer.TYPE;
     }
 }

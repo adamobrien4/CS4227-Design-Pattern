@@ -7,6 +7,7 @@ public class RestaurantOwner implements User {
     private ObjectId id;
     private String email;
     private String password;
+    private static final String TYPE = "restaurantOwner";
 
     public RestaurantOwner(ObjectId id, String email, String password) {
         this.id = id;
@@ -28,5 +29,13 @@ public class RestaurantOwner implements User {
 
     public ObjectId getId() {
         return this.id;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getType() {
+        return RestaurantOwner.TYPE;
     }
 }

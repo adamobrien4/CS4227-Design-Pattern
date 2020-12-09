@@ -10,6 +10,7 @@ public class Driver implements User {
     private String email;
     private String password;
     private List DriverOrders;
+    private static final String TYPE = "driver";
     
     public Driver(ObjectId id, String email, String password){
         this.id=id;
@@ -21,6 +22,14 @@ public class Driver implements User {
     public String toJson() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getType() {
+        return Driver.TYPE;
     }
 
     public static Driver fromDocument(Document document) {

@@ -4,7 +4,7 @@ import main.entities.FoodItem;
 import main.entities.Order;
 import main.entities.User;
 import main.services.LoginService;
-import main.services.SingupService;
+import main.services.SignupService;
 import main.utils.PasswordUtils;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
@@ -64,7 +64,6 @@ public class SignupController {
     private Label FXsignupmeesageField;
 
     DatabaseRepository db;
-    SingupService ss;
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
@@ -84,7 +83,6 @@ public class SignupController {
 
     public void handleCreateanAccount(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
-        createAccount = false;
         String email = FXusernameField.getText();
         String password = FXpasswordField.getText();
         String address = FXAddressField.getText();
@@ -143,7 +141,6 @@ public class SignupController {
         System.out.println("Initialise");
 
         db = new DatabaseRepository();
-        ss = new SingupService();
     }
 
 }
