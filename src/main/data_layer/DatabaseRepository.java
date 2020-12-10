@@ -3,6 +3,7 @@ package main.data_layer;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 
 import main.entities.*;
 import org.bson.Document;
@@ -111,10 +112,10 @@ public class DatabaseRepository {
         return listFoodItemDocuments;
     }
 
-    public static FindIterable<Document> getOrders() {
+    public static FindIterable<Document> getOrders(String x) {
         BasicDBObject whereQuery = new BasicDBObject();
         MongoCollection<Document> collection = database.getCollection("orders");
-        whereQuery.put("status", "pending");
+        whereQuery.put("status", x);
         FindIterable<Document> cursor = collection.find(whereQuery);
         return cursor;
         
@@ -135,6 +136,19 @@ public class DatabaseRepository {
         return cursor;
 
     }
+    public static void completeOrder(ObjectId x){
+        BasicDBObject whereQuery =new BasicDBObject();
+        MongoCollection <Document> collection= database.getCollection("orders");
+        whereQuery.put("_id",x);
+        collection.updateOne(whereQuery, Updates.set("status","completed"));
+
+    }
+    public static void acceptOrder(ObjectId y) {
+        BasicDBObject whereQuery =new BasicDBObject();
+        MongoCollection <Document> collection= database.getCollection("orders");
+        whereQuery.put("_id",y);
+        collection.updateOne(whereQuery, Updates.set("status","pending"));
+	}
 
 
     public Document createMenuDocument(Menu menu) {
@@ -200,4 +214,5 @@ public class DatabaseRepository {
         }
         return false;
     }
+
 }
