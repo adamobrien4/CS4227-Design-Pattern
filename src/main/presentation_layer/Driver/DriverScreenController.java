@@ -1,5 +1,16 @@
 package main.presentation_layer.Driver;
 
+import main.data_layer.DatabaseRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.text.Document;
+
+import com.mongodb.client.FindIterable;
+
+import org.bson.types.ObjectId;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
@@ -26,15 +37,33 @@ public class DriverScreenController extends Application implements EventHandler<
     VBox AcceptTab;
     VBox DetailsTab;
     //Testing
-    int[] Id = { 1, 2, 3, 4, 5, 6, 7 };
-    int[] unId = { 1, 2, 3, 4, 5, 6, 7 };
-    int[] Price = { 10, 20, 40, 20, 50, 20, 15 };
-    String[] Rest = {"mcdonalds","KFC","roB jAY CAFE","Adam O brien Fine wine","james'","Andys","Boomer"};
-    String [] addr = {"add1","add2","add3","add4","add5","add6","add7"};
-    String[] Cust = {"Andrew","Rob","James","Adam","Ted","Olie","Vanco"};
-    String temp = "";
+    private static int custSize;
+    private static ArrayList <Object> Price;
+    private static ArrayList<Object> Cust;
+    private static ArrayList<Object> Rest;
 
     public static void main(String[] args) {
+        ArrayList<Object> price = new ArrayList<Object>();
+        ArrayList<Object> cust = new ArrayList<Object>();
+        ArrayList<Object> rest = new ArrayList<Object>();
+        Object temp1;
+        ObjectId tempId;
+        DatabaseRepository.setup();
+        DatabaseRepository.getDB();
+
+        FindIterable<org.bson.Document> ord = DatabaseRepository.getOrders();
+
+        for (org.bson.Document doc : ord) {
+            price.add(doc.get("total_cost"));
+            tempId = (ObjectId) doc.get("customer_id");
+            cust.add(DatabaseRepository.getCust(tempId).get("email"));
+            tempId = (ObjectId) doc.get("restaurant_id");
+            rest.add(DatabaseRepository.getRest(tempId).get("name"));
+        }
+        custSize = cust.size();
+        Price=price;
+        Cust=cust;
+        Rest=rest;
         launch(args);
     }
 
@@ -45,23 +74,23 @@ public class DriverScreenController extends Application implements EventHandler<
         VBox OrderTab = new VBox();
         VBox AcceptTab = new VBox();
         VBox DetailsTab = new VBox();
-        for (int i = 0; i < Id.length; i++) {
-            temp = Integer.toString(Id[i]);
-            btn = new Button("Complete Order: #" + temp);
+        for (int i = 0; i < custSize; i++) {
+            //temp = Integer.toString(Id[i]);
+            btn = new Button("Complete");
             btn.setLayoutY(i * 100);
             btn.setLayoutX(1);
-            btn.setId("Order"+temp);
-            btn.setOnAction(this);
+            //btn.setId("Order"+temp);
+            //btn.setOnAction(this);
             OrderTab.getChildren().add(btn);
 
         }
-        for (int i = 0; i < unId.length; i++) {
-            temp = Integer.toString(Id[i]);
-            btn = new Button("Accept: #" + temp);
+        for (int i = 0; i < custSize; i++) {
+           // temp = Integer.toString(Id[i]);
+            btn = new Button("Accept");
             btn.setLayoutY(i * 100);
             btn.setLayoutX(1);
-            btn.setId("NewOrder"+temp);
-            btn.setOnAction(this);
+           // btn.setId("NewOrder"+temp);
+            //btn.setOnAction(this);
             AcceptTab.getChildren().add(btn);
 
         }
@@ -73,9 +102,9 @@ public class DriverScreenController extends Application implements EventHandler<
         TabPane detailsTabPane= new TabPane();
 
 
-        for(int i = 0; i<Cust.length; i++){
+        for(int i = 0; i<Cust.size(); i++){
         VBox Tabv= new VBox();
-        Tabv.getChildren().addAll( new Label("Name: "+Cust[i]),new Label("Address: "+addr[i]),new Label("Name: "+Rest[i]),new Label("Price: "+Price[i]));
+        Tabv.getChildren().addAll( new Label("Name: "+Cust.get(i)),new Label("Name: "+Rest.get(i)),new Label("Price: "+Price.get(i)));
         Tab tab= new Tab("Order: #"+i,Tabv);
         detailsTabPane.getTabs().add(tab);
     }

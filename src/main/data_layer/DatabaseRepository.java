@@ -1,5 +1,6 @@
 package main.data_layer;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -8,6 +9,9 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
@@ -38,7 +42,8 @@ public class DatabaseRepository {
 
         System.out.println("Setting up DB");
 
-        MongoClientURI uri = new MongoClientURI("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
 
         try {
             mongoClient = new MongoClient(uri);
@@ -51,7 +56,7 @@ public class DatabaseRepository {
 
     }
 
-    public MongoDatabase getDB() {
+    public static MongoDatabase getDB() {
         return database;
     }
 
@@ -64,7 +69,6 @@ public class DatabaseRepository {
         return database.getCollection("users").find(whereQuery).first();
     }
 
-    
     public void insertOrder(Order order) {
         System.out.println("Inserting Order");
 
@@ -94,19 +98,44 @@ public class DatabaseRepository {
         System.out.println(menu.get("menu"));
     }
 
-    public List<Document> createListFoodItemDocuments( ArrayList<FoodItem> listOfFoodItems) {
+    public List<Document> createListFoodItemDocuments(ArrayList<FoodItem> listOfFoodItems) {
         List<Document> listFoodItemDocuments = new ArrayList<>();
-        for(FoodItem item : listOfFoodItems) {
+        for (FoodItem item : listOfFoodItems) {
 
             String[] arrAllergens = item.getAllergens();
 
-            listFoodItemDocuments.add(new Document().append("name",item.getName())
-                    .append("allergens",asList(arrAllergens))
-                    .append("price",item.getPrice()));
+            listFoodItemDocuments.add(new Document().append("name", item.getName())
+                    .append("allergens", asList(arrAllergens)).append("price", item.getPrice()));
         }
 
         return listFoodItemDocuments;
     }
+
+    public static FindIterable<Document> getOrders() {
+        BasicDBObject whereQuery = new BasicDBObject();
+        MongoCollection<Document> collection = database.getCollection("orders");
+        whereQuery.put("status", "pending");
+        FindIterable<Document> cursor = collection.find(whereQuery);
+        return cursor;
+        
+    }
+    public static Document getCust(ObjectId x) {
+        BasicDBObject whereQuery = new BasicDBObject();
+        MongoCollection<Document> collection = database.getCollection("users");
+        whereQuery.put("_id", x);
+        Document cursor = collection.find(whereQuery).first();
+        return cursor;
+
+    }
+    public static Document getRest(ObjectId x) {
+        BasicDBObject whereQuery = new BasicDBObject();
+        MongoCollection<Document> collection = database.getCollection("restaurants");
+        whereQuery.put("_id", x);
+        Document cursor = collection.find(whereQuery).first();
+        return cursor;
+
+    }
+
 
     public Document createMenuDocument(Menu menu) {
         ArrayList<FoodItem> listOfMainCoursesItems = menu.getListOfMainCoursesItems();
