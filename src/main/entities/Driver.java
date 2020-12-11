@@ -6,11 +6,13 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public class Driver implements User {
+    
+    private static final String TYPE = "driver";
+    
     private ObjectId id;
     private String email;
     private String password;
-    private List DriverOrders;
-    private static final String TYPE = "driver";
+    private List driverOrders;
     
     public Driver(ObjectId id, String email, String password){
         this.id=id;
@@ -19,15 +21,11 @@ public class Driver implements User {
     }
 
     @Override
-    public String toJson() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public String getEmail() {
         return this.email;
     }
 
+    @Override
     public String getType() {
         return Driver.TYPE;
     }
@@ -38,7 +36,7 @@ public class Driver implements User {
     
     public void AcceptOrder(Order order){
         order.setDriver(id);
-        DriverOrders.add(order);
+        driverOrders.add(order);
     }
     
     public Order CompleteOrder(Order order){
@@ -47,7 +45,7 @@ public class Driver implements User {
     }
     
     public List ViewOrders(){
-        return DriverOrders;
+        return driverOrders;
     }
     public List viewAvailibleOrders(){
         return Order.PendingOrders;

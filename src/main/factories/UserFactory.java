@@ -14,11 +14,11 @@ public class UserFactory {
         }
 
         switch(userDoc.getString("type")) {
-            case "customer":
+            case User.CUSTOMER:
                 return Customer.fromDocument(userDoc);
-            case "restaurant_owner":
+            case User.RESTAURANT_OWNER:
                 return RestaurantOwner.fromDocument(userDoc);
-            case "delivery_driver":
+            case User.DRIVER:
                 return Driver.fromDocument(userDoc);
         }
 

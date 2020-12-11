@@ -9,10 +9,9 @@ public interface User {
     // Stringify the entity
     public String toString();
 
-    // Convert the entity to Json format
-    public String toJson();
-
+    // Returns the curent users email
     public String getEmail();
 
+    // Returns the current users type
     public String getType();
 }
