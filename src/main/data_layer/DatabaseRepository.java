@@ -28,7 +28,6 @@ public class DatabaseRepository {
     private static boolean isSetup = false;
 
     public DatabaseRepository() {
-
         if (isSetup) {
             System.out.println("Database is setup");
         } else {
@@ -90,16 +89,7 @@ public class DatabaseRepository {
         return Discount.fromDocument(doc);
     }
 
-    public void test() {
-        // BasicDBObject whereQuery = new BasicDBObject();
-        // whereQuery.put("name", "adam");
-
-        Document menu = database.getCollection("menu").find().first();
-
-        System.out.println(menu.get("menu"));
-    }
-
-    public List<Document> createListFoodItemDocuments(ArrayList<FoodItem> listOfFoodItems) {
+    public List<Document> createListFoodItemDocuments( ArrayList<FoodItem> listOfFoodItems) {
         List<Document> listFoodItemDocuments = new ArrayList<>();
         for (FoodItem item : listOfFoodItems) {
 

@@ -4,17 +4,17 @@ import org.bson.Document;
 
 import main.Globals;
 import main.data_layer.DatabaseRepository;
-import main.entities.Customer;
-import main.entities.Driver;
-import main.entities.RestaurantOwner;
 import main.entities.User;
+import main.factories.UserFactory;
 import main.utils.PasswordUtils;
 
 public class LoginService {
     DatabaseRepository dbRepo;
+    UserFactory userFactory;
 
     public LoginService(DatabaseRepository dbRepo) {
         this.dbRepo = dbRepo;
+        this.userFactory = new UserFactory();
     }
 
     public boolean verifyLogin(String email, String password) {
@@ -34,22 +34,7 @@ public class LoginService {
             System.out.println(userDoc);
         }
 
-        User usr = null;
-
-        switch(userDoc.getString("type")) {
-            case "customer":
-                usr = Customer.fromDocument(userDoc);
-            break;
-            case "restaurant_owner":
-                usr = RestaurantOwner.fromDocument(userDoc);
-            break;
-            case "admin":
-            break;
-            case "delivery_driver":
-                usr = Driver.fromDocument(userDoc);
-            break;
-        }
-
+        User usr = userFactory.createUser(userDoc);
         
         System.out.println(usr);
         Globals.setLoggedInUser(usr);
