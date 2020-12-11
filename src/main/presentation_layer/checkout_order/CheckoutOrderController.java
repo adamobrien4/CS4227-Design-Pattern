@@ -1,5 +1,7 @@
 package main.presentation_layer.checkout_order;
 
+import javax.print.attribute.standard.PresentationDirection;
+
 import com.mongodb.BasicDBObject;
 
 import org.bson.Document;
@@ -11,6 +13,7 @@ import javafx.scene.control.TextField;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.Customer;
+import main.presentation_layer.PresentationLoader;
 
 public class CheckoutOrderController {
     
@@ -23,16 +26,31 @@ public class CheckoutOrderController {
     @FXML
     private TextField checkout_cvv;
 
-    DatabaseRepository db;
-
     @FXML
     private void handlePayNow(ActionEvent evt) {
         System.out.println("Checking out");
 
-        db = new DatabaseRepository();
+        if (checkout_card_number.getText().length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Please enter a CARD NUMBER").showAndWait();
+            return;
+        }
 
-        Alert a = new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed");
-        a.showAndWait();
+        if (card_expiry.getText().length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Please enter a CARD EXPIRY").showAndWait();
+            return;
+        }
+
+        if (checkout_card_owner.getText().length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Please enter a CARD OWNER").showAndWait();
+            return;
+        }
+
+        if (checkout_cvv.getText().length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Please enter a CHECKOUT CVV").showAndWait();
+            return;
+        }
+
+        new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed").showAndWait();
 
         Customer c = (Customer)Globals.getLoggedInUser();
         BasicDBObject whereQuery = new BasicDBObject();
@@ -50,7 +68,9 @@ public class CheckoutOrderController {
         update.append("$set", setData);
         
         //To update single Document  
-        db.getDB().getCollection("orders").updateOne(query, update);
+        DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
+
+        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
 
         evt.consume();
     }

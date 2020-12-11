@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
+import main.presentation_layer.driver.DriverScreenController;
 import main.presentation_layer.login.LoginController;
 import main.presentation_layer.signup.SignupController;
 
@@ -21,6 +22,7 @@ public class PresentationLoader {
     public static final int BROWSE_RESTAURANT = 2;
     public static final int CREATE_ORDER = 3;
     public static final int CHECKOUT_ORDER = 4;
+    public static final int DELIVERY_DRIVER = 5;
 
     private static Stage stage;
 
@@ -64,6 +66,11 @@ public class PresentationLoader {
                     break;
                 case CHECKOUT_ORDER:
                     root = FXMLLoader.load(CheckoutOrderController.class.getResource("CheckoutOrder.fxml"));
+                    break;
+                case DELIVERY_DRIVER:
+                    prefWidth = 900.0;
+                    prefHeight = 600.0;
+                    root = FXMLLoader.load(DriverScreenController.class.getResource("DriverScreen.fxml"));
                     break;
                 default:
                     break;

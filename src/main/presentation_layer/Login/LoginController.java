@@ -53,40 +53,48 @@ public class LoginController {
 
     DatabaseRepository db;
     LoginService loginService;
-   
-
 
     @FXML
     // Handles login
     public void handleLogin(ActionEvent event) {
-        
+
         System.out.println("Button pressed");
 
         String email = FXusernameField.getText();
         String password = FXpasswordField.getText();
 
-        System.out.println("email is "+ email);
-        System.out.println("password is "+ password);
+        System.out.println("email is " + email);
+        System.out.println("password is " + password);
 
         loginService.verifyLogin(email, password);
 
         if (Globals.getLoggedInUser() == null) {
             FXmessageField.setEffect(new DropShadow(2.0, Color.BLACK));
             FXmessageField.setTextFill(Color.RED);
-            FXmessageField.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+            FXmessageField.setBackground(new Background(
+                    new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
             FXmessageField.setText("User is not loggged in");
-            
+
         } else {
 
             System.out.println("User is loggged in");
-            System.out.println("I am in a try block I am running");
-            PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
-    
+
+            switch (Globals.getLoggedInUser().getType()) {
+                case User.CUSTOMER:
+                    PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+                    break;
+                case User.DRIVER:
+                    PresentationLoader.display(PresentationLoader.DELIVERY_DRIVER);
+                    break;
+                case User.RESTAURANT_OWNER:
+                    break;
+                default:
+                    PresentationLoader.display(PresentationLoader.LOGIN);
+                    break;
+            }
             event.consume();
         }
     }
-
-
 
     public void handleSignup(ActionEvent event) throws IOException {
         System.out.println("Button pressed");

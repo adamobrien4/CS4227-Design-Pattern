@@ -14,6 +14,7 @@ public class Order {
     private ObjectId driver;
     private ObjectId restaurant;
     private String status;
+    private String address;
 
     private double totalCost;
     private double foodCost;
@@ -27,7 +28,7 @@ public class Order {
     private boolean IsCompleted;
     public static List PendingOrders;
 
-    public Order(ObjectId id,String[] food){
+    public Order(ObjectId id,String[] food, String address){
         this.id=id;
         this.driver=null;
         this.IsCompleted=false;
@@ -38,18 +39,20 @@ public class Order {
         return id;
     }
 
-    public Order(double totalCost, double deliveryCost, String[] orderItems) {
+    public Order(double totalCost, double deliveryCost, String[] orderItems, String address) {
         this.totalCost = totalCost;
         this.deliveryCost = deliveryCost;
         this.orderItems = orderItems;
+        this.address = address;
     }
 
-    public Order(double totalCost, String discountCode, double discountAmount, double deliveryCost, String[] orderItems) {
+    public Order(double totalCost, String discountCode, double discountAmount, double deliveryCost, String[] orderItems, String address) {
         this.totalCost = totalCost;
         this.discountCode = discountCode;
         this.discountAmount = discountAmount;
         this.deliveryCost = deliveryCost;
         this.orderItems = orderItems;
+        this.address = address;
     }
 
     public void setIsCompleted() {
@@ -74,7 +77,8 @@ public class Order {
             .append("total_cost", totalCost)
             .append("delivery_cost", deliveryCost)
             .append("order_items", Arrays.asList(orderItems))
-            .append("status", "pending_payment");
+            .append("status", "pending_payment")
+            .append("address", address);
 
         if (discountAmount > 0) {
             doc.append("discount_code", discountCode)

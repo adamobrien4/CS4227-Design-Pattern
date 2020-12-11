@@ -7,6 +7,7 @@ import main.presentation_layer.PresentationLoader;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
+import main.entities.Customer;
 import main.entities.Discount;
 
 import java.io.IOException;
@@ -79,6 +80,7 @@ public class CreateOrderController {
     double deliveryCost = 4.00;
     Discount discount = null;
     double discountValue = 0;
+    Customer loggedInCustomer;
 
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
@@ -204,9 +206,9 @@ public class CreateOrderController {
 
         if (discountValue > 0) {
             order = new Order(basketTotal, discount.getCode(), discountValue, deliveryCost,
-                    orderItems.toArray(new String[orderItems.size()]));
+                    orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
         } else {
-            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]));
+            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
         }
 
         db.insertOrder(order);
@@ -223,6 +225,7 @@ public class CreateOrderController {
         db = new DatabaseRepository();
 
         Restaurant r = Globals.getRestaurant();
+        loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
         // Testing
         mainCourses = r.getMenu().getListOfMainCoursesItems();
@@ -291,7 +294,7 @@ public class CreateOrderController {
 
         Text alg = new Text();
         if (item.hasAllergens()) {
-            alg.setLayoutX(163.0);
+            alg.setLayoutX(250.0);
             alg.setLayoutY(y);
             alg.setText("Allergens: " + String.join(", ", item.getAllergens()));
         }

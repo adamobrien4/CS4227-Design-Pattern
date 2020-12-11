@@ -1,14 +1,10 @@
 package main.presentation_layer.browse_restaurants;
 
-import main.entities.FoodItem;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.mongodb.client.FindIterable;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,6 +44,8 @@ public class BrowseRestaurantController {
         System.out.println("Initialising Checkout Screen");
 
         restaurants = new ArrayList<Restaurant>();
+        
+        restaurant_list_anchor_pane.getChildren().clear();
 
         // Read restaurants from Database
         db = new DatabaseRepository();
