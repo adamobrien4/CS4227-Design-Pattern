@@ -23,7 +23,7 @@ public class SimpleTest {
     @Test
     public void testOneItemCollection() {
         collection.add("itemA");
-        assertEquals(1, collection.size());
+        assertEquals(4, collection.size());
     }
 
     @Test
