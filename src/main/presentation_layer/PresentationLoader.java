@@ -34,6 +34,10 @@ public class PresentationLoader {
         PresentationLoader.stage = stage;
     }
 
+    public static Stage getStage() {
+        return stage;
+    }
+
     public static void display(int screen) {
 
         if (PresentationLoader.stage == null) {

@@ -1,6 +1,9 @@
 package main.presentation_layer.driver;
 
+import javafx.fxml.FXML;
+import main.Globals;
 import main.data_layer.DatabaseRepository;
+import main.presentation_layer.PresentationLoader;
 
 import java.util.ArrayList;
 
@@ -22,7 +25,13 @@ import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 
-public class DriverScreenController extends Application implements EventHandler<ActionEvent> {
+public class DriverScreenController {
+
+    @FXML
+    private VBox orders_pane;
+    @FXML
+    private VBox accept_pane;
+
     Button btn;
     Label lab;
     CheckBox cbx;
@@ -32,15 +41,27 @@ public class DriverScreenController extends Application implements EventHandler<
     VBox AcceptTab;
     VBox DetailsTab;
     // Testing
-    private static int custSize;
-    private static int UnAcptIdSize;
-    private static ArrayList<Object> Price;
-    private static ArrayList<Object> Cust;
-    private static ArrayList<Object> Rest;
-    private static ArrayList<String> unacptid;
-    private static ArrayList<Object> acptid;
+    private int custSize;
+    private int UnAcptIdSize;
+    private ArrayList<Object> Price;
+    private ArrayList<Object> Cust;
+    private ArrayList<Object> Rest;
+    private ArrayList<String> unacptid;
+    private ArrayList<Object> acptid;
 
-    public static void main(String[] args) {
+    EventHandler<ActionEvent> handleClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent evt) {
+            System.out.println("Handle Click");
+            evt.consume();
+        }
+    };
+
+    @FXML
+    public void initialize() {
+
+        Stage primaryStage = PresentationLoader.getStage();
+
         ArrayList<Object> price = new ArrayList<Object>();
         ArrayList<Object> cust = new ArrayList<Object>();
         ArrayList<Object> rest = new ArrayList<Object>();
@@ -74,10 +95,15 @@ public class DriverScreenController extends Application implements EventHandler<
         Rest = rest;
         acptid = Actid;
         unacptid = UnAcptId;
-        launch(args);
-    }
 
-    public void start(Stage primaryStage) throws Exception {
+        for (int i = 0; i < custSize; i++) {
+            Button btn = new Button("Complete: #" + (i + 1));
+            btn.setLayoutY(i * 100);
+            btn.setLayoutX(1);
+            btn.setId("Order" + acptid.get(i));
+            btn.setOnAction(handleClick);
+            orders_pane.getChildren().add(btn);
+        }
 
         primaryStage.setTitle("Driver Screen");
         HBox root = new HBox();
@@ -89,7 +115,7 @@ public class DriverScreenController extends Application implements EventHandler<
             btn.setLayoutY(i * 100);
             btn.setLayoutX(1);
             btn.setId("Order" + acptid.get(i));
-            btn.setOnAction(this);
+            btn.setOnAction(handleClick);
             OrderTab.getChildren().add(btn);
 
         }
@@ -98,7 +124,7 @@ public class DriverScreenController extends Application implements EventHandler<
             btn.setLayoutY(i * 100);
             btn.setLayoutX(1);
             btn.setId("NewOr" + unacptid.get(i));
-            btn.setOnAction(this);
+            btn.setOnAction(handleClick);
             AcceptTab.getChildren().add(btn);
 
         }
@@ -134,7 +160,7 @@ public class DriverScreenController extends Application implements EventHandler<
         check2.getChildren().addAll(cbx, lab);
 
         btn = new Button("Complete");
-        btn.setOnAction(this);
+        btn.setOnAction(handleClick);
 
         DetailsTab.getChildren().addAll(check1, check2, btn);
 
@@ -146,24 +172,24 @@ public class DriverScreenController extends Application implements EventHandler<
         primaryStage.show();
     }
 
-    // button handler
-    @Override
-    public void handle(ActionEvent arg0) {
-        Button sourceButton = (Button) arg0.getSource();
-        String id = sourceButton.getId();
+    // // button handler
+    // @Override
+    // public void handle(ActionEvent arg0) {
+    //     Button sourceButton = (Button) arg0.getSource();
+    //     String id = sourceButton.getId();
 
-        ObjectId x = new ObjectId(id.substring(5));
-        if (id.substring(0, 5).equals("Order")) {
-            System.out.println("Order Completed: " + id.substring(5));
-            DatabaseRepository.completeOrder(x);
-        }
+    //     ObjectId x = new ObjectId(id.substring(5));
+    //     if (id.substring(0, 5).equals("Order")) {
+    //         System.out.println("Order Completed: " + id.substring(5));
+    //         DatabaseRepository.completeOrder(x);
+    //     }
 
-        if (id.substring(0, 5).equals("NewOr")) {
-            System.out.println("Order Accepted: " + id.substring(8));
+    //     if (id.substring(0, 5).equals("NewOr")) {
+    //         System.out.println("Order Accepted: " + id.substring(8));
 
-            DatabaseRepository.acceptOrder(x);
-        }
+    //         DatabaseRepository.acceptOrder(x);
+    //     }
 
-    }
+    // }
 
 }
