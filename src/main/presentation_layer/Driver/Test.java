@@ -24,7 +24,7 @@ public class Test {
         ObjectId tempId;
         DatabaseRepository.setup();
         DatabaseRepository.getDB();
-
+/*
         FindIterable<org.bson.Document> ord = DatabaseRepository.getOrders();
 
         for (org.bson.Document doc : ord) {
@@ -37,6 +37,8 @@ public class Test {
         System.out.println(cust);
        System.out.println(rest);
        System.out.println(price);
+
+ */
     }
 }
 
