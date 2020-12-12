@@ -1,4 +1,4 @@
-package main.presentation_layer.driver;
+package main.presentation_layer.Driver;
 
 import javafx.fxml.FXML;
 import main.Globals;
@@ -6,6 +6,8 @@ import main.data_layer.DatabaseRepository;
 import main.presentation_layer.PresentationLoader;
 
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.text.Document;
 
 import com.mongodb.client.FindIterable;
 
@@ -14,6 +16,8 @@ import org.bson.types.ObjectId;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -35,19 +39,19 @@ public class DriverScreenController {
     Button btn;
     Label lab;
     CheckBox cbx;
-    // StackPane DetailsStack;
+    //StackPane DetailsStack;
     HBox root;
     VBox OrderTab;
     VBox AcceptTab;
     VBox DetailsTab;
     // Testing
-    private int custSize;
-    private int UnAcptIdSize;
-    private ArrayList<Object> Price;
-    private ArrayList<Object> Cust;
-    private ArrayList<Object> Rest;
-    private ArrayList<String> unacptid;
-    private ArrayList<Object> acptid;
+    private static int custSize;
+    private static int UnAcptIdSize;
+    private static ArrayList<Object> Price;
+    private static ArrayList<Object> Cust;
+    private static ArrayList<Object> Rest;
+    private static ArrayList<String> unacptid;
+    private static ArrayList<Object> acptid;
 
     EventHandler<ActionEvent> handleClick = new EventHandler<ActionEvent>() {
         @Override
@@ -66,28 +70,27 @@ public class DriverScreenController {
         ArrayList<Object> cust = new ArrayList<Object>();
         ArrayList<Object> rest = new ArrayList<Object>();
         ArrayList<String> UnAcptId = new ArrayList<String>();
-        ArrayList<Object> Actid = new ArrayList<Object>();
+        ArrayList<Object> Actid=new ArrayList<Object>();
         ObjectId tempId;
         DatabaseRepository.setup();
         DatabaseRepository.getDB();
 
         FindIterable<org.bson.Document> ordPending = DatabaseRepository.getOrders("pending");
-        FindIterable<org.bson.Document> ordUnAccepted = DatabaseRepository.getOrders("UnAccepted");
+        FindIterable<org.bson.Document> ordUnAccepted=DatabaseRepository.getOrders("UnAccepted");
         for (org.bson.Document doc : ordPending) {
             price.add(doc.get("total_cost"));
             tempId = (ObjectId) doc.get("customer_id");
             cust.add(DatabaseRepository.getCust(tempId).get("email"));
             tempId = (ObjectId) doc.get("restaurant_id");
             rest.add(DatabaseRepository.getRest(tempId).get("name"));
-            tempId = (ObjectId) doc.get("_id");
+            tempId=(ObjectId) doc.get("_id");
             Actid.add(tempId);
         }
-
-        for (org.bson.Document doc : ordUnAccepted) {
-            ;
+        
+        for (org.bson.Document doc : ordUnAccepted){;
             UnAcptId.add(doc.get("_id").toString());
         }
-
+        
         custSize = cust.size();
         UnAcptIdSize = UnAcptId.size();
         Price = price;
@@ -111,7 +114,7 @@ public class DriverScreenController {
         VBox AcceptTab = new VBox();
         VBox DetailsTab = new VBox();
         for (int i = 0; i < custSize; i++) {
-            btn = new Button("Complete: #" + (i + 1));
+            btn = new Button("Complete: #"+(i+1));
             btn.setLayoutY(i * 100);
             btn.setLayoutX(1);
             btn.setId("Order" + acptid.get(i));
@@ -128,25 +131,28 @@ public class DriverScreenController {
             AcceptTab.getChildren().add(btn);
 
         }
-
+        
         AcceptTab.setPadding(new Insets(10, 20, 10, 5));
         DetailsTab.setPadding(new Insets(10, 20, 10, 5));
         OrderTab.setPadding(new Insets(10, 20, 10, 5));
         root.setPadding(new Insets(10, 10, 10, 5));
-        TabPane detailsTabPane = new TabPane();
+        TabPane detailsTabPane= new TabPane();
 
-        for (int i = 0; i < Cust.size(); i++) {
-            VBox Tabv = new VBox();
-            Tabv.getChildren().addAll(new Label("Name: " + Cust.get(i)), new Label("Restaurant: " + Rest.get(i)),
-                    new Label("Price: " + Price.get(i)));
-            Tab tab = new Tab("Order: #" + (i + 1), Tabv);
-            detailsTabPane.getTabs().add(tab);
-        }
+
+        for(int i = 0; i<Cust.size(); i++){
+        VBox Tabv= new VBox();
+        Tabv.getChildren().addAll( new Label("Name: "+Cust.get(i)),new Label("Restaurant: "+Rest.get(i)),new Label("Price: "+Price.get(i)));
+        Tab tab= new Tab("Order: #"+(i+1),Tabv);
+        detailsTabPane.getTabs().add(tab);
+    }
+        
+        
+        
 
         HBox check1 = new HBox();
         cbx = new CheckBox();
         cbx.setId("cbxAtRest");
-        // cbx.setOnAction(checkHandler);
+        //cbx.setOnAction(checkHandler);
         lab = new Label();
         lab.setText("Parked At Restaurant");
         check1.getChildren().addAll(cbx, lab);
@@ -154,7 +160,7 @@ public class DriverScreenController {
         HBox check2 = new HBox();
         cbx = new CheckBox();
         cbx.setId("cbxEnRoute");
-        // cbx.setOnAction(checkHandler);
+        //cbx.setOnAction(checkHandler);
         lab = new Label();
         lab.setText("Enroute");
         check2.getChildren().addAll(cbx, lab);
@@ -184,12 +190,13 @@ public class DriverScreenController {
     //         DatabaseRepository.completeOrder(x);
     //     }
 
-    //     if (id.substring(0, 5).equals("NewOr")) {
-    //         System.out.println("Order Accepted: " + id.substring(8));
+        if (id.substring(0, 5).equals("NewOr")) {
+            System.out.println("Order Accepted: " + id.substring(8));
 
-    //         DatabaseRepository.acceptOrder(x);
-    //     }
+            DatabaseRepository.acceptOrder(x);
+        }
 
-    // }
+    }
 
-}
+    
+} 
