@@ -1,6 +1,7 @@
 package main.entities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bson.Document;
 
@@ -46,5 +47,15 @@ public class FoodItem {
             return new FoodItem(document.get("name", String.class), document.get("price", Double.class));
         }
         
+    }
+
+    @Override
+    public String toString() {
+        return "FoodItem{" +
+                "name='" + name + '\'' +
+                ", hasAllergens=" + hasAllergens +
+                ", allergens=" + Arrays.toString(allergens) +
+                ", price=" + price +
+                '}';
     }
 }

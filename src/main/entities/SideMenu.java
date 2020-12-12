@@ -22,7 +22,8 @@ public class SideMenu extends MenuTemplate{
     }
     @Override
     void printInfo() {
-        System.out.println("Side Menu");
-        System.out.println(menuName);
+        System.out.println("This is the Side Menu");
+        for (FoodItem item : listOfSideItems)
+            System.out.println(item.toString());
     }
 }

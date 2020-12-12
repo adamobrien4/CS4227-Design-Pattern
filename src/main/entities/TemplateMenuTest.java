@@ -35,17 +35,15 @@ public class TemplateMenuTest {
 
 
         MenuTemplate menu = new DrinksMenu("drinks menu", listOfDrinkItems);
-        System.out.println(menu.getListOfItems());
+        menu.printInfo();
 
         menu = new MainMenu("main menu",listOfMainCoursesItems);
-        System.out.println(menu.getListOfItems());
+        menu.printInfo();
 
         menu = new SideMenu("side menu",listOfSideItems);
-        System.out.println(menu.getListOfItems());
+        menu.printInfo();
 
         menu = new DessertMenu("dessert menu",listOfDesertItems);
-        System.out.println(menu.getListOfItems());
-
-
+        menu.printInfo();
     }
 }

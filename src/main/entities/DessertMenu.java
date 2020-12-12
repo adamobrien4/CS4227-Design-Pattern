@@ -16,7 +16,9 @@ public class DessertMenu extends MenuTemplate {
     }
     @Override
     void printInfo() {
-        System.out.println(menuName);
+        System.out.println("This is the Dessert Menu");
+        for (FoodItem item : listOfDessertItems)
+            System.out.println(item.toString());
     }
     @Override
     ArrayList<FoodItem> getList() {

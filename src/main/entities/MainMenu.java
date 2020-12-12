@@ -16,7 +16,9 @@ public class MainMenu extends MenuTemplate {
     }
     @Override
     void printInfo() {
-        System.out.println(menuName);
+        System.out.println("This is the Main Menu");
+        for (FoodItem item : listOfMainMItems)
+            System.out.println(item.toString());
     }
     @Override
     ArrayList<FoodItem> getList() {

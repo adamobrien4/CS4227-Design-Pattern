@@ -22,6 +22,8 @@ public class DrinksMenu extends MenuTemplate{
     }
     @Override
     void printInfo() {
-        System.out.println(menuName);
+        System.out.println("This is the Drink's Menu");
+        for (FoodItem item : listOfDrinkItems)
+            System.out.println(item.toString());
     }
 }
