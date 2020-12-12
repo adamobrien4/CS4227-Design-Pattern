@@ -35,12 +35,16 @@ public class DriverScreenController {
     private VBox orders_pane;
     @FXML
     private VBox accept_pane;
-
+    @FXML
+    private VBox DetailsPane;
+    @FXML
+    private HBox root;
     Button btn;
     Label lab;
+    Label dashlab;
     CheckBox cbx;
     //StackPane DetailsStack;
-    HBox root;
+
     VBox OrderTab;
     VBox AcceptTab;
     VBox DetailsTab;
@@ -56,7 +60,19 @@ public class DriverScreenController {
     EventHandler<ActionEvent> handleClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent evt) {
-            System.out.println("Handle Click");
+            Button sourceButton = (Button) evt.getSource();
+            String id = sourceButton.getId();
+            ObjectId x = new ObjectId(id.substring(5));
+            if (id.substring(0, 5).equals("Order")) {
+                System.out.println("Order Completed: " + id.substring(5));
+                         DatabaseRepository.completeOrder(x);
+                     }
+
+                     if (id.substring(0, 5).equals("NewOr")) {
+                           System.out.println("Order Accepted: " + id.substring(8));
+               
+                           DatabaseRepository.acceptOrder(x);
+                       }
             evt.consume();
         }
     };
@@ -70,6 +86,8 @@ public class DriverScreenController {
         ArrayList<Object> cust = new ArrayList<Object>();
         ArrayList<Object> rest = new ArrayList<Object>();
         ArrayList<String> UnAcptId = new ArrayList<String>();
+        ArrayList<Object> UnDelCost = new ArrayList<Object>();
+        ArrayList<String> Unaddr= new ArrayList<String>();
         ArrayList<Object> Actid=new ArrayList<Object>();
         ObjectId tempId;
         DatabaseRepository.setup();
@@ -87,8 +105,11 @@ public class DriverScreenController {
             Actid.add(tempId);
         }
         
-        for (org.bson.Document doc : ordUnAccepted){;
+        for (org.bson.Document doc : ordUnAccepted){
             UnAcptId.add(doc.get("_id").toString());
+            tempId = (ObjectId) doc.get("customer_id");
+            Unaddr.add(DatabaseRepository.getCust(tempId).get("address").toString());
+            UnDelCost.add(doc.get("delivery_cost"));
         }
         
         custSize = cust.size();
@@ -107,9 +128,23 @@ public class DriverScreenController {
             btn.setOnAction(handleClick);
             orders_pane.getChildren().add(btn);
         }
+        
+        for (int i=0; i<Unaddr.size();i++){
+          Unaddr.set(i,Unaddr.get(i).replaceAll(",", " \n")); 
+        }
+        for (int i = 0; i < UnAcptIdSize; i++) {
+            btn = new Button("Accept");
+            lab= new Label("Payment: €"+UnDelCost.get(i)+"\nAddress: "+Unaddr.get(i));
+            dashlab=new Label("--------------------");
+            btn.setLayoutY(i * 100);
+            btn.setLayoutX(1);
+            btn.setId("NewOr" + unacptid.get(i));
+            btn.setOnAction(handleClick);
+            accept_pane.getChildren().addAll(lab,btn,dashlab);
 
-        primaryStage.setTitle("Driver Screen");
-        HBox root = new HBox();
+        }
+
+       // primaryStage.setTitle("Driver Screen");
         VBox OrderTab = new VBox();
         VBox AcceptTab = new VBox();
         VBox DetailsTab = new VBox();
@@ -132,21 +167,21 @@ public class DriverScreenController {
 
         }
         
-        AcceptTab.setPadding(new Insets(10, 20, 10, 5));
+        accept_pane.setPadding(new Insets(10, 20, 10, 5));
         DetailsTab.setPadding(new Insets(10, 20, 10, 5));
-        OrderTab.setPadding(new Insets(10, 20, 10, 5));
+        orders_pane.setPadding(new Insets(10, 20, 10, 5));
         root.setPadding(new Insets(10, 10, 10, 5));
-        TabPane detailsTabPane= new TabPane();
-
+        
+    TabPane DetailsTabPane=new TabPane();
 
         for(int i = 0; i<Cust.size(); i++){
-        VBox Tabv= new VBox();
-        Tabv.getChildren().addAll( new Label("Name: "+Cust.get(i)),new Label("Restaurant: "+Rest.get(i)),new Label("Price: "+Price.get(i)));
-        Tab tab= new Tab("Order: #"+(i+1),Tabv);
-        detailsTabPane.getTabs().add(tab);
+            VBox Tabv= new VBox();
+            Tabv.getChildren().addAll( new Label("Email: "+Cust.get(i)),new Label("Restaurant: "+Rest.get(i)),new Label("Price: €"+Price.get(i)));
+            Tab tab= new Tab("Order: #"+(i+1),Tabv);
+            DetailsTabPane.getTabs().add(tab);
     }
         
-        
+        DetailsPane.getChildren().add(DetailsTabPane);
         
 
         HBox check1 = new HBox();
@@ -170,33 +205,12 @@ public class DriverScreenController {
 
         DetailsTab.getChildren().addAll(check1, check2, btn);
 
-        root.getChildren().addAll(OrderTab, detailsTabPane, AcceptTab);
+        //root.getChildren().addAll(orders_pane, DetailsTab, accept_pane);
 
-        Scene orderScene = new Scene(root, 1920, 1000);
-        primaryStage.setScene(orderScene);
+       // Scene orderScene = new Scene(root, 1920, 1000);
+       // primaryStage.setScene(orderScene);
 
-        primaryStage.show();
-    }
-
-    // // button handler
-    // @Override
-    // public void handle(ActionEvent arg0) {
-    //     Button sourceButton = (Button) arg0.getSource();
-    //     String id = sourceButton.getId();
-
-    //     ObjectId x = new ObjectId(id.substring(5));
-    //     if (id.substring(0, 5).equals("Order")) {
-    //         System.out.println("Order Completed: " + id.substring(5));
-    //         DatabaseRepository.completeOrder(x);
-    //     }
-
-        if (id.substring(0, 5).equals("NewOr")) {
-            System.out.println("Order Accepted: " + id.substring(8));
-
-            DatabaseRepository.acceptOrder(x);
-        }
-
-    }
-
+        //primaryStage.show();
     
+    }
 } 

@@ -1,4 +1,4 @@
-package main.presentation_layer.driver;
+package main.presentation_layer.Driver;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class DriverScreenMain extends Application {
         System.out.println(getClass().getResource("DriverScreen.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("DriverScreen.fxml"));
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("DriverScreen");
         primaryStage.setScene(new Scene(root, 900, 500));
         primaryStage.show();
     }
