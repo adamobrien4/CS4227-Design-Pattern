@@ -39,6 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -88,51 +89,56 @@ public class SignupController {
         String address = FXAddressField.getText();
         String confirmPassword = FXconfirmpasswordField.getText();
 
+        System.out.println("I am running before database queries");
         Label msg = (Label)FXsignupmeesageField;
+        msg.setTextFill(Color.RED);
+        
+        //BasicDBObject whereQuery = new BasicDBObject()
+        var whereQuery = new BasicDBObject();
+
+
+        System.out.println("I am running after creating a database object");
+
+        whereQuery.put("email", email);
+        System.out.println("I am running when the database is being queried");
+
+
+        Document d = db.getDB().getCollection("users").find(whereQuery).first();
+        System.out.println("I am running after d.getdb()");
+
+        System.out.println("I am running before the else if statements");
+
+
+
+
 
         if (email.isEmpty()){
             msg.setText("Email is empty");
         } else if(password.isEmpty()) {
             msg.setText("Password is empty");
-        } /*else if() {
-            
-        } else if() {
-            
-        } else if() {
-            
-        } else if() {
-            
-        } else if() {
-            
-        } else if() {
-            
+        }else if(confirmPassword.isEmpty()) {
+            msg.setText("Confrirm Password is empty");
+        } else if(address.isEmpty()) {
+            msg.setText("Address is empty");
+        } else if(password.equals(confirmPassword) == false) {
+            msg.setText("mismatch password");
+        } else if(password.length()<6) {
+            msg.setText("Password is too short");
+        }else if(d != null) {
+            msg.setText("That email has already been used");
+        }
+        else{
+            String ePwd = PasswordUtils.encryptPassword(FXconfirmpasswordField.getText());
+            SignupService.signupUser(db, email, ePwd, User.CUSTOMER);
+            msg.setText("Success");
+
         }
         
         
         
-        || FXpasswordField.getText().isEmpty()
-                || ) {
-            FXsignupmeesageField.setText("empty field(s)");
-        } else if (FXpasswordField.getText().equals(FXconfirmpasswordField.getText()) == false) {
-            FXsignupmeesageField.setText("mismatch password");
-        } else if (whereQuery.put("email", FXusernameField.getText()) != null) {
-            FXsignupmeesageField.setText("user exsits");
-        }*/
-
-        // From login service
-        String ePwd = PasswordUtils.encryptPassword(FXconfirmpasswordField.getText());
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("email", email);
-
-        Document d = db.getDB().getCollection("users").find(whereQuery).first();
-
-        if (d != null) {
-            // Email is already taken
-
-        }
-        // db.getDB().getCollection("users").insertOne(c.toDocument());
-        System.out.println("Result for first test   " + db.getDB().getCollection("users").find(whereQuery));
-
+        
+        
+        
     }
 
     @FXML

@@ -69,7 +69,6 @@ public class LoginController {
         loginService.verifyLogin(email, password);
 
         if (Globals.getLoggedInUser() == null) {
-            FXmessageField.setEffect(new DropShadow(2.0, Color.BLACK));
             FXmessageField.setTextFill(Color.RED);
             FXmessageField.setBackground(new Background(
                     new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));

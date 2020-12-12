@@ -65,6 +65,8 @@ public class DatabaseRepository {
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("email", email);
         whereQuery.put("password", password);
+        System.out.println("here is the email and password being queried\t" + email+password);
+        System.out.println("this is what get userByEmailAndPWD is returning\t" + database.getCollection("users").find(whereQuery).first());
 
         return database.getCollection("users").find(whereQuery).first();
     }
