@@ -68,6 +68,8 @@ public class PresentationLoader {
                     root = FXMLLoader.load(SignupController.class.getResource("SignupFX.fxml"));
                     break;
                 case BROWSE_RESTAURANT:
+                    prefWidth = 600.0;
+                    prefHeight = 600.0;
                     root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
                     break;
                 case CREATE_ORDER:

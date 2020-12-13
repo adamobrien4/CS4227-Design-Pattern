@@ -3,14 +3,17 @@ package main.services;
 import org.bson.Document;
 
 import main.data_layer.DatabaseRepository;
+import main.utils.PasswordUtils;
 
 public class SignupService {
 
-    private SignupService() {
+    public SignupService() {
         System.out.println("Created new Signup Service");
     }
 
-    public static boolean signupUser(DatabaseRepository db, String email, String password, String type) {
+    public boolean signupUser(DatabaseRepository db, String email, String password, String type) {
+
+        password = PasswordUtils.encryptPassword(password);
 
         Document userDoc = new Document("email", email).append("password", password).append("type", type);
 

@@ -1,46 +1,29 @@
 package main.presentation_layer.signup;
 
-import main.entities.FoodItem;
-import main.entities.Order;
-import main.entities.User;
-import main.services.LoginService;
-import main.services.SignupService;
-import main.utils.PasswordUtils;
 import main.data_layer.DatabaseRepository;
-import main.entities.BasketItem;
-import main.entities.Customer;
+import main.entities.User;
+import main.presentation_layer.PresentationLoader;
+import main.services.SignupService;
 import main.data_layer.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import org.bson.Document;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SignupController {
@@ -62,9 +45,10 @@ public class SignupController {
     @FXML
     private ResourceBundle resources;
     @FXML
-    private Label FXsignupmeesageField;
+    private Label FXsignupmessageField;
 
     DatabaseRepository db;
+    SignupService signupService;
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
@@ -89,48 +73,43 @@ public class SignupController {
         String address = FXAddressField.getText();
         String confirmPassword = FXconfirmpasswordField.getText();
 
-        System.out.println("I am running before database queries");
-        Label msg = (Label)FXsignupmeesageField;
+        Label msg = (Label)FXsignupmessageField;
         msg.setTextFill(Color.RED);
         
         //BasicDBObject whereQuery = new BasicDBObject()
         var whereQuery = new BasicDBObject();
-
-
-        System.out.println("I am running after creating a database object");
-
         whereQuery.put("email", email);
-        System.out.println("I am running when the database is being queried");
 
-
-        Document d = db.getDB().getCollection("users").find(whereQuery).first();
-        System.out.println("I am running after d.getdb()");
-
-        System.out.println("I am running before the else if statements");
-
-
-
+        Document d = DatabaseRepository.getDB().getCollection("users").find(whereQuery).first();
 
 
         if (email.isEmpty()){
             msg.setText("Email is empty");
-        } else if(password.isEmpty()) {
-            msg.setText("Password is empty");
-        }else if(confirmPassword.isEmpty()) {
-            msg.setText("Confrirm Password is empty");
+            return;
         } else if(address.isEmpty()) {
             msg.setText("Address is empty");
-        } else if(password.equals(confirmPassword) == false) {
-            msg.setText("mismatch password");
+            return;
+        } else if(password.isEmpty()) {
+            msg.setText("Password is empty");
+            return;
+        } else if(confirmPassword.isEmpty()) {
+            msg.setText("Confrirm Password is empty");
+            return;
+        } else if(!password.equals(confirmPassword)) {
+            msg.setText("Password Mismatch");
+            return;
         } else if(d != null) {
-            msg.setText("That email has already been used");
+            msg.setText("That email is already in use");
+            return;
         }
-        
-        
-        
-        
-        
-        
+
+        boolean signupSuccess = signupService.signupUser(db, email, password, User.CUSTOMER);
+
+        if (signupSuccess) {
+            PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
+        } else {
+            msg.setText("Error signing up user");
+        }
     }
 
     @FXML
@@ -139,6 +118,7 @@ public class SignupController {
         System.out.println("Initialise");
 
         db = new DatabaseRepository();
+        signupService = new SignupService();
     }
 
 }

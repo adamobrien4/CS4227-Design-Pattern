@@ -76,7 +76,7 @@ public class CreateOrderController {
 
     Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
 
-    double basketTotal;
+    double basketTotal = 0.00;
     double deliveryCost = 4.00;
     Discount discount = null;
     double discountValue = 0;
@@ -233,8 +233,6 @@ public class CreateOrderController {
         sides = r.getMenu().getListOfSideItems();
         drinks = r.getMenu().getListOfDrinksItems();
 
-        System.out.println("Got Restaurant 3");
-
         // Main Course
         if (mainCourses.isEmpty()) {
             main_course_tab_pane.getChildren().add(noFoodItemsMessage());
@@ -282,7 +280,7 @@ public class CreateOrderController {
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
 
-        System.out.println("Got Restaurant 2");
+        updateBasket();
     }
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {

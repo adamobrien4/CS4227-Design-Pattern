@@ -70,9 +70,9 @@ public class LoginController {
 
         if (Globals.getLoggedInUser() == null) {
             FXmessageField.setTextFill(Color.RED);
-            FXmessageField.setBackground(new Background(
-                    new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
-            FXmessageField.setText("User is not loggged in");
+            FXmessageField.setBackground(
+                    new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+            FXmessageField.setText("Invalid login details");
 
         } else {
 
@@ -98,18 +98,7 @@ public class LoginController {
     public void handleSignup(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
 
-        Button btn = (Button) event.getSource();
-        Scene scene = btn.getScene();
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../signup/SignupFX.fxml"));
-            Stage stage = (Stage) scene.getWindow();
-            Scene scene2 = new Scene(root);
-            stage.setScene(scene2);
-        } catch (IOException io) {
-            System.out.println("Error loading Checkout");
-            System.out.println(io.toString());
-        }
+        PresentationLoader.getInstance().display(PresentationLoader.SIGNUP);
 
         event.consume();
 
