@@ -110,7 +110,14 @@ public class DatabaseRepository {
         return cursor;
         
     }
+       public static Document getCust(ObjectId x) {
+        BasicDBObject whereQuery = new BasicDBObject();
+        MongoCollection<Document> collection = database.getCollection("users");
+        whereQuery.put("_id", x);
+        Document cursor = collection.find(whereQuery).first();
+        return cursor;
 
+    }
     public Document getRest(ObjectId x) {
         BasicDBObject whereQuery = new BasicDBObject();
         MongoCollection<Document> collection = database.getCollection("restaurants");
