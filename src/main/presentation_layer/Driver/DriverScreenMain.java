@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 public class DriverScreenMain extends Application {
 
     public void start(Stage primaryStage) throws Exception{
+    
         System.out.println(getClass().getResource("DriverScreen.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("DriverScreen.fxml"));
 

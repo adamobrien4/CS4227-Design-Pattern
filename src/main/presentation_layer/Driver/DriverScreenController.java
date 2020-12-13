@@ -43,7 +43,6 @@ public class DriverScreenController {
     Label lab;
     Label dashlab;
     CheckBox cbx;
-    //StackPane DetailsStack;
 
     VBox OrderTab;
     VBox AcceptTab;
@@ -56,6 +55,8 @@ public class DriverScreenController {
     private static ArrayList<Object> Rest;
     private static ArrayList<String> unacptid;
     private static ArrayList<Object> acptid;
+    DatabaseRepository db = new DatabaseRepository();
+    
 
     EventHandler<ActionEvent> handleClick = new EventHandler<ActionEvent>() {
         @Override
@@ -65,13 +66,13 @@ public class DriverScreenController {
             ObjectId x = new ObjectId(id.substring(5));
             if (id.substring(0, 5).equals("Order")) {
                 System.out.println("Order Completed: " + id.substring(5));
-                         DatabaseRepository.completeOrder(x);
+                         db.completeOrder(x);
                      }
 
                      if (id.substring(0, 5).equals("NewOr")) {
                            System.out.println("Order Accepted: " + id.substring(8));
                
-                           DatabaseRepository.acceptOrder(x);
+                           db.acceptOrder(x);
                        }
             evt.consume();
         }
@@ -93,14 +94,14 @@ public class DriverScreenController {
         DatabaseRepository.setup();
         DatabaseRepository.getDB();
 
-        FindIterable<org.bson.Document> ordPending = DatabaseRepository.getOrders("pending");
-        FindIterable<org.bson.Document> ordUnAccepted=DatabaseRepository.getOrders("UnAccepted");
+        FindIterable<org.bson.Document> ordPending = db.getOrders("pending");
+        FindIterable<org.bson.Document> ordUnAccepted=db.getOrders("UnAccepted");
         for (org.bson.Document doc : ordPending) {
             price.add(doc.get("total_cost"));
             tempId = (ObjectId) doc.get("customer_id");
             cust.add(DatabaseRepository.getCust(tempId).get("email"));
             tempId = (ObjectId) doc.get("restaurant_id");
-            rest.add(DatabaseRepository.getRest(tempId).get("name"));
+            rest.add(db.getRest(tempId).get("name"));
             tempId=(ObjectId) doc.get("_id");
             Actid.add(tempId);
         }
