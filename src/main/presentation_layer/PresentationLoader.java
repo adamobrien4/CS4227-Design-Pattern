@@ -11,7 +11,7 @@ import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
 import main.presentation_layer.Driver.DriverScreenController;
 import main.presentation_layer.login.LoginController;
-import main.presentation_layer.signup.SignupController;
+import main.presentation_layer.Signup.SignupController;
 
 public class PresentationLoader {
 

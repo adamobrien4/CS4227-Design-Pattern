@@ -19,6 +19,8 @@ import org.bson.types.ObjectId;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.stage.Stage;
+
 public class CreateRestaurantController {
 
     @FXML

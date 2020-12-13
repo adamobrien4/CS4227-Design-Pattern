@@ -1,4 +1,4 @@
-package main.presentation_layer.signup;
+package main.presentation_layer.Signup;
 
 import main.data_layer.DatabaseRepository;
 import main.entities.User;
@@ -37,6 +37,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SignupController {
+    @FXML
+    public Button createRestaurantBtn;
     @FXML
     private Button fXsignupButton;
 
@@ -133,6 +135,23 @@ public class SignupController {
         } else {
             msg.setText("Error signing up user");
         }
+    }
+
+    public void handleCreateRestaurant(ActionEvent event) {
+        Button btn = (Button) event.getSource();
+        Scene scene = btn.getScene();
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../create_restaurant/CreateRestaurant.fxml"));
+            Stage stage = (Stage) scene.getWindow();
+            Scene scene2 = new Scene(root);
+            stage.setScene(scene2);
+        } catch (IOException io) {
+            System.out.println("Error loading Checkout");
+            System.out.println(io.toString());
+        }
+        event.consume();
+
+
     }
 
     @FXML
