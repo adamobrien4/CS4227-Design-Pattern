@@ -9,6 +9,7 @@ public class SignupService {
 
     public SignupService() {
         System.out.println("Created new Signup Service");
+        DatabaseRepository db;
     }
 
     public boolean signupUser(DatabaseRepository db, String email, String password, String type) {
@@ -22,7 +23,6 @@ public class SignupService {
         } catch (Exception e) {
             return false;
         }
-
         return true; 
 
     }

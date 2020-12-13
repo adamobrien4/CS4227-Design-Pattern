@@ -22,6 +22,7 @@ public class LoginService {
         // Get user details from DB to see if the user exists
         // If the user exists assign it to Globals.loggedInUser
 
+        
         String ePwd = PasswordUtils.encryptPassword(password);
         System.out.println(ePwd);
 

@@ -17,12 +17,22 @@ import org.bson.Document;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -52,6 +62,7 @@ public class SignupController {
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
+        
         Button btn = (Button) event.getSource();
         Scene scene = btn.getScene();
         try {
@@ -75,14 +86,18 @@ public class SignupController {
 
         Label msg = (Label)FXsignupmessageField;
         msg.setTextFill(Color.RED);
-        
+        msg.setBackground(new Background(
+            new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));        
         //BasicDBObject whereQuery = new BasicDBObject()
         var whereQuery = new BasicDBObject();
         whereQuery.put("email", email);
+        System.out.println("I am running when the database is being queried");
 
-        Document d = DatabaseRepository.getDB().getCollection("users").find(whereQuery).first();
 
+        Document d = db.getDB().getCollection("users").find(whereQuery).first();
+        System.out.println("I am running after d.getdb()");
 
+        System.out.println("I am running before the else if statements");
         if (email.isEmpty()){
             msg.setText("Email is empty");
             return;
@@ -118,7 +133,7 @@ public class SignupController {
         System.out.println("Initialise");
 
         db = new DatabaseRepository();
-        signupService = new SignupService();
+        SignupService signupService = new SignupService();
     }
 
 }

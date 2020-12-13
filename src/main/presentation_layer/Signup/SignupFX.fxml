@@ -27,7 +27,7 @@
             <TextField fx:id="FXAddressField" layoutX="399.0" layoutY="142.0" promptText="Address" />
             <PasswordField fx:id="FXpasswordField" layoutX="398.0" layoutY="178.0" promptText="Password" />
             <PasswordField fx:id="FXconfirmpasswordField" layoutX="398.0" layoutY="218.0" promptText="Confirm Password" />
-            <Label fx:id="FXsignupmessageField" layoutX="398.0" layoutY="243.0" prefHeight="38.0" prefWidth="149.0" />
+            <Label fx:id="FXsignupmessageField" layoutX="399.0" layoutY="243.0" prefHeight="25.0" prefWidth="149.0" />
       </children>
     </AnchorPane>
   </children>

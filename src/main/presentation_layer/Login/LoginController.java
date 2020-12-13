@@ -59,6 +59,7 @@ public class LoginController {
     public void handleLogin(ActionEvent event) {
 
         System.out.println("Button pressed");
+        FXmessageField.setText("");
 
         String email = FXusernameField.getText();
         String password = FXpasswordField.getText();
@@ -71,7 +72,7 @@ public class LoginController {
         if (Globals.getLoggedInUser() == null) {
             FXmessageField.setTextFill(Color.RED);
             FXmessageField.setBackground(
-                    new Background(new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
+                    new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
             FXmessageField.setText("Invalid login details");
 
         } else {
