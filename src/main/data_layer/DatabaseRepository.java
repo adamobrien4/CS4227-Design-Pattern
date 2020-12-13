@@ -10,9 +10,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
@@ -104,7 +101,8 @@ public class DatabaseRepository {
         return listFoodItemDocuments;
     }
 
-    public static FindIterable<Document> getOrders(String x) {
+    
+    public FindIterable<Document> getOrders(String x) {
         BasicDBObject whereQuery = new BasicDBObject();
         MongoCollection<Document> collection = database.getCollection("orders");
         whereQuery.put("status", x);
@@ -112,15 +110,8 @@ public class DatabaseRepository {
         return cursor;
         
     }
-    public static Document getCust(ObjectId x) {
-        BasicDBObject whereQuery = new BasicDBObject();
-        MongoCollection<Document> collection = database.getCollection("users");
-        whereQuery.put("_id", x);
-        Document cursor = collection.find(whereQuery).first();
-        return cursor;
 
-    }
-    public static Document getRest(ObjectId x) {
+    public Document getRest(ObjectId x) {
         BasicDBObject whereQuery = new BasicDBObject();
         MongoCollection<Document> collection = database.getCollection("restaurants");
         whereQuery.put("_id", x);
@@ -128,14 +119,16 @@ public class DatabaseRepository {
         return cursor;
 
     }
-    public static void completeOrder(ObjectId x){
+
+    public void completeOrder(ObjectId x){
         BasicDBObject whereQuery =new BasicDBObject();
         MongoCollection <Document> collection= database.getCollection("orders");
         whereQuery.put("_id",x);
         collection.updateOne(whereQuery, Updates.set("status","completed"));
 
     }
-    public static void acceptOrder(ObjectId y) {
+    
+    public void acceptOrder(ObjectId y) {
         BasicDBObject whereQuery =new BasicDBObject();
         MongoCollection <Document> collection= database.getCollection("orders");
         whereQuery.put("_id",y);

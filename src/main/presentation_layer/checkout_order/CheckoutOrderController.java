@@ -70,7 +70,7 @@ public class CheckoutOrderController {
         //To update single Document  
         DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
 
-        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
 
         evt.consume();
     }

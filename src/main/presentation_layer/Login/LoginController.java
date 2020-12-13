@@ -80,15 +80,15 @@ public class LoginController {
 
             switch (Globals.getLoggedInUser().getType()) {
                 case User.CUSTOMER:
-                    PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+                    PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
                     break;
                 case User.DRIVER:
-                    PresentationLoader.display(PresentationLoader.DELIVERY_DRIVER);
+                    PresentationLoader.getInstance().display(PresentationLoader.DELIVERY_DRIVER);
                     break;
                 case User.RESTAURANT_OWNER:
                     break;
                 default:
-                    PresentationLoader.display(PresentationLoader.LOGIN);
+                    PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
                     break;
             }
             event.consume();

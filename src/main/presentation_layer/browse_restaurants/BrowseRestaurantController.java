@@ -33,7 +33,7 @@ public class BrowseRestaurantController {
 
             Globals.setRestaurant(restaurants.get(btnId));
 
-            PresentationLoader.display(PresentationLoader.CREATE_ORDER);
+            PresentationLoader.getInstance().display(PresentationLoader.CREATE_ORDER);
 
             evt.consume();
         }

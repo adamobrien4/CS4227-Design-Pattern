@@ -184,7 +184,7 @@ public class CreateOrderController {
 
     @FXML
     private void handleGoBackButton(ActionEvent evt) {
-        PresentationLoader.display(PresentationLoader.BROWSE_RESTAURANT);
+        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
         evt.consume();
     }
 
@@ -213,7 +213,7 @@ public class CreateOrderController {
 
         db.insertOrder(order);
 
-        PresentationLoader.display(PresentationLoader.CHECKOUT_ORDER);
+        PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
         evt.consume();
     }
 

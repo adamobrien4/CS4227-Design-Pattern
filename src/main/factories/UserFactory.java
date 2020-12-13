@@ -8,6 +8,9 @@ import main.entities.RestaurantOwner;
 import main.entities.User;
 
 public class UserFactory {
+
+    public UserFactory(){}
+
     public User createUser(Document userDoc) {
         if(userDoc.getString("type") == null) {
             return null;

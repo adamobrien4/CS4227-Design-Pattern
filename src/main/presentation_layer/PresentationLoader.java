@@ -15,8 +15,6 @@ import main.presentation_layer.signup.SignupController;
 
 public class PresentationLoader {
 
-    private static Parent root;
-
     public static final int LOGIN = 0;
     public static final int SIGNUP = 1;
     public static final int BROWSE_RESTAURANT = 2;
@@ -26,8 +24,15 @@ public class PresentationLoader {
 
     private static Stage stage;
 
-    private PresentationLoader() {
-        System.out.println("new PresentationLoader");
+    private static PresentationLoader instance = null;
+
+    private PresentationLoader() {}
+
+    public static PresentationLoader getInstance() {
+        if (instance == null) {
+            instance = new PresentationLoader();
+        }
+        return instance;
     }
 
     public static void setStage(Stage stage) {
@@ -38,12 +43,14 @@ public class PresentationLoader {
         return stage;
     }
 
-    public static void display(int screen) {
+    public void display(int screen) {
 
         if (PresentationLoader.stage == null) {
             System.out.println("Please setup stage before continuing");
             System.exit(0);
         }
+
+        Parent root = null;
 
         double prefWidth = 800.0;
         double prefHeight = 600.0;

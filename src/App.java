@@ -12,8 +12,10 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
+        PresentationLoader pl = PresentationLoader.getInstance();
+
         PresentationLoader.setStage(primaryStage);
-        PresentationLoader.display(PresentationLoader.LOGIN);
+        pl.display(PresentationLoader.LOGIN);
         
     }
 
