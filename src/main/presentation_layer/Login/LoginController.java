@@ -71,7 +71,7 @@ public class LoginController {
         if (Globals.getLoggedInUser() == null) {
             FXmessageField.setTextFill(Color.RED);
             FXmessageField.setBackground(new Background(
-                    new BackgroundFill(Color.rgb(0, 0, 80, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
+                    new BackgroundFill(Color.GRAY, new CornerRadii(5.0), new Insets(-5.0))));
             FXmessageField.setText("User is not loggged in");
 
         } else {

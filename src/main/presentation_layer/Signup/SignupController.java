@@ -122,16 +122,8 @@ public class SignupController {
             msg.setText("Address is empty");
         } else if(password.equals(confirmPassword) == false) {
             msg.setText("mismatch password");
-        } else if(password.length()<6) {
-            msg.setText("Password is too short");
-        }else if(d != null) {
+        } else if(d != null) {
             msg.setText("That email has already been used");
-        }
-        else{
-            String ePwd = PasswordUtils.encryptPassword(FXconfirmpasswordField.getText());
-            SignupService.signupUser(db, email, ePwd, User.CUSTOMER);
-            msg.setText("Success");
-
         }
         
         

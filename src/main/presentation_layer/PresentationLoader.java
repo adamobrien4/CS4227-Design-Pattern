@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
-import main.presentation_layer.driver.DriverScreenController;
+import main.presentation_layer.Driver.DriverScreenController;
 import main.presentation_layer.login.LoginController;
 import main.presentation_layer.signup.SignupController;
 
