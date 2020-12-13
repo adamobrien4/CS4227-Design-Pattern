@@ -1,4 +1,4 @@
-package main.presentation_layer.signup;
+package main.presentation_layer.Signup;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
