@@ -15,8 +15,21 @@ public class SignupService {
     public boolean signupUser(DatabaseRepository db, String email, String password, String type) {
 
         password = PasswordUtils.encryptPassword(password);
+        System.out.println("This Ran BEFORE USER DOC     results are:\t");
 
-        Document userDoc = new Document("email", email).append("password", password).append("type", type);
+        
+      
+
+        //Document userDoc = new Document("email", email).append("password", password).append("type", type);
+        Document userDoc = new Document();
+        userDoc.append("email", email)
+        .append("password", password)
+        .append("type", type);
+        
+    
+
+
+        System.out.println("I have recived the document");
 
         try {
             db.getDB().getCollection("users").insertOne(userDoc);

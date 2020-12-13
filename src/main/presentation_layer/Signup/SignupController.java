@@ -58,7 +58,6 @@ public class SignupController {
     private Label FXsignupmessageField;
 
     DatabaseRepository db;
-    SignupService signupService;
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
@@ -89,6 +88,8 @@ public class SignupController {
         msg.setBackground(new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));        
         //BasicDBObject whereQuery = new BasicDBObject()
+
+
         var whereQuery = new BasicDBObject();
         whereQuery.put("email", email);
         System.out.println("I am running when the database is being queried");
@@ -117,8 +118,15 @@ public class SignupController {
             msg.setText("That email is already in use");
             return;
         }
+        SignupService signupService = new SignupService();
+
+        System.out.println("This Ran BEFORE Signup.success results are:\t");
 
         boolean signupSuccess = signupService.signupUser(db, email, password, User.CUSTOMER);
+
+        System.out.println("This Ran after Signup.success results are:\t" + signupSuccess);
+
+        
 
         if (signupSuccess) {
             PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
@@ -133,7 +141,7 @@ public class SignupController {
         System.out.println("Initialise");
 
         db = new DatabaseRepository();
-        SignupService signupService = new SignupService();
+
     }
 
 }
