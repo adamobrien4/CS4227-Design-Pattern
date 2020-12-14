@@ -10,8 +10,8 @@ import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
 import main.presentation_layer.Driver.DriverScreenController;
-import main.presentation_layer.login.LoginController;
 import main.presentation_layer.Signup.SignupController;
+import main.presentation_layer.login.LoginController;
 
 public class PresentationLoader {
 
@@ -64,7 +64,7 @@ public class PresentationLoader {
                     break;
                 case SIGNUP:
                     prefWidth = 640.0;
-                    prefHeight = 400.0;
+                    prefHeight = 436.0;
                     root = FXMLLoader.load(SignupController.class.getResource("SignupFX.fxml"));
                     break;
                 case BROWSE_RESTAURANT:

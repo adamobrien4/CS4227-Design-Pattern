@@ -1,24 +1,17 @@
 package main.presentation_layer.Driver;
 
 import javafx.fxml.FXML;
-import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.presentation_layer.PresentationLoader;
 
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.text.Document;
 
 import com.mongodb.client.FindIterable;
 
 import org.bson.types.ObjectId;
 
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.TabPane;
@@ -48,13 +41,13 @@ public class DriverScreenController {
     VBox AcceptTab;
     VBox DetailsTab;
     // Testing
-    private static int custSize;
-    private static int UnAcptIdSize;
-    private static ArrayList<Object> Price;
-    private static ArrayList<Object> Cust;
-    private static ArrayList<Object> Rest;
-    private static ArrayList<String> unacptid;
-    private static ArrayList<Object> acptid;
+    private int custSize;
+    private int UnAcptIdSize;
+    private ArrayList<Object> Price;
+    private ArrayList<Object> Cust;
+    private ArrayList<Object> Rest;
+    private ArrayList<String> unacptid;
+    private ArrayList<Object> acptid;
     DatabaseRepository db = new DatabaseRepository();
     
 
@@ -165,7 +158,6 @@ public class DriverScreenController {
             btn.setId("NewOr" + unacptid.get(i));
             btn.setOnAction(handleClick);
             AcceptTab.getChildren().add(btn);
-
         }
         
         accept_pane.setPadding(new Insets(10, 20, 10, 5));
