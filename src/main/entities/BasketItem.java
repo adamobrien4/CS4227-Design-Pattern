@@ -1,38 +1,50 @@
 package main.entities;
-
 public class BasketItem extends FoodItem {
     private int quantity;
 
-    public BasketItem(String n, String[] a, double p){
-        super(n, a, p);
-        this.quantity = 1;
-    }
+    public static class Builder extends FoodItem.Builder<Builder>{
+        private int quantity = 1;
 
-    public BasketItem(String n,double p){
-        super(n, p);
-        this.quantity = 1;
-    }
+        public Builder(){}
 
-    public int getQuantity() {
-        return this.quantity;
-    }
-
-    public void incrementQuantity() {
-        this.quantity++;
-    }
-
-    public boolean decrementQuantity() {
-        this.quantity--;
-        if (quantity == 0) {
-            return true;
-        } 
-        return false;
-    }
-
-    public static BasketItem fromFoodItem(FoodItem item) {
-        if (item.hasAllergens()){
-            return new BasketItem(item.getName(), item.getAllergens(), item.getPrice());
+        public Builder quantity(int quantity){
+            this.quantity=quantity;
+            return this;
         }
-        return new BasketItem(item.getName(), item.getPrice());
+        
+        public BasketItem build(){
+            return new BasketItem(this);
+        }
+
+
     }
-}
+        public BasketItem(Builder builder){
+
+            super(builder);
+            quantity= builder.quantity;
+        }
+
+
+        public int getQuantity() {
+            return this.quantity;
+        }
+
+        public void incrementQuantity() {
+            this.quantity++;
+        }
+
+        public boolean decrementQuantity() {
+            this.quantity--;
+            if (quantity == 0) {
+                return true;
+            } 
+            return false;
+        }
+
+        public static BasketItem fromFoodItem(FoodItem item) {
+            if (item.hasAllergens()){
+                return new BasketItem.Builder().name(item.getName()).price(item.getPrice()).allergens(item.getAllergens()).build();
+            }
+            return new BasketItem.Builder().name(item.getName()).price(item.getPrice()).build();
+        }
+    }

@@ -2,7 +2,6 @@ package main.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.bson.Document;
 
 public class FoodItem {
@@ -11,19 +10,42 @@ public class FoodItem {
     private String[] allergens;
     private double price;
 
-    public FoodItem (String n, double p) {
-        this.name = n;
-        this.price = p;
-    }
+    public static class Builder<T extends Builder<T>> {
+        private String name;
+        private boolean hasAllergens = false;
+        private String[] allergens;
+        private double price;
 
-    public FoodItem (String n, String[] a, double p) {
-        this.name = n;
-        this.hasAllergens = true;
-        this.allergens = a;
-        this.price = p;
-    }
+        public Builder(){}
 
-    public String getName() {
+        public T name(String val) {
+            name = val;
+            return (T) this;
+        }
+        public T allergens(String[] val) {
+            hasAllergens=true;
+            allergens = val;
+            return (T) this;
+        }
+        public T price(double val) {
+            price = val;
+            return (T) this;
+        }
+        public FoodItem build(){
+            return new FoodItem(this);
+        }
+
+
+
+    }
+    public FoodItem(Builder<?> builder) {
+        name=builder.name;
+        hasAllergens=builder.hasAllergens;
+        allergens=builder.allergens;
+        price=builder.price;
+	}
+
+	public String getName() {
         return this.name;
     }
 
@@ -42,9 +64,9 @@ public class FoodItem {
     public static FoodItem fromDocument(Document document) {
         if (document.containsKey("allergens")) {
             ArrayList<String> alg = document.get("allergens", ArrayList.class);
-            return new FoodItem(document.get("name", String.class), alg.toArray(new String[0]), document.get("price", Double.class));
+            return new FoodItem.Builder<>().name(document.get("name", String.class)).allergens(alg.toArray(new String[0])).price(document.get("price", Double.class)).build();
         } else {
-            return new FoodItem(document.get("name", String.class), document.get("price", Double.class));
+            return new FoodItem.Builder<>().name(document.get("name", String.class)).price(document.get("price", Double.class)).build();
         }
         
     }
