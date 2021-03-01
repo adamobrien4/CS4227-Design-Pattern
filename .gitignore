@@ -27,3 +27,12 @@ hs_err_pid*
 .classpath
 
 bash.exe.stackdump
+
+
+# Other Files
+CS4227 Design Pattern Project.iml
+
+/out
+.idea/*
+
+.idea/

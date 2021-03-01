@@ -92,12 +92,12 @@ public class SignupController {
         //BasicDBObject whereQuery = new BasicDBObject()
 
 
-        var whereQuery = new BasicDBObject();
+        BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("email", email);
         System.out.println("I am running when the database is being queried");
 
 
-        Document d = db.getDB().getCollection("users").find(whereQuery).first();
+        Document d = (Document) db.getDB().getCollection("users").find(whereQuery).first();
         System.out.println("I am running after d.getdb()");
 
         System.out.println("I am running before the else if statements");
