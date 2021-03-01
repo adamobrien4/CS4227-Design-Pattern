@@ -12,6 +12,7 @@ public class Customer implements User {
     private String password;
     @BsonProperty(value = "address")
     private String address;
+    @BsonProperty(value = "type")
     private static final String TYPE = "customer";
 
     public Customer() {

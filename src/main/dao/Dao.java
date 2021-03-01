@@ -4,9 +4,6 @@ public interface Dao<T> {
     // Select by Id
     T get(String id);
 
-    // Select all
-    T[] getAll();
-
     // Insert
     boolean insert(T t);
 

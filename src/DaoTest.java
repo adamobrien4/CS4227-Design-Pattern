@@ -1,5 +1,6 @@
 import main.dao.CustomerDaoImpl;
 import main.data_layer.DatabaseRepository;
+import main.entities.Customer;
 
 public class DaoTest {
     public static void main(String[] args) {
@@ -7,6 +8,8 @@ public class DaoTest {
 
         CustomerDaoImpl customerDaoImpl = new CustomerDaoImpl();
 
-        customerDaoImpl.get("5fd3e7bd3ba9fcd30da1b5f1");
+        Customer c = customerDaoImpl.get("603d4a73c495bf5da092f88a");
+
+        customerDaoImpl.delete(c);
     }
 }

@@ -13,7 +13,6 @@ import com.mongodb.client.model.Updates;
 import main.entities.*;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.ClassModel;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 
@@ -45,11 +44,8 @@ public class DatabaseRepository {
 
         System.out.println("Setting up DB");
 
-        ClassModel<Customer> customerClassModel = ClassModel.builder(Customer.class).enableDiscriminator(false).build();
-
         ConnectionString connectionString = new ConnectionString("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
-        //CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().register(customerClassModel).build());
+        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
         MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionString).codecRegistry(codecRegistry).build();
 
@@ -87,7 +83,7 @@ public class DatabaseRepository {
         System.out.println("Inserting Order");
 
         db.getCollection("orders").insertOne(order.toDocument());
-        System.out.println("Inserted Order Docment");
+        System.out.println("Inserted Order Document");
     }
 
     public Discount verifyDiscountCode(String code) {
