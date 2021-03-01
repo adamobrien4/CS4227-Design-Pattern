@@ -1,27 +1,33 @@
 package main.data_layer;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.ConnectionString;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 
 import main.entities.*;
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.ClassModel;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class DatabaseRepository {
 
     private static MongoClient mongoClient;
-    private static MongoDatabase database;
+    private static MongoDatabase db;
     private static boolean isSetup = false;
 
     public DatabaseRepository() {
@@ -39,22 +45,31 @@ public class DatabaseRepository {
 
         System.out.println("Setting up DB");
 
-        MongoClientURI uri = new MongoClientURI(
-                "mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
+        ClassModel<Customer> customerClassModel = ClassModel.builder(Customer.class).enableDiscriminator(false).build();
+
+        ConnectionString connectionString = new ConnectionString("mongodb+srv://cs4125_user:P3anutButt3r@sandbox.51cvt.mongodb.net/cs4125?retryWrites=true&w=majority");
+        //CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
+        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().register(customerClassModel).build());
+        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
+        MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionString).codecRegistry(codecRegistry).build();
+
 
         try {
-            mongoClient = new MongoClient(uri);
-            database = mongoClient.getDatabase("cs4125");
-            isSetup = true;
+            mongoClient = MongoClients.create(clientSettings);
+            db = mongoClient.getDatabase("cs4125");
         } catch (Exception e) {
             System.out.println("Unable to connect to MongoDB");
-            System.exit(0);
+            System.out.println(e.toString());
+            System.exit(1);
         }
-
     }
 
     public static MongoDatabase getDB() {
-        return database;
+        return db;
+    }
+
+    public static MongoCollection getCollection(String collectionName, Class c) {
+        return db.getCollection(collectionName, c);
     }
 
     public Document getUserByEmailAndPwd(String email, String password) {
@@ -63,15 +78,15 @@ public class DatabaseRepository {
         whereQuery.put("email", email);
         whereQuery.put("password", password);
         System.out.println("here is the email and password being queried\t" + email+password);
-        System.out.println("this is what get userByEmailAndPWD is returning\t" + database.getCollection("users").find(whereQuery).first());
+        System.out.println("this is what get userByEmailAndPWD is returning\t" + db.getCollection("users").find(whereQuery).first());
 
-        return database.getCollection("users").find(whereQuery).first();
+        return db.getCollection("users").find(whereQuery).first();
     }
 
     public void insertOrder(Order order) {
         System.out.println("Inserting Order");
 
-        database.getCollection("orders").insertOne(order.toDocument());
+        db.getCollection("orders").insertOne(order.toDocument());
         System.out.println("Inserted Order Docment");
     }
 
@@ -79,7 +94,7 @@ public class DatabaseRepository {
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("code", code);
 
-        Document doc = database.getCollection("discounts").find(whereQuery).first();
+        Document doc = db.getCollection("discounts").find(whereQuery).first();
 
         if (doc == null) {
             return null;
@@ -104,7 +119,7 @@ public class DatabaseRepository {
     
     public FindIterable<Document> getOrders(String x) {
         BasicDBObject whereQuery = new BasicDBObject();
-        MongoCollection<Document> collection = database.getCollection("orders");
+        MongoCollection<Document> collection = db.getCollection("orders");
         whereQuery.put("status", x);
         FindIterable<Document> cursor = collection.find(whereQuery);
         return cursor;
@@ -112,7 +127,7 @@ public class DatabaseRepository {
     }
        public static Document getCust(ObjectId x) {
         BasicDBObject whereQuery = new BasicDBObject();
-        MongoCollection<Document> collection = database.getCollection("users");
+        MongoCollection<Document> collection = db.getCollection("users");
         whereQuery.put("_id", x);
         Document cursor = collection.find(whereQuery).first();
         return cursor;
@@ -120,7 +135,7 @@ public class DatabaseRepository {
     }
     public Document getRest(ObjectId x) {
         BasicDBObject whereQuery = new BasicDBObject();
-        MongoCollection<Document> collection = database.getCollection("restaurants");
+        MongoCollection<Document> collection = db.getCollection("restaurants");
         whereQuery.put("_id", x);
         Document cursor = collection.find(whereQuery).first();
         return cursor;
@@ -129,7 +144,7 @@ public class DatabaseRepository {
 
     public void completeOrder(ObjectId x){
         BasicDBObject whereQuery =new BasicDBObject();
-        MongoCollection <Document> collection= database.getCollection("orders");
+        MongoCollection <Document> collection= db.getCollection("orders");
         whereQuery.put("_id",x);
         collection.updateOne(whereQuery, Updates.set("status","completed"));
 
@@ -137,7 +152,7 @@ public class DatabaseRepository {
     
     public void acceptOrder(ObjectId y) {
         BasicDBObject whereQuery =new BasicDBObject();
-        MongoCollection <Document> collection= database.getCollection("orders");
+        MongoCollection <Document> collection= db.getCollection("orders");
         whereQuery.put("_id",y);
         collection.updateOne(whereQuery, Updates.set("status","pending"));
 	}
@@ -165,7 +180,7 @@ public class DatabaseRepository {
     }
 
     public void createRestaurant(Restaurant restaurant, ObjectId id) {
-        MongoCollection<Document> restaurantCollection = database.getCollection("restaurants");
+        MongoCollection<Document> restaurantCollection = db.getCollection("restaurants");
 
         Menu menu = restaurant.getMenu();
         Document menuDocument = createMenuDocument(menu);
@@ -180,7 +195,7 @@ public class DatabaseRepository {
     }
 
     public void createRestaurantAccount(RestaurantOwner restaurantOwner) {
-        MongoCollection<Document> usersCollection = database.getCollection("users");
+        MongoCollection<Document> usersCollection = db.getCollection("users");
 
         Document userDocument = new Document();
         userDocument.append("email",restaurantOwner.getEmail())
@@ -191,10 +206,6 @@ public class DatabaseRepository {
 
         System.out.println("account has been created");
     }
-
-
-
-
 
 
     public boolean close() {
