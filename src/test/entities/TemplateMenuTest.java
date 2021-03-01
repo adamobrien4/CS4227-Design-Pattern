@@ -18,14 +18,14 @@ public class TemplateMenuTest {
         String[] allergens1 = {"gluten","nuts"};
         String[] allergens2 = {"soya","milk"};
 
-        FoodItem item1 = new FoodItem("cheese",allergens1,4.50);
-        FoodItem item2 = new FoodItem("burger",allergens2,7.50);
-        FoodItem item3 = new FoodItem("ham",allergens2,5.50);
-        FoodItem item4 = new FoodItem("salad",allergens1,4.50);
-        FoodItem item5 = new FoodItem("ice cream",allergens1,4.50);
-        FoodItem item6 = new FoodItem("cherry",allergens2,1.50);
-        FoodItem item7 = new FoodItem("milk",allergens1,1.50);
-        FoodItem item8 = new FoodItem("coffee",allergens2,1.20);
+        FoodItem item1 = new FoodItem.Builder<>().name("cheese").allergens(allergens1).price(4.50).build();
+        FoodItem item2 = new FoodItem.Builder<>().name("Burger").allergens(allergens1).price(7.50).build();
+        FoodItem item3 = new FoodItem.Builder<>().name("ham").allergens(allergens2).price(5.50).build();
+        FoodItem item4 = new FoodItem.Builder<>().name("salad").allergens(allergens1).price(4.50).build();
+        FoodItem item5 = new FoodItem.Builder<>().name("ice cream").allergens(allergens1).price(4.50).build();
+        FoodItem item6 = new FoodItem.Builder<>().name("cherry").allergens(allergens2).price(1.50).build();
+        FoodItem item7 = new FoodItem.Builder<>().name("milk").allergens(allergens2).price(1.50).build();
+        FoodItem item8 = new FoodItem.Builder<>().name("coffee").allergens(allergens2).price(1.20).build();
 
         ArrayList<FoodItem> listOfMainCoursesItems = new ArrayList<>();
         listOfMainCoursesItems.add(item1);

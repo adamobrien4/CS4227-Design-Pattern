@@ -2,6 +2,7 @@ package main.presentation_layer.create_order;
 
 import main.entities.FoodItem;
 import main.entities.Order;
+import main.entities.Order.*;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
 import main.Globals;
@@ -205,10 +206,10 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order(basketTotal, discount.getCode(), discountValue, deliveryCost,
-                    orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).Food(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
+                    
         } else {
-            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).Food(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
         }
 
         db.insertOrder(order);

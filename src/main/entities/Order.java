@@ -28,47 +28,103 @@ public class Order {
     private boolean IsCompleted;
     public static List PendingOrders;
 
-    public Order(ObjectId id,String[] food, String address){
-        this.id=id;
-        this.driver=null;
-        this.IsCompleted=false;
-        PendingOrders.add(id);
-        this.Food=food;
+    public static class Builder <T extends Builder<T>>{
+    private ObjectId id;
+    private ObjectId driver;
+    private ObjectId restaurant;
+    private String status;
+    private String address;
+
+    private double totalCost;
+    private double foodCost;
+    private double deliveryCost;
+
+    private String discountCode;
+    private double discountAmount;
+    private String[] Food;
+    private String[] orderItems;
+
+    private boolean IsCompleted;
+    public static List PendingOrders;
+
+    public Builder(){}
+
+    public T id(ObjectId val){
+        id=val;
+        return (T)this;
+    }
+    public T driver(ObjectId val){
+        driver=val;
+        return (T)this;
+    }
+    public T restaurant(ObjectId val){
+        restaurant=val;
+        return (T)this;
+    }
+    public T status (String val){
+        status=val;
+        return (T)this;
+    }
+    public T address(String val){
+        status=val;
+        return (T)this;
+    }
+    public T totalCost(double val){
+        totalCost=val;
+        return (T)this;
+    }
+    public T foodCost(double val){
+        foodCost=val;
+        return (T)this;
+    }
+    public T deliveryCost(double val){
+        deliveryCost=val;
+        return (T)this;
+    }
+    public T discountCode(String val){
+        discountCode=val;
+        return (T)this;
+    }
+    public T discountAmount(double val){
+        discountAmount=val;
+        return (T)this;
+    }
+    public T Food(String[] val){
+        Food=val;
+        return (T)this;
+    }
+    public T orderItems(String[] val){
+        orderItems=val;
+        return (T)this;
+    }
+    public Order build(){
+        return new Order(this);
+    }
+    }
+    public Order(Builder<?> builder){
+        id=builder.id;
+        Food=builder.Food;
+        orderItems=builder.orderItems;
+        discountAmount=builder.discountAmount;
+        discountCode=builder.discountCode;
+        deliveryCost=builder.deliveryCost;
+        foodCost=builder.foodCost;
+        totalCost=builder.totalCost;
+        address=builder.address;
+        status=builder.status;
+        restaurant=builder.restaurant;
+        driver=builder.driver;
     }
     public ObjectId getId() {
         return id;
     }
 
-    public Order(double totalCost, double deliveryCost, String[] orderItems, String address) {
-        this.totalCost = totalCost;
-        this.deliveryCost = deliveryCost;
-        this.orderItems = orderItems;
-        this.address = address;
-    }
 
-    public Order(double totalCost, String discountCode, double discountAmount, double deliveryCost, String[] orderItems, String address) {
-        this.totalCost = totalCost;
-        this.discountCode = discountCode;
-        this.discountAmount = discountAmount;
-        this.deliveryCost = deliveryCost;
-        this.orderItems = orderItems;
-        this.address = address;
-    }
 
     public void setIsCompleted() {
         this.IsCompleted = true;
     }
 
-    public void setDriver(ObjectId driver){
-        for (int i=0; i<PendingOrders.size();i++){
-            if(PendingOrders.get(i)==id){
-                PendingOrders.remove(i);
-                this.driver=driver;
-                break;
-            }
-        }
-        System.out.println("Failed to assign Driver");
-    }
 
     public Document toDocument() {
         Customer loggedInUser = (Customer)Globals.getLoggedInUser();
@@ -87,6 +143,9 @@ public class Order {
     
         return doc;
     }
+	public void setDriver(ObjectId id) {
+        driver=id;
+	}
 
 }
 
