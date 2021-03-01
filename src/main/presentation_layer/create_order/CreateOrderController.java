@@ -206,12 +206,13 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).Food(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
+            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
                     
         } else {
-            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).Food(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
+            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
         }
-
+      System.out.println(order.toString());
+        
         db.insertOrder(order);
 
         PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);

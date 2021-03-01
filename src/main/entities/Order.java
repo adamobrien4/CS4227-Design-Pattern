@@ -42,7 +42,7 @@ public class Order {
     private String discountCode;
     private double discountAmount;
     private String[] Food;
-    private String[] orderItems;
+    private String[] orderItems ;
 
     private boolean IsCompleted;
     public static List PendingOrders;
@@ -125,7 +125,10 @@ public class Order {
         this.IsCompleted = true;
     }
 
-
+    @Override
+    public String toString(){
+        return "OrderID: "+id+"\n"+"Food: "+Food+"\n"+"orderItems: "+orderItems+"\n"+"discountAmount: "+discountAmount+"\n"+"DiscountCode: "+discountCode+"\n"+"deliveryCost: "+deliveryCost+"\n"+"Food Cost: "+foodCost+"\n"+"TotalCost: "+totalCost+"\n"+"Address: "+address+"\n"+"Status: "+status+"\n"+"Restaurant: "+restaurant+"\n"+"Driver: "+driver;
+    }
     public Document toDocument() {
         Customer loggedInUser = (Customer)Globals.getLoggedInUser();
         Document doc = new Document("customer_id", loggedInUser.getId())
