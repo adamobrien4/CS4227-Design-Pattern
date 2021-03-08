@@ -5,6 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 public class Customer implements User {
+    @BsonProperty(value = "_id")
     private ObjectId id;
     @BsonProperty(value = "email")
     private String email;
