@@ -1,9 +1,7 @@
-package main.entities;
+package main.entities.users;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
-import java.util.Objects;
 
 public class RestaurantOwner implements User {
     private ObjectId id;

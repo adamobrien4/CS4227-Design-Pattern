@@ -1,4 +1,4 @@
-package main.entities;
+package main.entities.users;
 
 public interface User {
 

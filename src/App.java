@@ -1,8 +1,6 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.Globals;
 import main.data_layer.DatabaseRepository;
-import main.entities.User;
 import main.presentation_layer.PresentationLoader;
 
 import java.io.IOException;

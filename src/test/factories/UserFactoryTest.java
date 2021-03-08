@@ -2,7 +2,7 @@ package test.factories;
 
 import org.junit.*;
 
-import main.entities.User;
+import main.entities.users.User;
 import main.factories.UserFactory;
 
 import static org.junit.Assert.*;

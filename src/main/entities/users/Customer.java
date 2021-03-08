@@ -1,4 +1,4 @@
-package main.entities;
+package main.entities.users;
 
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -37,10 +37,6 @@ public class Customer implements User {
         return "ID: " + id + "\nEmail: " + email + "\nAddress: " + address;
     }
 
-    public static Customer fromDocument(Document document) {
-        return new Customer(document.getObjectId("_id"), document.getString("email"), document.getString("password"), document.getString("address"));
-    }
-
     public ObjectId getId() {
         return this.id;
     }
@@ -73,13 +69,5 @@ public class Customer implements User {
 
     public String getType() {
         return Customer.TYPE;
-    }
-
-    // TODO: Remove in future
-    public Document toDocument() {
-        Document doc = new Document("email", this.email)
-                .append("password", this.password);
-
-        return doc;
     }
 }

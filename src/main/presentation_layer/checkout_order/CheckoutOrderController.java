@@ -1,7 +1,5 @@
 package main.presentation_layer.checkout_order;
 
-import javax.print.attribute.standard.PresentationDirection;
-
 import com.mongodb.BasicDBObject;
 
 import org.bson.Document;
@@ -12,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
-import main.entities.Customer;
+import main.entities.users.Customer;
 import main.presentation_layer.PresentationLoader;
 
 public class CheckoutOrderController {

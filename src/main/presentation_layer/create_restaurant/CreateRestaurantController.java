@@ -6,20 +6,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.data_layer.DatabaseRepository;
 import main.entities.Menu;
 import main.entities.Restaurant;
-import main.entities.RestaurantOwner;
+import main.entities.users.RestaurantOwner;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javafx.stage.Stage;
 
 public class CreateRestaurantController {
 

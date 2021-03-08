@@ -1,18 +1,18 @@
-package main.entities;
+package main.entities.users;
 
 import java.util.List;
 
+import main.entities.Order;
 import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 public class Driver implements User {
-    
-    private static final String TYPE = "driver";
-    
     private ObjectId id;
     private String email;
     private String password;
     private List driverOrders;
+    private static final String TYPE = "driver";
     
     public Driver(ObjectId id, String email, String password){
         this.id=id;
@@ -28,10 +28,6 @@ public class Driver implements User {
     @Override
     public String getType() {
         return Driver.TYPE;
-    }
-
-    public static Driver fromDocument(Document document) {
-        return new Driver(document.getObjectId("_id"), document.getString("email"), document.getString("password"));
     }
     
     public void AcceptOrder(Order order){

@@ -7,23 +7,18 @@ import main.presentation_layer.PresentationLoader;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
-import main.entities.Customer;
+import main.entities.users.Customer;
 import main.entities.Discount;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
-
-import org.bson.Document;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class HttpService {
-    private final static HttpClient client = HttpClient.newHttpClient();
+    private static final HttpClient client = HttpClient.newHttpClient();
 
     private HttpService(){}
 
@@ -37,11 +37,22 @@ public class HttpService {
         return handleResponse(request);
     }
 
+    public static String delete(String uri) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .DELETE()
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json")
+                .build();
+
+        return handleResponse(request);
+    }
+
     private static String handleResponse(HttpRequest request) {
         try {
             HttpResponse<String> response = HttpService.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-            if( response.statusCode() == 200){
+            if( response.statusCode() == 200 && response.body().length() > 0){
                 return response.body();
             } else {
                 System.out.println("API request returned with an error");

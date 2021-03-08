@@ -1,5 +1,6 @@
 package main.entities;
 
+import main.entities.users.Customer;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
