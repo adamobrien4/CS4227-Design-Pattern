@@ -4,7 +4,7 @@ import main.entities.FoodItem;
 import main.entities.Order;
 import main.entities.Order.*;
 import main.entities.Restaurant;
-import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.Presentation.*;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
@@ -185,7 +185,14 @@ public class CreateOrderController {
 
     @FXML
     private void handleGoBackButton(ActionEvent evt) {
-        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+        //browse restaurat
+
+        try {
+            UseRemote.browserestaurants();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         evt.consume();
     }
 
@@ -214,8 +221,12 @@ public class CreateOrderController {
       System.out.println(order.toString());
         
         db.insertOrder(order);
-
-        PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
+        // checkout
+        try {
+            UseRemote.checkout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         evt.consume();
     }
 

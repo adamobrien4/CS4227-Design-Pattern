@@ -1,6 +1,6 @@
 package main.presentation_layer.checkout_order;
 
-import javax.print.attribute.standard.PresentationDirection;
+import java.io.IOException;
 
 import com.mongodb.BasicDBObject;
 
@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.Customer;
-import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.Presentation.*;
 
 public class CheckoutOrderController {
     
@@ -25,7 +25,6 @@ public class CheckoutOrderController {
     private TextField checkout_card_owner;
     @FXML
     private TextField checkout_cvv;
-
     @FXML
     private void handlePayNow(ActionEvent evt) {
         System.out.println("Checking out");
@@ -70,7 +69,11 @@ public class CheckoutOrderController {
         //To update single Document  
         DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
 
-        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+        try {
+            UseRemote.browserestaurants();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         evt.consume();
     }

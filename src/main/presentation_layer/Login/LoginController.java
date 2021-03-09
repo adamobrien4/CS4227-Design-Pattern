@@ -2,7 +2,7 @@ package main.presentation_layer.login;
 
 import main.data_layer.*;
 import main.services.LoginService;
-import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.Presentation.*;
 import main.presentation_layer.browse_restaurants.*;
 
 import com.mongodb.DBRef;
@@ -81,15 +81,28 @@ public class LoginController {
 
             switch (Globals.getLoggedInUser().getType()) {
                 case User.CUSTOMER:
-                    PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+                try {
+                    UseRemote.browserestaurants();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                     break;
                 case User.DRIVER:
-                    PresentationLoader.getInstance().display(PresentationLoader.DELIVERY_DRIVER);
+                try {
+                    UseRemote.driver();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                };
                     break;
                 case User.RESTAURANT_OWNER:
                     break;
                 default:
-                    PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
+                //login
+                try {
+                    UseRemote.login();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                     break;
             }
             event.consume();
@@ -99,7 +112,11 @@ public class LoginController {
     public void handleSignup(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
 
-        PresentationLoader.getInstance().display(PresentationLoader.SIGNUP);
+        try {
+            UseRemote.signup();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         event.consume();
 

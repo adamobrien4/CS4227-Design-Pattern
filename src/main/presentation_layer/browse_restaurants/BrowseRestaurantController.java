@@ -1,5 +1,6 @@
 package main.presentation_layer.browse_restaurants;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.mongodb.client.FindIterable;
@@ -15,12 +16,11 @@ import javafx.scene.text.Text;
 import main.Globals;
 import main.data_layer.DatabaseRepository;
 import main.entities.Restaurant;
-import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.Presentation.*;
 
 public class BrowseRestaurantController {
     @FXML
     private AnchorPane restaurant_list_anchor_pane;
-
     ArrayList<Restaurant> restaurants;
     DatabaseRepository db;
 
@@ -33,7 +33,12 @@ public class BrowseRestaurantController {
 
             Globals.setRestaurant(restaurants.get(btnId));
 
-            PresentationLoader.getInstance().display(PresentationLoader.CREATE_ORDER);
+            // create order
+            try {
+                UseRemote.createorder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             evt.consume();
         }
@@ -49,7 +54,7 @@ public class BrowseRestaurantController {
 
         // Read restaurants from Database
         db = new DatabaseRepository();
-        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
+        FindIterable<Document> restDocs = DatabaseRepository.getDB().getCollection("restaurants").find();
 
         for(Document r : restDocs) {
             restaurants.add( Restaurant.fromDocument(r) );

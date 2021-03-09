@@ -2,7 +2,7 @@ package main.presentation_layer.Signup;
 
 import main.data_layer.DatabaseRepository;
 import main.entities.User;
-import main.presentation_layer.PresentationLoader;
+import main.presentation_layer.Presentation.*;
 import main.services.SignupService;
 import main.data_layer.*;
 
@@ -60,7 +60,7 @@ public class SignupController {
     private Label FXsignupmessageField;
 
     DatabaseRepository db;
-
+    UseRemote ur;
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
         
@@ -131,7 +131,11 @@ public class SignupController {
         
 
         if (signupSuccess) {
-            PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
+            try {
+                ur.login();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             msg.setText("Error signing up user");
         }
