@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import main.Globals;
 import main.entities.users.Customer;
+import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;
 
@@ -24,7 +25,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
     }
 
     @Override
-    public boolean insert(Customer customer) {
+    public boolean insert(Customer customer) throws APIException {
         String response = null;
         try {
             response = HttpService.post(Globals.APPLICATION_API_URL + "/add", POJOMapper.getMapper().writeValueAsString(customer));
@@ -32,14 +33,17 @@ public class CustomerDaoImpl implements Dao<Customer> {
             e.printStackTrace();
         }
 
-        assert response != null;
-        return response.equals("Customer Added");
+        if(response == "Customer Added") {
+            return true;
+        } else {
+            throw new APIException(response);
+        }
     }
 
     @Override
-    public boolean update(Customer customer) {
+    public Customer update(Customer customer) {
         // TODO: Implement functionality for editing Customer
-        return false;
+        return null;
     }
 
     @Override

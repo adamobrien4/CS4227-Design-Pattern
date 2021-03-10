@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
 import main.entities.users.Customer;
 import main.presentation_layer.PresentationLoader;
 
@@ -64,9 +63,10 @@ public class CheckoutOrderController {
 
         Document update = new Document();
         update.append("$set", setData);
-        
+
+        // TODO: Update checked out order
         //To update single Document  
-        DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
+//        DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
 
         PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
 

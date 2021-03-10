@@ -1,7 +1,8 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.data_layer.DatabaseRepository;
+import main.Globals;
 import main.presentation_layer.PresentationLoader;
+import main.services.HttpService;
 
 import java.io.IOException;
 
@@ -19,9 +20,16 @@ public class App extends Application {
 
     public static void main(String[] args) {
 
-        DatabaseRepository.setup();
+        // Check that the API is available
+        String resp = HttpService.get(Globals.APPLICATION_API_URL + "/ping");
 
-        launch();
+        if(resp != null && resp.equals("\"API Available\"")) {
+            launch();
+        } else {
+            System.out.println(resp);
+            System.out.println("Cannot connect to API, is the API available?");
+            System.exit(1);
+        }
     }
 
 }

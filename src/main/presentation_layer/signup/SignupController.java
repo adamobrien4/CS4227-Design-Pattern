@@ -1,16 +1,12 @@
-package main.presentation_layer.Signup;
+package main.presentation_layer.signup;
 
-import main.data_layer.DatabaseRepository;
-import main.entities.users.User;
+import main.entities.users.Customer;
 import main.presentation_layer.PresentationLoader;
 import main.services.SignupService;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import com.mongodb.BasicDBObject;
-import org.bson.Document;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,8 +47,6 @@ public class SignupController {
     @FXML
     private Label FXsignupmessageField;
 
-    DatabaseRepository db;
-
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
         
@@ -77,22 +71,14 @@ public class SignupController {
         String address = FXAddressField.getText();
         String confirmPassword = FXconfirmpasswordField.getText();
 
-        Label msg = (Label)FXsignupmessageField;
+        event.consume();
+
+        Label msg = FXsignupmessageField;
         msg.setTextFill(Color.RED);
         msg.setBackground(new Background(
-            new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));        
-        //BasicDBObject whereQuery = new BasicDBObject()
+            new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
 
-
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("email", email);
-        System.out.println("I am running when the database is being queried");
-
-
-        Document d = (Document) db.getDB().getCollection("users").find(whereQuery).first();
-        System.out.println("I am running after d.getdb()");
-
-        System.out.println("I am running before the else if statements");
+        // Signup Form Validation
         if (email.isEmpty()){
             msg.setText("Email is empty");
             return;
@@ -103,24 +89,25 @@ public class SignupController {
             msg.setText("Password is empty");
             return;
         } else if(confirmPassword.isEmpty()) {
-            msg.setText("Confrirm Password is empty");
+            msg.setText("Confirm Password is empty");
             return;
         } else if(!password.equals(confirmPassword)) {
             msg.setText("Password Mismatch");
             return;
-        } else if(d != null) {
-            msg.setText("That email is already in use");
+        }
+
+
+        SignupService signupService = new SignupService();
+        boolean signupSuccess = false;
+
+        try{
+            signupSuccess = signupService.signupUser(new Customer(email, password, address));
+        } catch (Exception ex) {
+            msg.setText(ex.getMessage());
             return;
         }
-        SignupService signupService = new SignupService();
-
-        System.out.println("This Ran BEFORE Signup.success results are:\t");
-
-        boolean signupSuccess = signupService.signupUser(db, email, password, User.CUSTOMER);
 
         System.out.println("This Ran after Signup.success results are:\t" + signupSuccess);
-
-        
 
         if (signupSuccess) {
             PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
@@ -150,9 +137,6 @@ public class SignupController {
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-
-        db = new DatabaseRepository();
-
     }
 
 }

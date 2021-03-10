@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
 
@@ -22,7 +21,6 @@ public class BrowseRestaurantController {
     private AnchorPane restaurant_list_anchor_pane;
 
     ArrayList<Restaurant> restaurants;
-    DatabaseRepository db;
 
     @FXML
     EventHandler<ActionEvent> handleBrowseRestaurant = new EventHandler<ActionEvent>() {
@@ -47,13 +45,14 @@ public class BrowseRestaurantController {
         
         restaurant_list_anchor_pane.getChildren().clear();
 
+        // TODO: Implement get restaurants
         // Read restaurants from Database
-        db = new DatabaseRepository();
-        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
-
-        for(Document r : restDocs) {
-            restaurants.add( Restaurant.fromDocument(r) );
-        }
+//        db = new DatabaseRepository();
+//        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
+//
+//        for(Document r : restDocs) {
+//            restaurants.add( Restaurant.fromDocument(r) );
+//        }
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
 

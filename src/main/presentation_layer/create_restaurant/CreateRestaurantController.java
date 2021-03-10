@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.data_layer.DatabaseRepository;
 import main.entities.Menu;
 import main.entities.Restaurant;
 import main.entities.users.RestaurantOwner;
@@ -65,10 +64,11 @@ public class CreateRestaurantController {
             // Restaurant account and restaurant itself will have same id
             ObjectId restaurantObjectID = new ObjectId();
             RestaurantOwner restaurantOwner = new RestaurantOwner(restaurantObjectID, restaurantObjectID, email, password);
-            DatabaseRepository.setup();
-            DatabaseRepository dr = new DatabaseRepository();
-            // Adds the restaurant owner's account to the DB
-            dr.createRestaurantAccount(restaurantOwner);
+
+            // TODO: Add restaurant to Database
+//            DatabaseRepository dr = new DatabaseRepository();
+//            // Adds the restaurant owner's account to the DB
+//            dr.createRestaurantAccount(restaurantOwner);
 
             // a default pre populated menu
             Menu sampleMenu = new Menu();
@@ -76,7 +76,7 @@ public class CreateRestaurantController {
 
             // Adds the restaurant Object to the DB
 
-            dr.createRestaurant(restaurant, restaurantObjectID);
+            // dr.createRestaurant(restaurant, restaurantObjectID);
             messageTxt.setText("A restaurant has been created");
             messageTxt.setVisible(true);
         }

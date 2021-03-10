@@ -5,7 +5,6 @@ import main.entities.Order;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
 import main.entities.BasketItem;
 import main.entities.users.Customer;
 import main.entities.Discount;
@@ -61,8 +60,6 @@ public class CreateOrderController {
     private URL location;
     @FXML
     private ResourceBundle resources;
-
-    DatabaseRepository db;
 
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
@@ -165,13 +162,14 @@ public class CreateOrderController {
     private void handleApplyDiscount(ActionEvent evt) {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
-        Discount d = db.verifyDiscountCode(discount_code_entry_field.getText());
+        // TODO: Get dicsount from database
+        // Discount d = db.verifyDiscountCode(discount_code_entry_field.getText());
 
-        if (d == null) {
-            System.out.println("Discount code is invalid");
-        } else {
-            discount = d;
-        }
+//        if (d == null) {
+//            System.out.println("Discount code is invalid");
+//        } else {
+//            discount = d;
+//        }
 
         evt.consume();
         updateBasket();
@@ -206,7 +204,8 @@ public class CreateOrderController {
             order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
         }
 
-        db.insertOrder(order);
+        // TODO: Insert order into database
+        // db.insertOrder(order);
 
         PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
         evt.consume();
@@ -216,8 +215,6 @@ public class CreateOrderController {
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-
-        db = new DatabaseRepository();
 
         Restaurant r = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();

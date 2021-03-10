@@ -4,7 +4,6 @@ import main.services.LoginService;
 import main.presentation_layer.PresentationLoader;
 
 import main.Globals;
-import main.data_layer.DatabaseRepository;
 import main.entities.users.User;
 
 import java.io.IOException;
@@ -32,7 +31,6 @@ public class LoginController {
     @FXML
     private Label FXmessageField;
 
-    DatabaseRepository db;
     LoginService loginService;
 
     @FXML
@@ -48,6 +46,7 @@ public class LoginController {
         System.out.println("email is " + email);
         System.out.println("password is " + password);
 
+        // Attempt to login user
         loginService.verifyLogin(email, password);
 
         if (Globals.getLoggedInUser() == null) {
@@ -55,26 +54,26 @@ public class LoginController {
             FXmessageField.setBackground(
                     new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
             FXmessageField.setText("Invalid login details");
-
-        } else {
-
-            System.out.println("User is loggged in");
-
-            switch (Globals.getLoggedInUser().getType()) {
-                case User.CUSTOMER:
-                    PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
-                    break;
-                case User.DRIVER:
-                    PresentationLoader.getInstance().display(PresentationLoader.DELIVERY_DRIVER);
-                    break;
-                case User.RESTAURANT_OWNER:
-                    break;
-                default:
-                    PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
-                    break;
-            }
-            event.consume();
+            return;
         }
+
+        System.out.println("User is loggged in");
+
+        switch (Globals.getLoggedInUser().getType()) {
+            case User.CUSTOMER:
+                PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+                break;
+            case User.DRIVER:
+                PresentationLoader.getInstance().display(PresentationLoader.DELIVERY_DRIVER);
+                break;
+            case User.RESTAURANT_OWNER:
+                // TODO: Direct restaurant owner to resaurant management screen
+                break;
+            default:
+                PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
+                break;
+        }
+        event.consume();
     }
 
     public void handleSignup(ActionEvent event) throws IOException {
@@ -83,16 +82,13 @@ public class LoginController {
         PresentationLoader.getInstance().display(PresentationLoader.SIGNUP);
 
         event.consume();
-
     }
 
     @FXML
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-        db = new DatabaseRepository();
-
-        loginService = new LoginService(db);
+        loginService = new LoginService();
     }
 
 }

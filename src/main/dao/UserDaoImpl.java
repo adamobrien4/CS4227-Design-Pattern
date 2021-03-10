@@ -11,6 +11,7 @@ import main.services.HttpService;
 import main.services.POJOMapper;
 import main.utils.PasswordUtils;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 
 public class UserDaoImpl {
@@ -36,6 +37,12 @@ public class UserDaoImpl {
             e.printStackTrace();
             return null;
         }
+
+        if(user == null) {
+            return null;
+        }
+
+        System.out.println(user.toString());
 
         TypeReference tr = null;
 
