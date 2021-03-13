@@ -71,8 +71,9 @@ public class CreateRestaurantController {
 //            dr.createRestaurantAccount(restaurantOwner);
 
             // a default pre populated menu
-            Menu sampleMenu = new Menu();
-            Restaurant restaurant = new Restaurant(restaurantObjectID, restaurantName, sampleMenu, restaurantGenre);
+            // TODO: Implement new Menu for the created restaurant - do it in API instead of here
+            // Menu sampleMenu = new Menu();
+            Restaurant restaurant = new Restaurant(restaurantObjectID, restaurantName, new ObjectId(), restaurantGenre);
 
             // Adds the restaurant Object to the DB
 

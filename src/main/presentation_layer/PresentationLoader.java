@@ -73,9 +73,9 @@ public class PresentationLoader {
                     root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
                     break;
                 case CREATE_ORDER:
-                    root = FXMLLoader.load(CreateOrderController.class.getResource("CreateOrder.fxml"));
                     prefWidth = 1000.0;
                     prefHeight = 800.0;
+                    root = FXMLLoader.load(CreateOrderController.class.getResource("CreateOrder.fxml"));
                     break;
                 case CHECKOUT_ORDER:
                     root = FXMLLoader.load(CheckoutOrderController.class.getResource("CheckoutOrder.fxml"));
@@ -88,7 +88,8 @@ public class PresentationLoader {
                 default:
                     break;
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
             System.out.println("Could not load screen");
             System.exit(0);
         }

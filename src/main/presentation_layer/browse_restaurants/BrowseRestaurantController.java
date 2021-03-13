@@ -2,9 +2,7 @@ package main.presentation_layer.browse_restaurants;
 
 import java.util.ArrayList;
 
-import com.mongodb.client.FindIterable;
-
-import org.bson.Document;
+import main.entities.users.RestaurantDaoImpl;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,11 +13,14 @@ import javafx.scene.text.Text;
 import main.Globals;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
+import org.bson.types.ObjectId;
+
 
 public class BrowseRestaurantController {
     @FXML
     private AnchorPane restaurant_list_anchor_pane;
 
+    private RestaurantDaoImpl restaurantDao;
     ArrayList<Restaurant> restaurants;
 
     @FXML
@@ -39,20 +40,28 @@ public class BrowseRestaurantController {
 
     @FXML
     public void initialize() {
-        System.out.println("Initialising Checkout Screen");
+        System.out.println("Initialising Restaurant Listings");
 
+        System.out.println("Clearing restaurants array");
         restaurants = new ArrayList<Restaurant>();
-        
-        restaurant_list_anchor_pane.getChildren().clear();
+        System.out.println("Cleared");
 
-        // TODO: Implement get restaurants
-        // Read restaurants from Database
-//        db = new DatabaseRepository();
-//        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
-//
-//        for(Document r : restDocs) {
-//            restaurants.add( Restaurant.fromDocument(r) );
-//        }
+        System.out.println("Clearing pane");
+        restaurant_list_anchor_pane.getChildren().clear();
+        System.out.println("Cleared");
+
+        // Get all restaurants from DB
+        System.out.println("getting All");
+
+
+        restaurants = restaurantDao.getAll();
+
+
+
+        restaurants.add(new Restaurant(new ObjectId(), "Name", new ObjectId(), "Genre"));
+
+        System.out.println("getAll REsp:");
+        System.out.println(restaurants);
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
 

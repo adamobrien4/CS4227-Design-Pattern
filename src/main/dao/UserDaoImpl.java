@@ -7,14 +7,22 @@ import main.entities.users.Customer;
 import main.entities.users.Driver;
 import main.entities.users.RestaurantOwner;
 import main.entities.users.User;
+import main.factories.UserFactory;
 import main.services.HttpService;
 import main.services.POJOMapper;
 import main.utils.PasswordUtils;
 
-import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UserDaoImpl {
+
+    private UserFactory userFactory;
+
+    public UserDaoImpl() {
+        this.userFactory = new UserFactory();
+    }
+
     public User getByEmailAndPassword(String email, String password) {
         HashMap<String, String> request = new HashMap<>();
         request.put("email", email);
@@ -31,8 +39,13 @@ public class UserDaoImpl {
 
         User user = null;
 
+        System.out.println(response);
+
         try {
-            user = POJOMapper.getMapper().readValue(response, new TypeReference<User>(){});
+            // Get type of user
+            Map<String, String> userMap = POJOMapper.getMapper().readValue(response, Map.class);
+
+            user = userFactory.createUser(userMap);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -42,30 +55,6 @@ public class UserDaoImpl {
             return null;
         }
 
-        System.out.println(user.toString());
-
-        TypeReference tr = null;
-
-        switch(user.getType()) {
-            case User.CUSTOMER:
-                tr = new TypeReference<Customer>() {};
-                break;
-            case User.DRIVER:
-                tr = new TypeReference<Driver>() {};
-                break;
-            case User.RESTAURANT_OWNER:
-                tr = new TypeReference<RestaurantOwner>() {};
-                break;
-            default:
-                System.out.println("Unknown user login type");
-                return null;
-        }
-
-        try {
-            return (User) POJOMapper.getMapper().readValue(response, tr);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return user;
     }
 }

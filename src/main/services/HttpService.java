@@ -16,6 +16,7 @@ public class HttpService {
     }
 
     public static String get(String uri) {
+        System.out.println("Getting URI: " + uri);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .header("accept", "application/json")

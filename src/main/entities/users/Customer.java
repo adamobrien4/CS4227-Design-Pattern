@@ -1,19 +1,22 @@
 package main.entities.users;
 
-import org.bson.Document;
-import org.bson.codecs.pojo.annotations.BsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.bson.types.ObjectId;
 
+@JsonPropertyOrder({"_id", "email", "password", "address"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer implements User {
-    @BsonProperty(value = "_id")
+    @JsonProperty("_id")
     private ObjectId id;
-    @BsonProperty(value = "email")
+    @JsonProperty("email")
     private String email;
-    @BsonProperty(value = "password")
+    @JsonProperty("password")
     private String password;
-    @BsonProperty(value = "address")
+    @JsonProperty("address")
     private String address;
-    @BsonProperty(value = "type")
+    @JsonProperty("type")
     private static final String TYPE = "customer";
 
     public Customer() {

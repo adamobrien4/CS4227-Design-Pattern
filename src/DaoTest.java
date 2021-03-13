@@ -1,14 +1,9 @@
-import main.dao.CustomerDaoImpl;
-import main.dao.UserDaoImpl;
-import main.entities.users.Customer;
-import main.entities.users.User;
+import main.entities.users.RestaurantDaoImpl;
 
 public class DaoTest {
     public static void main(String[] args) {
-        UserDaoImpl userDaoImpl = new UserDaoImpl();
+        RestaurantDaoImpl restaurantDao = new RestaurantDaoImpl();
 
-        User user = userDaoImpl.getByEmailAndPassword("Adam@gmail.com", "a");
-
-        System.out.println(user.toString());
+        restaurantDao.getAll();
     }
 }

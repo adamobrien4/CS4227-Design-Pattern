@@ -1,13 +1,26 @@
 package main.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+@JsonPropertyOrder({"_id", "restaurant", "email", "password"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RestaurantOwner implements User {
+    @JsonProperty("_id")
     private ObjectId id;
+
+    @JsonProperty("restaurant")
     private ObjectId restaurantId;
+
+    @JsonProperty("email")
     private String email;
+
+    @JsonProperty("password")
     private String password;
+
     private static final String TYPE = "restaurantOwner";
 
     public RestaurantOwner(ObjectId id, ObjectId restaurantId, String email, String password) {

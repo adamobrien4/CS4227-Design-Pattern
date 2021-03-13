@@ -47,9 +47,7 @@ public class LoginController {
         System.out.println("password is " + password);
 
         // Attempt to login user
-        loginService.verifyLogin(email, password);
-
-        if (Globals.getLoggedInUser() == null) {
+        if (!loginService.verifyLogin(email, password)) {
             FXmessageField.setTextFill(Color.RED);
             FXmessageField.setBackground(
                     new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));

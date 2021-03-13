@@ -2,15 +2,26 @@ package main.entities.users;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import main.entities.Order;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
+@JsonPropertyOrder({"_id", "email", "password"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Driver implements User {
+    @JsonProperty("_id")
     private ObjectId id;
+
+    @JsonProperty("email")
     private String email;
+
+    @JsonProperty("password")
     private String password;
+
     private List driverOrders;
     private static final String TYPE = "driver";
     

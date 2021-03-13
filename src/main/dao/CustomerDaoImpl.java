@@ -8,13 +8,11 @@ import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;
 
-import static com.mongodb.client.model.Filters.eq;
-
 public class CustomerDaoImpl implements Dao<Customer> {
 
     @Override
     public Customer get(String id) {
-        String response = HttpService.get(Globals.APPLICATION_API_URL + id);
+        String response = HttpService.get(Globals.APPLICATION_API_URL + "/user/" + id);
 
         try {
             return POJOMapper.getMapper().readValue(response, new TypeReference<Customer>() {});
@@ -28,7 +26,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
     public boolean insert(Customer customer) throws APIException {
         String response = null;
         try {
-            response = HttpService.post(Globals.APPLICATION_API_URL + "/add", POJOMapper.getMapper().writeValueAsString(customer));
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/user/add", POJOMapper.getMapper().writeValueAsString(customer));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -48,7 +46,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
 
     @Override
     public boolean delete(Customer customer) {
-        String response = HttpService.get(Globals.APPLICATION_API_URL + "/" + customer.getId());
+        String response = HttpService.get(Globals.APPLICATION_API_URL + "/user/" + customer.getId());
 
         return response.equals("Customer Deleted");
     }

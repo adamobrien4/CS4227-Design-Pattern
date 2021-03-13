@@ -219,11 +219,13 @@ public class CreateOrderController {
         Restaurant r = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
+        // TODO: Load restaurant menu from API
+
         // Testing
-        mainCourses = r.getMenu().getListOfMainCoursesItems();
-        desserts = r.getMenu().getListOfDessertItems();
-        sides = r.getMenu().getListOfSideItems();
-        drinks = r.getMenu().getListOfDrinksItems();
+//        mainCourses = r.getMenu().getListOfMainCoursesItems();
+//        desserts = r.getMenu().getListOfDessertItems();
+//        sides = r.getMenu().getListOfSideItems();
+//        drinks = r.getMenu().getListOfDrinksItems();
 
         // Main Course
         if (mainCourses.isEmpty()) {

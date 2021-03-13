@@ -17,15 +17,13 @@ public class LoginService {
         // Get user details from DB to see if the user exists
         // If the user exists assign it to Globals.loggedInUser
 
-        User user = userDaoImpl.getByEmailAndPassword(email, PasswordUtils.encryptPassword(password));
+        User user = userDaoImpl.getByEmailAndPassword(email, password);
 
         if(user != null) {
             // Found user in database
             Globals.setLoggedInUser(user);
             return true;
-        } else {
-            // User not found in database
-            return false;
         }
+        return false;
     }
 }
