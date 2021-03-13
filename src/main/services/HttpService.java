@@ -53,6 +53,8 @@ public class HttpService {
         try {
             HttpResponse<String> response = HttpService.getClient().send(request, HttpResponse.BodyHandlers.ofString());
 
+            System.out.println(response);
+
             if( response.statusCode() == 200 && response.body().length() > 0){
                 return response.body();
             } else {

@@ -1,4 +1,4 @@
-import main.entities.users.RestaurantDaoImpl;
+import main.dao.RestaurantDaoImpl;
 
 public class DaoTest {
     public static void main(String[] args) {

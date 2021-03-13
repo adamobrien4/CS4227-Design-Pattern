@@ -2,7 +2,7 @@ package main.presentation_layer.browse_restaurants;
 
 import java.util.ArrayList;
 
-import main.entities.users.RestaurantDaoImpl;
+import main.dao.RestaurantDaoImpl;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,6 +41,7 @@ public class BrowseRestaurantController {
     @FXML
     public void initialize() {
         System.out.println("Initialising Restaurant Listings");
+        restaurantDao = new RestaurantDaoImpl();
 
         System.out.println("Clearing restaurants array");
         restaurants = new ArrayList<Restaurant>();
@@ -53,15 +54,7 @@ public class BrowseRestaurantController {
         // Get all restaurants from DB
         System.out.println("getting All");
 
-
         restaurants = restaurantDao.getAll();
-
-
-
-        restaurants.add(new Restaurant(new ObjectId(), "Name", new ObjectId(), "Genre"));
-
-        System.out.println("getAll REsp:");
-        System.out.println(restaurants);
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
 
