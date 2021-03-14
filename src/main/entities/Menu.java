@@ -1,20 +1,42 @@
 package main.entities;
 
 import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import main.entities.FoodItem.*;
+import org.bson.types.ObjectId;
 
 // Menu has a Composition('Has a') relationship with Restaurant
+@JsonPropertyOrder({"_id", "name", "main_course", "dessert", "sides", "drinks", "restaurant"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Menu {
+    @JsonProperty("_id")
+    public ObjectId id;
+    @JsonProperty("name")
     public String menuName;
+    @JsonProperty("main_course")
     private ArrayList<FoodItem> listOfMainCoursesItems;
+    @JsonProperty("dessert")
     private ArrayList<FoodItem> listOfDessertItems;
+    @JsonProperty("sides")
     private ArrayList<FoodItem> listOfSideItems;
+    @JsonProperty("drinks")
     private ArrayList<FoodItem> listOfDrinkItems;
+    @JsonProperty("restaurant")
+    private ObjectId restaurant;
 
     // Default menu
     public Menu() {
-        String[] allergens1 = { "gluten", "nuts" };
-        String[] allergens2 = { "soya", "milk" };
+        ArrayList<String> allergens1 = new ArrayList<>();
+        ArrayList<String> allergens2 = new ArrayList<>();
+
+        allergens1.add("gluten");
+        allergens1.add("nuts");
+
+        allergens2.add("soya");
+        allergens2.add("milk");
 
         FoodItem item1 = new FoodItem.Builder<>().name("cheese").allergens(allergens1).price(4.50).build();
         FoodItem item2 = new FoodItem.Builder<>().name("Burger").allergens(allergens1).price(7.50).build();
@@ -80,5 +102,7 @@ public class Menu {
         return listOfDrinkItems;
     }
 
-
+    public String toString() {
+        return this.getMenuName();
+    }
 }

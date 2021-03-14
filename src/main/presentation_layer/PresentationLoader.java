@@ -89,7 +89,7 @@ public class PresentationLoader {
                     break;
             }
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            ex.printStackTrace();
             System.out.println("Could not load screen");
             System.exit(0);
         }

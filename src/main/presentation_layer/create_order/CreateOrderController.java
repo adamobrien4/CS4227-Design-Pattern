@@ -1,13 +1,12 @@
 package main.presentation_layer.create_order;
 
-import main.entities.FoodItem;
-import main.entities.Order;
-import main.entities.Restaurant;
+import main.dao.MenuDaoImpl;
+import main.dao.OrderDaoImpl;
+import main.entities.*;
+import main.exceptions.APIException;
 import main.presentation_layer.PresentationLoader;
 import main.Globals;
-import main.entities.BasketItem;
 import main.entities.users.Customer;
-import main.entities.Discount;
 
 import java.net.URL;
 import java.util.*;
@@ -61,6 +60,9 @@ public class CreateOrderController {
     @FXML
     private ResourceBundle resources;
 
+    private MenuDaoImpl menuDao;
+    private OrderDaoImpl orderDao;
+
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
     ArrayList<FoodItem> sides;
@@ -70,6 +72,7 @@ public class CreateOrderController {
 
     double basketTotal = 0.00;
     double deliveryCost = 4.00;
+    double basketSubTotalPrice = 0.00;
     Discount discount = null;
     double discountValue = 0;
     Customer loggedInCustomer;
@@ -184,6 +187,7 @@ public class CreateOrderController {
     @FXML
     private void handleCheckout(ActionEvent evt) {
         System.out.println("Handling Checkout");
+        evt.consume();
 
         Order order;
 
@@ -198,17 +202,20 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order(basketTotal, discount.getCode(), discountValue, deliveryCost,
-                    orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, discount.getCode(), discountValue,
+                    orderItems, loggedInCustomer.getAddress());
         } else {
-            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, orderItems, loggedInCustomer.getAddress());
         }
 
-        // TODO: Insert order into database
-        // db.insertOrder(order);
+        order.setRestaurant(Globals.getRestaurant().getId());
 
-        PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
-        evt.consume();
+        try {
+            orderDao.insert(order);
+            PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -216,16 +223,19 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
+        menuDao = new MenuDaoImpl();
+        orderDao = new OrderDaoImpl();
+
         Restaurant r = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
-        // TODO: Load restaurant menu from API
+        Menu restaurantMenu = menuDao.get(r.getMenu().toString());
 
         // Testing
-//        mainCourses = r.getMenu().getListOfMainCoursesItems();
-//        desserts = r.getMenu().getListOfDessertItems();
-//        sides = r.getMenu().getListOfSideItems();
-//        drinks = r.getMenu().getListOfDrinksItems();
+        mainCourses = restaurantMenu.getListOfMainCoursesItems();
+        desserts = restaurantMenu.getListOfDessertItems();
+        sides = restaurantMenu.getListOfSideItems();
+        drinks = restaurantMenu.getListOfDrinksItems();
 
         // Main Course
         if (mainCourses.isEmpty()) {
@@ -318,7 +328,7 @@ public class CreateOrderController {
         children.clear();
 
         int index = 0;
-        double basketSubTotalPrice = 0.0;
+        basketSubTotalPrice = 0.0;
 
         BasketItem[] items = basket.values().toArray(new BasketItem[basket.size()]);
         String[] keys = basket.keySet().toArray(new String[basket.size()]);
@@ -388,7 +398,7 @@ public class CreateOrderController {
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountValue));
 
-        double basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
+        basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
     }

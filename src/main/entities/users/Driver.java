@@ -45,9 +45,11 @@ public class Driver implements User {
         order.setDriver(id);
         driverOrders.add(order);
     }
+
+    // TODO: Fix this / remove the way the orders are complted
     
     public Order CompleteOrder(Order order){
-        order.setIsCompleted();
+        //order.setIsCompleted();
         return order;
     }
     

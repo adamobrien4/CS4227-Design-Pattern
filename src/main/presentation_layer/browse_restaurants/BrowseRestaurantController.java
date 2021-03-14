@@ -43,17 +43,11 @@ public class BrowseRestaurantController {
         System.out.println("Initialising Restaurant Listings");
         restaurantDao = new RestaurantDaoImpl();
 
-        System.out.println("Clearing restaurants array");
         restaurants = new ArrayList<Restaurant>();
-        System.out.println("Cleared");
 
-        System.out.println("Clearing pane");
         restaurant_list_anchor_pane.getChildren().clear();
-        System.out.println("Cleared");
 
         // Get all restaurants from DB
-        System.out.println("getting All");
-
         restaurants = restaurantDao.getAll();
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);

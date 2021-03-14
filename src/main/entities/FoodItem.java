@@ -2,18 +2,24 @@ package main.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.bson.Document;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.types.ObjectId;
 
 public class FoodItem {
+    @JsonProperty("_id")
+    private ObjectId id;
+    @JsonProperty("name")
     private String name;
-    private boolean hasAllergens = false;
-    private String[] allergens;
+    @JsonProperty("allergens")
+    private ArrayList<String> allergens = new ArrayList<>();
+    @JsonProperty("price")
     private double price;
+
+    public FoodItem(){}
 
     public static class Builder<T extends Builder<T>> {
         private String name;
-        private boolean hasAllergens = false;
-        private String[] allergens;
+        private ArrayList<String> allergens;
         private double price;
 
         public Builder(){}
@@ -22,8 +28,7 @@ public class FoodItem {
             name = val;
             return (T) this;
         }
-        public T allergens(String[] val) {
-            hasAllergens=true;
+        public T allergens(ArrayList<String> val) {
             allergens = val;
             return (T) this;
         }
@@ -40,7 +45,6 @@ public class FoodItem {
     }
     public FoodItem(Builder<?> builder) {
         name=builder.name;
-        hasAllergens=builder.hasAllergens;
         allergens=builder.allergens;
         price=builder.price;
 	}
@@ -49,7 +53,7 @@ public class FoodItem {
         return this.name;
     }
 
-    public String[] getAllergens() {
+    public ArrayList<String> getAllergens() {
         return this.allergens;
     }
 
@@ -58,25 +62,15 @@ public class FoodItem {
     }
 
     public boolean hasAllergens() {
-        return hasAllergens;
-    }
-
-    public static FoodItem fromDocument(Document document) {
-        if (document.containsKey("allergens")) {
-            ArrayList<String> alg = document.get("allergens", ArrayList.class);
-            return new FoodItem.Builder<>().name(document.get("name", String.class)).allergens(alg.toArray(new String[0])).price(document.get("price", Double.class)).build();
-        } else {
-            return new FoodItem.Builder<>().name(document.get("name", String.class)).price(document.get("price", Double.class)).build();
-        }
-        
+        return allergens.isEmpty();
     }
 
     @Override
     public String toString() {
         return "FoodItem{" +
                 "name='" + name + '\'' +
-                ", hasAllergens=" + hasAllergens +
-                ", allergens=" + Arrays.toString(allergens) +
+                ", hasAllergens=" + this.hasAllergens() +
+                ", allergens=" + allergens.toString() +
                 ", price=" + price +
                 '}';
     }
