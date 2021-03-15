@@ -3,6 +3,7 @@ package main.entities.serialisers;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import main.Globals;
 import main.entities.Order;
 import main.services.POJOMapper;
 
@@ -22,6 +23,7 @@ public class CustomOrderSerialiser extends StdSerializer<Order> {
     public void serialize(Order order, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
         try {
             jsonGenerator.writeStartObject();
+            jsonGenerator.writeStringField("customer", Globals.getLoggedInUser().getId().toString());
             jsonGenerator.writeStringField("driver", order.getDriver().toHexString());
             jsonGenerator.writeStringField("restaurant", order.getRestaurant().toHexString());
             jsonGenerator.writeStringField("status", order.getStatus());

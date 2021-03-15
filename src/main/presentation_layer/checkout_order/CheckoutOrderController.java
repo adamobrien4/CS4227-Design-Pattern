@@ -2,6 +2,7 @@ package main.presentation_layer.checkout_order;
 
 import com.mongodb.BasicDBObject;
 
+import main.dao.OrderDaoImpl;
 import org.bson.Document;
 
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import javafx.scene.control.TextField;
 import main.Globals;
 import main.entities.users.Customer;
 import main.presentation_layer.PresentationLoader;
+
+import java.util.HashMap;
 
 public class CheckoutOrderController {
     
@@ -22,6 +25,8 @@ public class CheckoutOrderController {
     private TextField checkout_card_owner;
     @FXML
     private TextField checkout_cvv;
+
+    private OrderDaoImpl orderDao;
 
     @FXML
     private void handlePayNow(ActionEvent evt) {
@@ -47,26 +52,11 @@ public class CheckoutOrderController {
             return;
         }
 
-        new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed").showAndWait();
-
-        Customer c = (Customer)Globals.getLoggedInUser();
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("customer_id", c.getId());
-        whereQuery.put("status", "pending_payment");
-
-        Document query = new Document();
-        query.append("customer_id", c.getId());
-        query.append("status", "pending_payment");
-
-        Document setData = new Document();
-        setData.append("status", "pending");
-
-        Document update = new Document();
-        update.append("$set", setData);
 
         // TODO: Update checked out order
-        //To update single Document  
-//        DatabaseRepository.getDB().getCollection("orders").updateOne(query, update);
+        if( orderDao.payForOrder() ){
+            new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed").showAndWait();
+        }
 
         PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
 
@@ -76,6 +66,7 @@ public class CheckoutOrderController {
     @FXML
     public void initialize() {
         System.out.println("Initialising Checkout Screen");
+        orderDao = new OrderDaoImpl();
     }
 
 }

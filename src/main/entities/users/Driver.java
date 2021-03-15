@@ -37,6 +37,11 @@ public class Driver implements User {
     }
 
     @Override
+    public ObjectId getId() {
+        return id;
+    }
+
+    @Override
     public String getType() {
         return Driver.TYPE;
     }
