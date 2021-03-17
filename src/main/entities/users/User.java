@@ -1,4 +1,6 @@
-package main.entities;
+package main.entities.users;
+
+import org.bson.types.ObjectId;
 
 public interface User {
 
@@ -11,6 +13,9 @@ public interface User {
 
     // Returns the curent users email
     public String getEmail();
+
+    // Returns the users id
+    public ObjectId getId();
 
     // Returns the current users type
     public String getType();

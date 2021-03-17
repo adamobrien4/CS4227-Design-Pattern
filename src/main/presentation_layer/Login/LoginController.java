@@ -1,41 +1,22 @@
 package main.presentation_layer.login;
 
-import main.data_layer.*;
 import main.services.LoginService;
-import main.presentation_layer.Presentation.*;
 import main.presentation_layer.browse_restaurants.*;
-
-import com.mongodb.DBRef;
-
-import org.bson.Document;
-import org.bson.types.ObjectId;
+import main.presentation_layer.Presentation.*;
 
 import main.Globals;
-import main.data_layer.DatabaseRepository;
-import main.entities.Customer;
-import main.entities.Driver;
-import main.entities.RestaurantOwner;
-import main.entities.User;
-import main.utils.PasswordUtils;
+import main.entities.users.User;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
-import main.data_layer.DatabaseRepository;
-
-import main.utils.PasswordUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.*;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 public class LoginController {
     @FXML
@@ -51,7 +32,6 @@ public class LoginController {
     @FXML
     private Label FXmessageField;
 
-    DatabaseRepository db;
     LoginService loginService;
 
     @FXML
@@ -67,15 +47,16 @@ public class LoginController {
         System.out.println("email is " + email);
         System.out.println("password is " + password);
 
-        loginService.verifyLogin(email, password);
-
-        if (Globals.getLoggedInUser() == null) {
+        // Attempt to login user
+        if (!loginService.verifyLogin(email, password)) {
             FXmessageField.setTextFill(Color.RED);
             FXmessageField.setBackground(
                     new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
             FXmessageField.setText("Invalid login details");
+            return;
+        }
 
-        } else {
+        System.out.println("User is loggged in");
 
             System.out.println("User is loggged in");
 
@@ -107,6 +88,7 @@ public class LoginController {
             }
             event.consume();
         }
+        event.consume();
     }
 
     public void handleSignup(ActionEvent event) throws IOException {
@@ -119,16 +101,13 @@ public class LoginController {
         }
 
         event.consume();
-
     }
 
     @FXML
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-        db = new DatabaseRepository();
-
-        loginService = new LoginService(db);
+        loginService = new LoginService();
     }
 
 }

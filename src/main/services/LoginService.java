@@ -1,20 +1,15 @@
 package main.services;
 
-import org.bson.Document;
-
+import main.dao.UserDaoImpl;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
-import main.entities.User;
-import main.factories.UserFactory;
+import main.entities.users.User;
 import main.utils.PasswordUtils;
 
 public class LoginService {
-    DatabaseRepository dbRepo;
-    UserFactory userFactory;
+    UserDaoImpl userDaoImpl;
 
-    public LoginService(DatabaseRepository dbRepo) {
-        this.dbRepo = dbRepo;
-        this.userFactory = new UserFactory();
+    public LoginService() {
+        this.userDaoImpl = new UserDaoImpl();
     }
 
     public boolean verifyLogin(String email, String password) {
@@ -22,24 +17,13 @@ public class LoginService {
         // Get user details from DB to see if the user exists
         // If the user exists assign it to Globals.loggedInUser
 
-        
-        String ePwd = PasswordUtils.encryptPassword(password);
-        System.out.println(ePwd);
+        User user = userDaoImpl.getByEmailAndPassword(email, password);
 
-        Document userDoc = dbRepo.getUserByEmailAndPwd(email, ePwd);
-
-        if(userDoc == null) {
-            System.out.println("User is null");
-            return false;
-        } else {
-            System.out.println(userDoc);
+        if(user != null) {
+            // Found user in database
+            Globals.setLoggedInUser(user);
+            return true;
         }
-
-        User usr = userFactory.createUser(userDoc);
-        
-        System.out.println(usr);
-        Globals.setLoggedInUser(usr);
-
-        return true;
+        return false;
     }
 }

@@ -1,15 +1,13 @@
 package main;
 
 import main.entities.Restaurant;
-import main.entities.User;
+import main.entities.users.User;
 
 public class Globals {
     private static User loggedInUser;
     private static Restaurant restaurant;
 
-    private Globals(){
-        
-    }
+    private Globals(){}
 
     public static User getLoggedInUser() {
         return loggedInUser;
@@ -24,4 +22,7 @@ public class Globals {
     public static void setRestaurant(Restaurant r) {
         Globals.restaurant = r;
     }
+
+    // public static final String APPLICATION_API_URL = "https://cs4227-design-pattern-api.herokuapp.com";
+    public static final String APPLICATION_API_URL = "http://localhost:5000";
 }

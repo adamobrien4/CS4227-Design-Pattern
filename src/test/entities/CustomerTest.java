@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-import main.entities.Customer;
+import main.entities.users.Customer;
 
 public class CustomerTest {
   @Test

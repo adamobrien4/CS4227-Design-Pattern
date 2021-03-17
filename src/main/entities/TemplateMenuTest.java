@@ -5,8 +5,14 @@ import java.util.ArrayList;
 public class TemplateMenuTest {
     public static void main(String[] args) {
 
-        String[] allergens1 = {"gluten","nuts"};
-        String[] allergens2 = {"soya","milk"};
+        ArrayList<String> allergens1 = new ArrayList<>();
+        ArrayList<String> allergens2 = new ArrayList<>();
+
+        allergens1.add("gluten");
+        allergens1.add("nuts");
+
+        allergens2.add("soya");
+        allergens2.add("milk");
 
         FoodItem item1 = new FoodItem.Builder<>().name("cheese").allergens(allergens1).price(4.50).build();
         FoodItem item2 = new FoodItem.Builder<>().name("Burger").allergens(allergens1).price(7.50).build();
