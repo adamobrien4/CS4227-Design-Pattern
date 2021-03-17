@@ -1,8 +1,10 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import main.Globals;
+import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
 import main.dao.RestaurantDaoImpl;
+import main.entities.Discount;
 import main.entities.Menu;
 import main.entities.Order;
 import main.entities.users.Customer;
@@ -14,19 +16,10 @@ import java.util.HashMap;
 
 public class DaoTest {
     public static void main(String[] args) {
-        Customer c = new Customer(new ObjectId(), "email@gmail.com", "Password", "Oak St.");
+        DiscountDaoImpl discountDao = new DiscountDaoImpl();
 
-        Globals.setLoggedInUser(c);
+        Discount d = discountDao.get("DEL");
 
-        HashMap<String, String> details = new HashMap<>();
-
-        details.put("email", Globals.getLoggedInUser().getEmail());
-        details.put("restaurant", new ObjectId().toString());
-
-        try {
-            System.out.println(POJOMapper.getMapper().writeValueAsString(details));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        System.out.println(d.toString());
     }
 }

@@ -1,5 +1,6 @@
 package main.presentation_layer.create_order;
 
+import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
 import main.entities.*;
@@ -62,6 +63,7 @@ public class CreateOrderController {
 
     private MenuDaoImpl menuDao;
     private OrderDaoImpl orderDao;
+    private DiscountDaoImpl discountDao;
 
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
@@ -166,13 +168,13 @@ public class CreateOrderController {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
         // TODO: Get dicsount from database
-        // Discount d = db.verifyDiscountCode(discount_code_entry_field.getText());
+        discount = discountDao.get(discount_code_entry_field.getText());
 
-//        if (d == null) {
-//            System.out.println("Discount code is invalid");
-//        } else {
-//            discount = d;
-//        }
+        if(discount == null) {
+            // Discount does not exist
+            discount_code_entry_field.clear();
+            return;
+        }
 
         evt.consume();
         updateBasket();
@@ -225,6 +227,7 @@ public class CreateOrderController {
 
         menuDao = new MenuDaoImpl();
         orderDao = new OrderDaoImpl();
+        discountDao = new DiscountDaoImpl();
 
         Restaurant r = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
@@ -383,6 +386,7 @@ public class CreateOrderController {
                 case Discount.DELIVERY_DISCOUNT:
                     deliveryCost = deliveryCost - discount.getAmount();
                     deliveryCost = Math.max(0, deliveryCost);
+                    discountValue = discount.getAmount();
                 break;
                 default:
                 break;
