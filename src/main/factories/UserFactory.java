@@ -1,30 +1,25 @@
 package main.factories;
 
-import org.bson.Document;
+import main.entities.users.Customer;
+import main.entities.users.Driver;
+import main.entities.users.RestaurantOwner;
+import main.entities.users.User;
+import org.bson.types.ObjectId;
 
-import main.entities.Customer;
-import main.entities.Driver;
-import main.entities.RestaurantOwner;
-import main.entities.User;
+import java.util.Map;
 
 public class UserFactory {
-
-    public UserFactory(){}
-
-    public User createUser(Document userDoc) {
-        if(userDoc.getString("type") == null) {
-            return null;
-        }
-
-        switch(userDoc.getString("type")) {
+    public User createUser(Map<String, String> data) {
+        switch(data.get("type")) {
             case User.CUSTOMER:
-                return Customer.fromDocument(userDoc);
-            case User.RESTAURANT_OWNER:
-                return RestaurantOwner.fromDocument(userDoc);
+                return new Customer(new ObjectId(data.get("_id")), data.get("email"), data.get("password"), data.get("address"));
             case User.DRIVER:
-                return Driver.fromDocument(userDoc);
+                return new Driver(new ObjectId(data.get("_id")), data.get("email"), data.get("password"));
+            case User.RESTAURANT_OWNER:
+                return new RestaurantOwner(new ObjectId(data.get("_id")), new ObjectId(data.get("restaurant")), data.get("email"), data.get("password"));
+            default:
+                System.out.println("Unknown user type: " + data.get("type"));
+                return null;
         }
-
-        return null;
     }
 }

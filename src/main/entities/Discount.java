@@ -1,7 +1,4 @@
 package main.entities;
-
-import org.bson.Document;
-
 public class Discount {
     
     private double amount;
@@ -18,14 +15,12 @@ public class Discount {
         ]
     */
 
+    public Discount() {}
+
     public Discount(double amt, String cd, int typ) {
         this.amount = amt;
         this.code = cd;
         this.type = typ;
-    }
-
-    public static Discount fromDocument(Document document) {
-        return new Discount(document.getDouble("amount"), document.getString("code"), document.getInteger("type"));
     }
 
     public double getAmount() {
@@ -40,4 +35,12 @@ public class Discount {
         return this.type;
     }
 
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "amount=" + amount +
+                ", code='" + code + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

@@ -1,29 +1,23 @@
 package main.presentation_layer.create_order;
 
-import main.entities.FoodItem;
-import main.entities.Order;
-import main.entities.Restaurant;
+import main.dao.DiscountDaoImpl;
+import main.dao.MenuDaoImpl;
+import main.dao.OrderDaoImpl;
+import main.entities.*;
+import main.exceptions.APIException;
 import main.presentation_layer.PresentationLoader;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
-import main.entities.BasketItem;
-import main.entities.Customer;
-import main.entities.Discount;
+import main.entities.users.Customer;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
-
-import org.bson.Document;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -67,7 +61,9 @@ public class CreateOrderController {
     @FXML
     private ResourceBundle resources;
 
-    DatabaseRepository db;
+    private MenuDaoImpl menuDao;
+    private OrderDaoImpl orderDao;
+    private DiscountDaoImpl discountDao;
 
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
@@ -78,6 +74,7 @@ public class CreateOrderController {
 
     double basketTotal = 0.00;
     double deliveryCost = 4.00;
+    double basketSubTotalPrice = 0.00;
     Discount discount = null;
     double discountValue = 0;
     Customer loggedInCustomer;
@@ -170,12 +167,13 @@ public class CreateOrderController {
     private void handleApplyDiscount(ActionEvent evt) {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
-        Discount d = db.verifyDiscountCode(discount_code_entry_field.getText());
+        // TODO: Get dicsount from database
+        discount = discountDao.get(discount_code_entry_field.getText());
 
-        if (d == null) {
-            System.out.println("Discount code is invalid");
-        } else {
-            discount = d;
+        if(discount == null) {
+            // Discount does not exist
+            discount_code_entry_field.clear();
+            return;
         }
 
         evt.consume();
@@ -191,6 +189,7 @@ public class CreateOrderController {
     @FXML
     private void handleCheckout(ActionEvent evt) {
         System.out.println("Handling Checkout");
+        evt.consume();
 
         Order order;
 
@@ -205,16 +204,20 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order(basketTotal, discount.getCode(), discountValue, deliveryCost,
-                    orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, discount.getCode(), discountValue,
+                    orderItems, loggedInCustomer.getAddress());
         } else {
-            order = new Order(basketTotal, deliveryCost, orderItems.toArray(new String[orderItems.size()]), loggedInCustomer.getAddress());
+            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, orderItems, loggedInCustomer.getAddress());
         }
 
-        db.insertOrder(order);
+        order.setRestaurant(Globals.getRestaurant().getId());
 
-        PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
-        evt.consume();
+        try {
+            orderDao.insert(order);
+            PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -222,16 +225,20 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
-        db = new DatabaseRepository();
+        menuDao = new MenuDaoImpl();
+        orderDao = new OrderDaoImpl();
+        discountDao = new DiscountDaoImpl();
 
         Restaurant r = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
+        Menu restaurantMenu = menuDao.get(r.getMenu().toString());
+
         // Testing
-        mainCourses = r.getMenu().getListOfMainCoursesItems();
-        desserts = r.getMenu().getListOfDessertItems();
-        sides = r.getMenu().getListOfSideItems();
-        drinks = r.getMenu().getListOfDrinksItems();
+        mainCourses = restaurantMenu.getListOfMainCoursesItems();
+        desserts = restaurantMenu.getListOfDessertItems();
+        sides = restaurantMenu.getListOfSideItems();
+        drinks = restaurantMenu.getListOfDrinksItems();
 
         // Main Course
         if (mainCourses.isEmpty()) {
@@ -324,7 +331,7 @@ public class CreateOrderController {
         children.clear();
 
         int index = 0;
-        double basketSubTotalPrice = 0.0;
+        basketSubTotalPrice = 0.0;
 
         BasketItem[] items = basket.values().toArray(new BasketItem[basket.size()]);
         String[] keys = basket.keySet().toArray(new String[basket.size()]);
@@ -379,6 +386,7 @@ public class CreateOrderController {
                 case Discount.DELIVERY_DISCOUNT:
                     deliveryCost = deliveryCost - discount.getAmount();
                     deliveryCost = Math.max(0, deliveryCost);
+                    discountValue = discount.getAmount();
                 break;
                 default:
                 break;
@@ -394,7 +402,7 @@ public class CreateOrderController {
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountValue));
 
-        double basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
+        basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
     }

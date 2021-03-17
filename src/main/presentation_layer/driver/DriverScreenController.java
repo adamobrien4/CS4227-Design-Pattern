@@ -1,7 +1,6 @@
-package main.presentation_layer.Driver;
+package main.presentation_layer.driver;
 
 import javafx.fxml.FXML;
-import main.data_layer.DatabaseRepository;
 import main.presentation_layer.PresentationLoader;
 
 import java.util.ArrayList;
@@ -48,7 +47,6 @@ public class DriverScreenController {
     private ArrayList<Object> Rest;
     private ArrayList<String> unacptid;
     private ArrayList<Object> acptid;
-    DatabaseRepository db = new DatabaseRepository();
     
 
     EventHandler<ActionEvent> handleClick = new EventHandler<ActionEvent>() {
@@ -59,13 +57,15 @@ public class DriverScreenController {
             ObjectId x = new ObjectId(id.substring(5));
             if (id.substring(0, 5).equals("Order")) {
                 System.out.println("Order Completed: " + id.substring(5));
-                         db.completeOrder(x);
+                        // TODO: Mark order as complete
+                         // db.completeOrder(x);
                      }
 
                      if (id.substring(0, 5).equals("NewOr")) {
                            System.out.println("Order Accepted: " + id.substring(8));
-               
-                           db.acceptOrder(x);
+
+                           // TODO: Mark order as accepted
+                           // db.acceptOrder(x);
                        }
             evt.consume();
         }
@@ -84,27 +84,26 @@ public class DriverScreenController {
         ArrayList<String> Unaddr= new ArrayList<String>();
         ArrayList<Object> Actid=new ArrayList<Object>();
         ObjectId tempId;
-        DatabaseRepository.setup();
-        DatabaseRepository.getDB();
 
-        FindIterable<org.bson.Document> ordPending = db.getOrders("pending");
-        FindIterable<org.bson.Document> ordUnAccepted=db.getOrders("UnAccepted");
-        for (org.bson.Document doc : ordPending) {
-            price.add(doc.get("total_cost"));
-            tempId = (ObjectId) doc.get("customer_id");
-            cust.add(DatabaseRepository.getCust(tempId).get("email"));
-            tempId = (ObjectId) doc.get("restaurant_id");
-            rest.add(db.getRest(tempId).get("name"));
-            tempId=(ObjectId) doc.get("_id");
-            Actid.add(tempId);
-        }
-        
-        for (org.bson.Document doc : ordUnAccepted){
-            UnAcptId.add(doc.get("_id").toString());
-            tempId = (ObjectId) doc.get("customer_id");
-            Unaddr.add(DatabaseRepository.getCust(tempId).get("address").toString());
-            UnDelCost.add(doc.get("delivery_cost"));
-        }
+        // TODO: Get pending and unaccepted orders
+//        FindIterable<org.bson.Document> ordPending = db.getOrders("pending");
+//        FindIterable<org.bson.Document> ordUnAccepted=db.getOrders("UnAccepted");
+//        for (org.bson.Document doc : ordPending) {
+//            price.add(doc.get("total_cost"));
+//            tempId = (ObjectId) doc.get("customer_id");
+//            cust.add(DatabaseRepository.getCust(tempId).get("email"));
+//            tempId = (ObjectId) doc.get("restaurant_id");
+//            rest.add(db.getRest(tempId).get("name"));
+//            tempId=(ObjectId) doc.get("_id");
+//            Actid.add(tempId);
+//        }
+//
+//        for (org.bson.Document doc : ordUnAccepted){
+//            UnAcptId.add(doc.get("_id").toString());
+//            tempId = (ObjectId) doc.get("customer_id");
+//            Unaddr.add(DatabaseRepository.getCust(tempId).get("address").toString());
+//            UnDelCost.add(doc.get("delivery_cost"));
+//        }
         
         custSize = cust.size();
         UnAcptIdSize = UnAcptId.size();

@@ -2,9 +2,7 @@ package main.presentation_layer.browse_restaurants;
 
 import java.util.ArrayList;
 
-import com.mongodb.client.FindIterable;
-
-import org.bson.Document;
+import main.dao.RestaurantDaoImpl;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,16 +11,17 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
 import main.entities.Restaurant;
 import main.presentation_layer.PresentationLoader;
+import org.bson.types.ObjectId;
+
 
 public class BrowseRestaurantController {
     @FXML
     private AnchorPane restaurant_list_anchor_pane;
 
+    private RestaurantDaoImpl restaurantDao;
     ArrayList<Restaurant> restaurants;
-    DatabaseRepository db;
 
     @FXML
     EventHandler<ActionEvent> handleBrowseRestaurant = new EventHandler<ActionEvent>() {
@@ -41,19 +40,15 @@ public class BrowseRestaurantController {
 
     @FXML
     public void initialize() {
-        System.out.println("Initialising Checkout Screen");
+        System.out.println("Initialising Restaurant Listings");
+        restaurantDao = new RestaurantDaoImpl();
 
         restaurants = new ArrayList<Restaurant>();
-        
+
         restaurant_list_anchor_pane.getChildren().clear();
 
-        // Read restaurants from Database
-        db = new DatabaseRepository();
-        FindIterable<Document> restDocs = db.getDB().getCollection("restaurants").find();
-
-        for(Document r : restDocs) {
-            restaurants.add( Restaurant.fromDocument(r) );
-        }
+        // Get all restaurants from DB
+        restaurants = restaurantDao.getAll();
 
         restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
 

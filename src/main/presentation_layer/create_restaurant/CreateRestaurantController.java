@@ -6,20 +6,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.data_layer.DatabaseRepository;
 import main.entities.Menu;
 import main.entities.Restaurant;
-import main.entities.RestaurantOwner;
+import main.entities.users.RestaurantOwner;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javafx.stage.Stage;
 
 public class CreateRestaurantController {
 
@@ -68,18 +64,20 @@ public class CreateRestaurantController {
             // Restaurant account and restaurant itself will have same id
             ObjectId restaurantObjectID = new ObjectId();
             RestaurantOwner restaurantOwner = new RestaurantOwner(restaurantObjectID, restaurantObjectID, email, password);
-            DatabaseRepository.setup();
-            DatabaseRepository dr = new DatabaseRepository();
-            // Adds the restaurant owner's account to the DB
-            dr.createRestaurantAccount(restaurantOwner);
+
+            // TODO: Add restaurant to Database
+//            DatabaseRepository dr = new DatabaseRepository();
+//            // Adds the restaurant owner's account to the DB
+//            dr.createRestaurantAccount(restaurantOwner);
 
             // a default pre populated menu
-            Menu sampleMenu = new Menu();
-            Restaurant restaurant = new Restaurant(restaurantObjectID, restaurantName, sampleMenu, restaurantGenre);
+            // TODO: Implement new Menu for the created restaurant - do it in API instead of here
+            // Menu sampleMenu = new Menu();
+            Restaurant restaurant = new Restaurant(restaurantObjectID, restaurantName, new ObjectId(), restaurantGenre);
 
             // Adds the restaurant Object to the DB
 
-            dr.createRestaurant(restaurant, restaurantObjectID);
+            // dr.createRestaurant(restaurant, restaurantObjectID);
             messageTxt.setText("A restaurant has been created");
             messageTxt.setVisible(true);
         }
