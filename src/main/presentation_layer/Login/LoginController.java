@@ -1,8 +1,7 @@
 package main.presentation_layer.login;
 
 import main.services.LoginService;
-import main.presentation_layer.browse_restaurants.*;
-import main.presentation_layer.Presentation.*;
+import main.presentation_layer.presentation.*;
 
 import main.Globals;
 import main.entities.users.User;
@@ -58,38 +57,38 @@ public class LoginController {
 
         System.out.println("User is loggged in");
 
-            System.out.println("User is loggged in");
+        System.out.println("User is loggged in");
 
-            switch (Globals.getLoggedInUser().getType()) {
-                case User.CUSTOMER:
+        switch (Globals.getLoggedInUser().getType()) {
+            case User.CUSTOMER:
                 try {
                     UseRemote.browserestaurants();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                    break;
-                case User.DRIVER:
+                break;
+            case User.DRIVER:
                 try {
                     UseRemote.driver();
                 } catch (IOException e) {
                     e.printStackTrace();
-                };
-                    break;
-                case User.RESTAURANT_OWNER:
-                    break;
-                default:
+                }
+
+                break;
+            case User.RESTAURANT_OWNER:
+                break;
+            default:
                 //login
                 try {
                     UseRemote.login();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                    break;
-            }
-            event.consume();
+                break;
         }
         event.consume();
     }
+
 
     public void handleSignup(ActionEvent event) throws IOException {
         System.out.println("Button pressed");

@@ -13,8 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
 import main.entities.Restaurant;
-import main.presentation_layer.Presentation.*;
-import org.bson.types.ObjectId;
+import main.presentation_layer.presentation.*;
 
 
 public class BrowseRestaurantController {

@@ -4,12 +4,12 @@ import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
 import main.exceptions.APIException;
-import main.entities.Order.*;
-import main.presentation_layer.Presentation.*;
+import main.presentation_layer.presentation.*;
 import main.entities.*;
 import main.Globals;
 import main.entities.users.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -201,7 +201,7 @@ public class CreateOrderController {
 
         Order order;
 
-        ArrayList<String> orderItems = new ArrayList<String>();
+        ArrayList<String> orderItems = new ArrayList<>();
 
         for (BasketItem item : basket.values()) {
             String s = item.getName();
@@ -212,20 +212,21 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
-                    
+            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
         } else {
-            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems.toArray(new String[orderItems.size()])).address(loggedInCustomer.getAddress()).build();
+            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
         }
 
         order.setRestaurant(Globals.getRestaurant().getId());
 
         try {
             orderDao.insert(order);
-            PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
-        } catch (APIException e) {
+            UseRemote.checkout();
+        } catch (APIException | IOException e) {
             e.printStackTrace();
         }
+
+        evt.consume();
     }
 
     @FXML

@@ -35,121 +35,98 @@ public class Order {
     @JsonProperty("orderItems")
     private ArrayList<String> orderItems;
 
-    // Additional Fields TODO: Are these fields necessary
+    public static class Builder<T extends Builder<T>> {
+        private ObjectId id;
+        private ObjectId driver;
+        private ObjectId restaurant;
+        private String status;
+        private String address;
 
-    private String[] Food;
-    private boolean IsCompleted;
-    public static List PendingOrders;
+        private double totalCost;
+        private double foodCost;
+        private double deliveryCost;
 
-    public static class Builder <T extends Builder<T>>{
-    private ObjectId id;
-    private ObjectId driver;
-    private ObjectId restaurant;
-    private String status;
-    private String address;
+        private String discountCode;
+        private double discountAmount;
+        private ArrayList<String> orderItems;
 
-    private double totalCost;
-    private double foodCost;
-    private double deliveryCost;
+        public Builder() {}
 
-    private String discountCode;
-    private double discountAmount;
-    private String[] Food;
-    private String[] orderItems ;
+        public T id(ObjectId val) {
+            id = val;
+            return (T) this;
+        }
 
-    private boolean IsCompleted;
-    public static List PendingOrders;
+        public T driver(ObjectId val) {
+            driver = val;
+            return (T) this;
+        }
 
-    public Builder(){}
+        public T restaurant(ObjectId val) {
+            restaurant = val;
+            return (T) this;
+        }
 
-    public T id(ObjectId val){
-        id=val;
-        return (T)this;
+        public T status(String val) {
+            status = val;
+            return (T) this;
+        }
+
+        public T address(String val) {
+            status = val;
+            return (T) this;
+        }
+
+        public T totalCost(double val) {
+            totalCost = val;
+            return (T) this;
+        }
+
+        public T foodCost(double val) {
+            foodCost = val;
+            return (T) this;
+        }
+
+        public T deliveryCost(double val) {
+            deliveryCost = val;
+            return (T) this;
+        }
+
+        public T discountCode(String val) {
+            discountCode = val;
+            return (T) this;
+        }
+
+        public T discountAmount(double val) {
+            discountAmount = val;
+            return (T) this;
+        }
+
+        public T orderItems(ArrayList<String> val) {
+            orderItems = val;
+            return (T) this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
     }
-    public T driver(ObjectId val){
-        driver=val;
-        return (T)this;
+
+    public Order(Builder<?> builder) {
+        id = builder.id;
+        orderItems = builder.orderItems;
+        discountAmount = builder.discountAmount;
+        discountCode = builder.discountCode;
+        deliveryCost = builder.deliveryCost;
+        foodCost = builder.foodCost;
+        totalCost = builder.totalCost;
+        address = builder.address;
+        status = builder.status;
+        restaurant = builder.restaurant;
+        driver = builder.driver;
     }
-    public T restaurant(ObjectId val){
-        restaurant=val;
-        return (T)this;
-    }
-    public T status (String val){
-        status=val;
-        return (T)this;
-    }
-    public T address(String val){
-        status=val;
-        return (T)this;
-    }
-    public T totalCost(double val){
-        totalCost=val;
-        return (T)this;
-    }
-    public T foodCost(double val){
-        foodCost=val;
-        return (T)this;
-    }
-    public T deliveryCost(double val){
-        deliveryCost=val;
-        return (T)this;
-    }
-    public T discountCode(String val){
-        discountCode=val;
-        return (T)this;
-    }
-    public T discountAmount(double val){
-        discountAmount=val;
-        return (T)this;
-    }
-    public T Food(String[] val){
-        Food=val;
-        return (T)this;
-    }
-    public T orderItems(String[] val){
-        orderItems=val;
-        return (T)this;
-    }
-    public Order build(){
-        return new Order(this);
-    }
-    }
-    public Order(Builder<?> builder){
-        id=builder.id;
-        Food=builder.Food;
-        orderItems=builder.orderItems;
-        discountAmount=builder.discountAmount;
-        discountCode=builder.discountCode;
-        deliveryCost=builder.deliveryCost;
-        foodCost=builder.foodCost;
-        totalCost=builder.totalCost;
-        address=builder.address;
-        status=builder.status;
-        restaurant=builder.restaurant;
-        driver=builder.driver;
-    }
-    public ObjectId getId() {
-        return id;
-    }
+
     private Order() {}
-
-    public Order(double totalCost, double foodCost, double deliveryCost, ArrayList<String> orderItems, String address) {
-        this.totalCost = totalCost;
-        this.deliveryCost = deliveryCost;
-        this.foodCost = foodCost;
-        this.orderItems = orderItems;
-        this.address = address;
-    }
-
-    public Order(double totalCost, double foodCost, double deliveryCost, String discountCode, double discountAmount, ArrayList<String> orderItems, String address) {
-        this.totalCost = totalCost;
-        this.discountCode = discountCode;
-        this.discountAmount = discountAmount;
-        this.foodCost = foodCost;
-        this.deliveryCost = deliveryCost;
-        this.orderItems = orderItems;
-        this.address = address;
-    }
 
     public ObjectId getId() {
         return id;
@@ -166,9 +143,6 @@ public class Order {
     public void setDriver(ObjectId driver) {
         this.driver = driver;
     }
-	public void setDriver(ObjectId id) {
-        driver=id;
-	}
 
     public ObjectId getRestaurant() {
         return restaurant;
@@ -242,11 +216,6 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    // TODO: Remove
-    public void setIsCompeted() {
-        this.IsCompleted = true;
-    }
-
     @Override
     public String toString() {
         return "Order{" +
@@ -258,9 +227,6 @@ public class Order {
                 ", foodCost=" + foodCost +
                 ", deliveryCost=" + deliveryCost +
                 ", totalCost=" + totalCost +
-                ", discountCode='" + discountCode + '\'' +
-                ", discountAmount=" + discountAmount +
-                ", orderItems=" + orderItems +
                 '}';
     }
 }

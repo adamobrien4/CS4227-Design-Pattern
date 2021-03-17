@@ -1,9 +1,8 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import main.Globals;
-import main.data_layer.DatabaseRepository;
-import main.entities.User;
-import main.presentation_layer.Presentation.*;
+import main.presentation_layer.presentation.*;
+import main.services.HttpService;
 
 import java.io.IOException;
 

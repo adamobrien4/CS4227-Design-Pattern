@@ -2,20 +2,13 @@ package main.presentation_layer.checkout_order;
 
 import java.io.IOException;
 
-import com.mongodb.BasicDBObject;
-
 import main.dao.OrderDaoImpl;
-import org.bson.Document;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import main.Globals;
-import main.presentation_layer.Presentation.*;
-import main.entities.users.Customer;
-
-import java.util.HashMap;
+import main.presentation_layer.presentation.*;
 
 public class CheckoutOrderController {
     

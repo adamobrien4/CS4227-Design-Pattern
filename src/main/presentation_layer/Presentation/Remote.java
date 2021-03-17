@@ -1,4 +1,4 @@
-package main.presentation_layer.Presentation;
+package main.presentation_layer.presentation;
 
 public class Remote {
 

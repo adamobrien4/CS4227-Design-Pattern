@@ -1,8 +1,7 @@
 package main.presentation_layer.signup;
 
-import main.presentation_layer.Presentation.*;
+import main.presentation_layer.presentation.*;
 import main.entities.users.Customer;
-import main.entities.User;
 import main.services.SignupService;
 
 import java.io.IOException;

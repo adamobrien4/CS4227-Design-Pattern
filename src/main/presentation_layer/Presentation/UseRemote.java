@@ -1,8 +1,6 @@
-package main.presentation_layer.Presentation;
+package main.presentation_layer.presentation;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UseRemote {
     static PresentationLoader newDevice = (PresentationLoader) Remote.getPres();

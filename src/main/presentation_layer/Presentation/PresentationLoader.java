@@ -1,4 +1,4 @@
-package main.presentation_layer.Presentation;
+package main.presentation_layer.presentation;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
-import main.presentation_layer.Driver.DriverScreenController;
-import main.presentation_layer.Signup.SignupController;
+import main.presentation_layer.driver.DriverScreenController;
+import main.presentation_layer.signup.SignupController;
 import main.presentation_layer.login.LoginController;
 
 public class PresentationLoader implements Presentation {
@@ -43,7 +43,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(LoginController.class.getResource("LoginFX.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, 640.0, 400.0));
         stg.show();
 
     }
@@ -53,7 +53,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(SignupController.class.getResource("SignupFX.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, 640.0, 436.0));
         stg.show();
 
     }
@@ -73,7 +73,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(DriverScreenController.class.getResource("DriverScreen.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, 900.0, 600.0));
         stg.show();
     }
 
@@ -91,7 +91,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(CreateOrderController.class.getResource("CreateOrder.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, 1000.0, 800.0));
         stg.show();
     }
 }
