@@ -31,7 +31,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
             e.printStackTrace();
         }
 
-        if(response == "Customer Added") {
+        if(response.equals("\"Customer Added\"")) {
             return true;
         } else {
             throw new APIException(response);

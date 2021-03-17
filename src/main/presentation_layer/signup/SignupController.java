@@ -23,6 +23,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import main.utils.PasswordUtils;
 
 public class SignupController {
     @FXML
@@ -46,6 +47,8 @@ public class SignupController {
     private ResourceBundle resources;
     @FXML
     private Label FXsignupmessageField;
+
+    SignupService signupService;
 
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
@@ -96,13 +99,12 @@ public class SignupController {
             return;
         }
 
-
-        SignupService signupService = new SignupService();
         boolean signupSuccess = false;
 
         try{
-            signupSuccess = signupService.signupUser(new Customer(email, password, address));
+            signupSuccess = signupService.signupUser(new Customer(email, PasswordUtils.encryptPassword(password), address));
         } catch (Exception ex) {
+            ex.printStackTrace();
             msg.setText(ex.getMessage());
             return;
         }
@@ -137,6 +139,7 @@ public class SignupController {
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
+        signupService = new SignupService();
     }
 
 }
