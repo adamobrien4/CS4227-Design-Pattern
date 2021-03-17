@@ -31,12 +31,9 @@ bash.exe.stackdump
 
 # Other Files
 CS4227 Design Pattern Project.iml
+CS4227-Project.iml
 
 out/*
 .idea/*
 
 .idea/
-
-src/DanVegaTutorial.java
-
-src/Post.java
