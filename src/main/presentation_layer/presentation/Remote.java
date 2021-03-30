@@ -4,7 +4,6 @@ public class Remote {
 
     public static Presentation getPres(){
         return new PresentationLoader();
-        
     }
     
 }

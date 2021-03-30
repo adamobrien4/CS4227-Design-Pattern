@@ -1,25 +1,27 @@
 package main.framework.contexts;
 
+import main.presentation_layer.presentation.ScreenType;
+
 public class ScreenSwitchContext extends Context {
-    private String screenType;
+    private ScreenType screenType;
 
     public ScreenSwitchContext()
     {
         this(null, null);
     }
 
-    public ScreenSwitchContext(String message, String screenType)
+    public ScreenSwitchContext(String message, ScreenType screenType)
     {
         this.message = message;
         this.screenType = screenType;
     }
 
-    public String getScreenType()
+    public ScreenType getScreenType()
     {
         return screenType;
     }
 
-    public void setScreenType(String screenType)
+    public void setScreenType(ScreenType screenType)
     {
         this.screenType = screenType;
     }

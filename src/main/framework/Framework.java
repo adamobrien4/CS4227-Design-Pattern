@@ -23,8 +23,9 @@ public class Framework {
 
     public static Framework getInstance()
     {
-        if (instance == null)
+        if (instance == null) {
             instance = new Framework();
+        }
         return instance;
     }
 

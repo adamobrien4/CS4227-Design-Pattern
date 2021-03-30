@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.framework.Framework;
+import main.framework.contexts.ScreenSwitchContext;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
 import main.presentation_layer.create_order.CreateOrderController;
@@ -17,8 +19,8 @@ public class PresentationLoader implements Presentation {
 
     private static Stage stage;
     private static PresentationLoader instance = null;
-    private static double height = 600.0;
-    private static double width = 800.0;
+    private static final double HEIGHT = 600.0;
+    private static final double WIDTH = 800.0;
 
     PresentationLoader() {}
 
@@ -30,6 +32,7 @@ public class PresentationLoader implements Presentation {
     }
 
     public static void setStage(Stage stage) {
+        // Framework.getInstance().onScreenSwitch(new ScreenSwitchContext(String.format("Switching from screen '%s' to screen '%s'")));
         PresentationLoader.stage = stage;
     }
 
@@ -63,7 +66,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(CheckoutOrderController.class.getResource("CheckoutOrder.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, WIDTH, HEIGHT));
         stg.show();
 
     }
@@ -82,7 +85,7 @@ public class PresentationLoader implements Presentation {
         Stage stg = PresentationLoader.stage;
         Parent root = FXMLLoader.load(BrowseRestaurantController.class.getResource("BrowseRestaurant.fxml"));
         stg.setTitle("Delivery Eats");
-        stg.setScene(new Scene(root, width, height));
+        stg.setScene(new Scene(root, WIDTH, HEIGHT));
         stg.show();
     }
 

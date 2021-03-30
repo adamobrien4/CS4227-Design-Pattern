@@ -13,7 +13,6 @@ public class PresSignup implements PresCommand {
     @Override
     public void execute() throws IOException {
         thePresentationLoader.signup();
-
     }
     
 }

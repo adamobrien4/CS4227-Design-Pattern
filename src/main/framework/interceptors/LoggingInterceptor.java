@@ -9,7 +9,7 @@ import main.framework.contexts.ErrorContext;
 
 import java.util.logging.Level;
 
-public class LoggingInterceptor {
+public class LoggingInterceptor implements Interceptor {
     private LogAdapter logAdapter;
 
     private static LoggingInterceptor instance;
