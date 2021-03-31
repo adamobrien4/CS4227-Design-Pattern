@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
 import main.entities.Restaurant;
+import main.framework.Framework;
+import main.framework.contexts.Context;
 import main.presentation_layer.presentation.*;
 
 
@@ -31,7 +33,7 @@ public class BrowseRestaurantController {
             int btnId = Integer.parseInt(btn.getId());
 
             Globals.setRestaurant(restaurants.get(btnId));
-
+            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",restaurants.get(btnId).toString())));
             // create order
             try {
                 UseRemote.createorder();

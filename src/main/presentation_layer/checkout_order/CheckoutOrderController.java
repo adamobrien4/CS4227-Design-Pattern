@@ -3,7 +3,8 @@ package main.presentation_layer.checkout_order;
 import java.io.IOException;
 
 import main.dao.OrderDaoImpl;
-
+import main.framework.Framework;
+import main.framework.contexts.Context;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -50,6 +51,7 @@ public class CheckoutOrderController {
 
         // TODO: Update checked out order
         if( orderDao.payForOrder() ){
+            Framework.getInstance().onLogEvent(new Context(String.format("Order has Been paid for with card:\n Card Number: %s\nCard Expiry: %s\nCard Name: %s\nCVV: %s",checkout_card_number.getText(),card_expiry.getText(),checkout_card_owner.getText(),checkout_cvv.getText())));
             new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed").showAndWait();
         }
 

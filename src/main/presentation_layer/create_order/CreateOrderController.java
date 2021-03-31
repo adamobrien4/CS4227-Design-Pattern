@@ -4,6 +4,8 @@ import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
 import main.exceptions.APIException;
+import main.framework.Framework;
+import main.framework.contexts.Context;
 import main.presentation_layer.presentation.*;
 import main.entities.*;
 import main.Globals;
@@ -221,6 +223,7 @@ public class CreateOrderController {
 
         try {
             orderDao.insert(order);
+            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
             UseRemote.checkout();
         } catch (APIException | IOException e) {
             e.printStackTrace();

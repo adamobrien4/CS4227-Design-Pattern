@@ -43,6 +43,9 @@ public class Restaurant {
     public ObjectId getId() {
         return this.id;
     }
+    public String toString(){
+        return "Name: "+name+"\nGenre: "+genre;
+    }
 
 //    public static Restaurant fromDocument(Document document) {
 //
