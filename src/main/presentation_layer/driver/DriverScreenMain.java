@@ -1,4 +1,4 @@
-package main.presentation_layer.driver;
+package main.presentation_layer.Driver;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
