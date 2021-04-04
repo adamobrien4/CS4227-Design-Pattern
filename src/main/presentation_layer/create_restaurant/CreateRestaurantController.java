@@ -9,8 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.entities.Businesses.LocationTypes.FamilyRestaurant;
+import main.entities.Businesses.LocationTypes.Location;
 import main.entities.Menu;
-import main.entities.Restaurant;
 import main.entities.users.RestaurantOwner;
 import org.bson.types.ObjectId;
 
@@ -73,7 +74,7 @@ public class CreateRestaurantController {
             // a default pre populated menu
             // TODO: Implement new Menu for the created restaurant - do it in API instead of here
             // Menu sampleMenu = new Menu();
-            Restaurant restaurant = new Restaurant(restaurantObjectID, restaurantName, new ObjectId(), restaurantGenre);
+            Location restaurant = new FamilyRestaurant(restaurantObjectID, restaurantName, restaurantGenre, new ObjectId());
 
             // Adds the restaurant Object to the DB
 
