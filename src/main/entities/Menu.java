@@ -105,4 +105,7 @@ public class Menu {
     public String toString() {
         return this.getMenuName();
     }
+    public void addFoodItem(FoodItem food){
+        listOfMainCoursesItems.add(food);
+    }
 }
