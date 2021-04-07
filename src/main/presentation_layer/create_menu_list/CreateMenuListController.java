@@ -59,7 +59,7 @@ public class CreateMenuListController {
         FoodItem food= new FoodItem.Builder<>().name(name).allergens(allergens).price(price).build();
         menu.addFoodItem(food);
     }
-    public void handleEventCreate(ActionEvent event){
+    public void HandleEventCreate(ActionEvent event){
         String name =EventNamefield.getText();
         double price=0;
         try{

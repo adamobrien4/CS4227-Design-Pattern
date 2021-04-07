@@ -1,4 +1,4 @@
-package main.presentation_layer.Signup;
+package main.presentation_layer.signup;
 
 import main.presentation_layer.presentation.*;
 import main.entities.users.Customer;
