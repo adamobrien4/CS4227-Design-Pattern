@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import main.entities.EventItems;
 import main.entities.Menu;
 import main.entities.Businesses.LocationTypes.Location;
 
@@ -42,9 +43,7 @@ public abstract class Owner{
         restaurant.review();
     }
 
-    public Menu getMenu() {
-        return restaurant.getMenu();
-    }
+
     public void setMenu(ObjectId menu) {
         restaurant.setMenu(menu);
     }
@@ -79,6 +78,8 @@ public abstract class Owner{
 
     public abstract Owner fromDocument(Document document);
     public abstract String getTYPE();
+    public abstract EventItems getEventList();
+    public abstract Menu getMenu();
     
 }
 

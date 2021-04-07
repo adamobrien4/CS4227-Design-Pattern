@@ -6,5 +6,6 @@ public enum ScreenType
     SIGNUP,
     BROWSE_RESTAURANT,
     CREATE_ORDER,
-    CHECKOUT
+    CHECKOUT,
+    CREATE_MENU_LIST
 }

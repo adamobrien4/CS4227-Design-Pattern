@@ -2,11 +2,11 @@ package main.entities.Businesses.LocationTypes;
 
 import org.bson.types.ObjectId;
 
-public class FamilyRestaurant extends Location{
+public class VerifiedOnly extends Location{
 
     @Override
     public boolean customerVerification() {
-        return true;
+        return false;
     }
 
     @Override
@@ -14,7 +14,7 @@ public class FamilyRestaurant extends Location{
         // TODO Auto-generated method stub
         
     }
-    public FamilyRestaurant(ObjectId id, String name, String genre,ObjectId menu){
+    public VerifiedOnly(ObjectId id, String name, String genre,ObjectId menu){
 
         id=this.id;
         name=this.name;

@@ -25,7 +25,18 @@ public class MenuDaoImpl implements Dao<Menu> {
 
     @Override
     public boolean insert(Menu menu) throws APIException {
-        return false;
+        String response = null;
+        try {
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/menu/add", POJOMapper.getMapper().writeValueAsString(menu));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if(response.equals("\"Menu Added\"")) {
+            return true;
+        } else {
+            throw new APIException(response);
+        }
     }
 
     @Override

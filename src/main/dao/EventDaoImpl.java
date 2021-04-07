@@ -1,6 +1,8 @@
 package main.dao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import main.Globals;
 import main.entities.Event;
 import main.entities.Businesses.Owners.*;
@@ -13,9 +15,16 @@ import java.util.HashMap;
 
 public class EventDaoImpl implements Dao<Event> {
 
-
     @Override
     public Event get(String id) {
+        String response = HttpService.get(Globals.APPLICATION_API_URL + "/event/" + id);
+
+        try {
+            return POJOMapper.getMapper().readValue(response, new TypeReference<Event>() {});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 

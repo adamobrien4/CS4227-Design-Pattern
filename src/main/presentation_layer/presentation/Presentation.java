@@ -15,4 +15,6 @@ public interface Presentation{
     public void browse_restaurants() throws IOException;
 
     public void create_order() throws IOException;
+
+    public void create_menu_list() throws IOException;
 }

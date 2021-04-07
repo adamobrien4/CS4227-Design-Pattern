@@ -26,9 +26,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button id="createEvent" layoutX="253.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleEventCreate" text="Create" />
-                        <TextField layoutX="14.0" layoutY="14.0" promptText="Name" />
-                        <TextField layoutX="14.0" layoutY="55.0" promptText="Price" />
+                        <Button id="createEvent" fx:id="createEvent" layoutX="253.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleEventCreate" text="Create" />
+                        <TextField fx:id="eventName" layoutX="14.0" layoutY="14.0" promptText="Name" />
+                        <TextField fx:id="eventPrice" layoutX="14.0" layoutY="55.0" promptText="Price" />
                      </children>
                   </AnchorPane>
               </content>
@@ -38,9 +38,9 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button id="createFood" layoutX="253.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleFoodCreate" text="Create" />
-                        <TextField id="foodName" layoutX="14.0" layoutY="14.0" promptText="Name" />
-                        <TextField id="foodAlergens" layoutX="14.0" layoutY="56.0" promptText="Allergens" />
-                        <TextField id="foodPrice" layoutX="14.0" layoutY="103.0" promptText="Price" />
+                        <TextField id="foodName" fx:id="foodName" layoutX="14.0" layoutY="14.0" promptText="Name" />
+                        <TextField id="foodAlergens" fx:id="foodAlergens" layoutX="14.0" layoutY="56.0" promptText="Allergens" />
+                        <TextField id="foodPrice" fx:id="foodPrice" layoutX="14.0" layoutY="103.0" promptText="Price" />
                      </children>
                   </AnchorPane>
               </content>

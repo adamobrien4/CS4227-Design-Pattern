@@ -3,6 +3,8 @@ package main.entities.Businesses.Owners;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import main.entities.EventItems;
+import main.entities.Menu;
 import main.entities.Businesses.LocationTypes.Location;
 
 public class VenueOwner extends Owner{
@@ -20,6 +22,16 @@ public class VenueOwner extends Owner{
     @Override
     public String getTYPE() {
         return TYPE;
+    }
+
+    @Override
+    public EventItems getEventList() {
+        return restaurant.getEventList();
+    }
+
+    @Override
+    public Menu getMenu() {
+        return null;
     }
     
 }

@@ -47,7 +47,7 @@ public class OwnerMenuController {
     private void handleCreateFood(ActionEvent evt){
         Menu menu = loggedInOwner.getMenu();
         if(foodAlergens.getText().equals("")){
-            menu.addFoodItem(new FoodItem.Builder<>().name((foodName.getText())).build());
+            menu.addFoodItem(new FoodItem.Builder<>().name((foodName.getText())).price(Double.parseDouble(foodPrice.getText())).build());
         }
         else{
             
@@ -63,7 +63,8 @@ public class OwnerMenuController {
 
     @FXML
     private void handleCreateEvent(ActionEvent evt){
-        
+        EventItems eventItems = loggedInOwner.getEventList();
+        eventItems.addEventItem(new Event.Builder<>().name(eventName.getText()).price(Double.parseDouble(eventPrice.getText())).build());
         eventName.clear();
         eventPrice.clear();
         evt.consume();

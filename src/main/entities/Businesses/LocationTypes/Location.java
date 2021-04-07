@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.bson.types.ObjectId;
 
+import main.dao.EventItemsDaoImpl;
+import main.dao.MenuDaoImpl;
+import main.entities.EventItems;
 import main.entities.Menu;
 @JsonPropertyOrder({"_id", "name", "menu", "genre"})
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,11 +22,17 @@ abstract class Location {
     public String name;
     @JsonProperty("menu")
     public ObjectId menuid;
+    @JsonProperty("EventItem")
+    public ObjectId eventitemid;
     @JsonProperty("genre")
     public String genre;
-
+    MenuDaoImpl Menudao;
+    EventItemsDaoImpl Eventdao; 
     public Menu getMenu() {
-        return null;
+        return Menudao.get(menuid.toString());
+    }
+    public EventItems getEventList(){
+        return Eventdao.get(eventitemid.toString());
     }
     public ObjectId getMenuId(){
         return menuid;

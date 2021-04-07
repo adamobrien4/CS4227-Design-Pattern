@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,7 +31,6 @@ public class SignupController {
     public Button createRestaurantBtn;
     @FXML
     private Button fXsignupButton;
-
     @FXML
     private TextField FXusernameField;
     @FXML
@@ -113,7 +113,7 @@ public class SignupController {
 
         if (signupSuccess) {
             try {
-                ur.login();
+                UseRemote.login();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,6 +136,13 @@ public class SignupController {
         }
         event.consume();
 
+
+    }
+    public void handleAge(ActionEvent event){
+        System.out.println("I ran");
+        //double age =ageslider.getValue();
+        //AgeText.setText("Age: "+age);
+       // event.consume();
 
     }
 

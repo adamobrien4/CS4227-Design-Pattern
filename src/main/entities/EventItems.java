@@ -34,4 +34,7 @@ public class EventItems {
     public String toString() {
         return this.getMenuName();
     }
+    public void addEventItem(Event e){
+        listOfEvents.add(e);
+    }
 }

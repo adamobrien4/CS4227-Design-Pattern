@@ -19,6 +19,7 @@ public class Customer implements User {
     @JsonProperty("type")
     private static final String TYPE = "customer";
 
+
     public Customer() {
 
     }
@@ -35,6 +36,7 @@ public class Customer implements User {
         this.password = password;
         this.address = address;
     }
+
 
     public String toString() {
         return "ID: " + id + "\nEmail: " + email + "\nAddress: " + address;

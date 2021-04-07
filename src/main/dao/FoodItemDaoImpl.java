@@ -1,22 +1,22 @@
 package main.dao;
 
-import main.entities.EventItems;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import main.Globals;
-import main.entities.Menu;
-import main.entities.users.Customer;
+import main.entities.FoodItem;
 import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;
 
-public class EventItemsDaoImpl implements Dao<EventItems>{
+public class FoodItemDaoImpl implements Dao<FoodItem>{
 
-    public EventItems get(String id) {
-        String response = HttpService.get(Globals.APPLICATION_API_URL + "/EventItems/" + id);
+    @Override
+    public FoodItem get(String id) throws APIException {
+        String response = HttpService.get(Globals.APPLICATION_API_URL + "/FoodItem/" + id);
 
         try {
-            return POJOMapper.getMapper().readValue(response, new TypeReference<EventItems>() {});
+            return POJOMapper.getMapper().readValue(response, new TypeReference<FoodItem>() {});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -24,17 +24,16 @@ public class EventItemsDaoImpl implements Dao<EventItems>{
         return null;
     }
 
-
     @Override
-    public boolean insert(EventItems eventItems) throws APIException {
+    public boolean insert(FoodItem t) throws APIException {
         String response = null;
         try {
-            response = HttpService.post(Globals.APPLICATION_API_URL + "/EventItems/add", POJOMapper.getMapper().writeValueAsString(eventItems));
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/FoodItem/add", POJOMapper.getMapper().writeValueAsString(t));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        if(response.equals("\"EventItems Added\"")) {
+        if(response.equals("\"FoodItem Added\"")) {
             return true;
         } else {
             throw new APIException(response);
@@ -42,13 +41,13 @@ public class EventItemsDaoImpl implements Dao<EventItems>{
     }
 
     @Override
-    public EventItems update(EventItems t) throws APIException {
+    public FoodItem update(FoodItem t) throws APIException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public boolean delete(EventItems t) throws APIException {
+    public boolean delete(FoodItem t) throws APIException {
         // TODO Auto-generated method stub
         return false;
     }

@@ -2,9 +2,9 @@ package main.entities.Businesses.LocationTypes;
 
 import org.bson.types.ObjectId;
 
-public class NightClub extends Location{
+public class Over18s extends Location{
 
-    public NightClub(ObjectId id, String name, String genre,ObjectId menu){
+    public Over18s(ObjectId id, String name, String genre,ObjectId menu){
 
         id=this.id;
         name=this.name;

@@ -40,5 +40,10 @@ public class UseRemote {
         Screen onSwap = new Screen(onCommand);
         onSwap.change();
     }
+    public static void create_menu_list() throws IOException{
+        PresCreateMenuList onCommand = new PresCreateMenuList(newDevice);
+        Screen onSwap = new Screen(onCommand);
+        onSwap.change();
+    }
 
 }
