@@ -16,8 +16,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
 
-import javax.tools.DocumentationTool.Location;
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -243,10 +241,10 @@ public class CreateOrderController {
         orderDao = new OrderDaoImpl();
         discountDao = new DiscountDaoImpl();
 
-        main.entities.Businesses.LocationTypes.Location r = Globals.getRestaurant();
+        main.entities.businesses.LocationTypes.Location location = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
-        Menu restaurantMenu = menuDao.get(r.getMenu().toString());
+        Menu restaurantMenu = location.getMenu();
 
         // Testing
         mainCourses = restaurantMenu.getListOfMainCoursesItems();

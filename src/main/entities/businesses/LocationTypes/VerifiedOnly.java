@@ -1,4 +1,4 @@
-package main.entities.Businesses.LocationTypes;
+package main.entities.businesses.LocationTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 

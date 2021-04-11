@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import main.Globals;
 import main.entities.Menu;
-import main.entities.users.Customer;
 import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;

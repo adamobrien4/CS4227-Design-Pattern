@@ -1,11 +1,11 @@
-package main.entities.Businesses.Owners;
+package main.entities.businesses.Owners;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import main.entities.EventItems;
 import main.entities.Menu;
-import main.entities.Businesses.LocationTypes.Location;
+import main.entities.businesses.LocationTypes.Location;
 
 public class VenueOwner extends Owner{
     private static final String TYPE = "VenueOwner";

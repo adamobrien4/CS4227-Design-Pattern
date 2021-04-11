@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import main.dao.RestaurantDaoImpl;
-import main.entities.Businesses.LocationTypes.FamilyFriendly;
-import main.entities.Businesses.LocationTypes.Location;
+import main.entities.businesses.LocationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

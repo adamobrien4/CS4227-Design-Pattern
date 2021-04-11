@@ -1,4 +1,4 @@
-package main.entities.Businesses.Owners;
+package main.entities.businesses.Owners;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 
 import main.entities.EventItems;
 import main.entities.Menu;
-import main.entities.Businesses.LocationTypes.Location;
+import main.entities.businesses.LocationTypes.Location;
 
 
 public abstract class Owner{

@@ -1,7 +1,5 @@
 package main.presentation_layer.create_restaurant;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.entities.Businesses.LocationTypes.*;
-import main.entities.Businesses.Owners.*;
-import main.entities.Menu;
-import main.entities.users.RestaurantOwner;
+import main.entities.businesses.LocationTypes.*;
+import main.entities.businesses.Owners.*;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package main.entities.Businesses.LocationTypes;
+package main.entities.businesses.LocationTypes;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.bson.types.ObjectId;
 
@@ -23,7 +22,6 @@ import main.entities.Menu;
 
 public abstract  class Location {
 
-
     @JsonProperty("_id")
     public ObjectId id;
     @JsonProperty("name")
@@ -33,26 +31,31 @@ public abstract  class Location {
     @JsonProperty("genre")
     public String genre;
     public EventItems eventitemid;
-    MenuDaoImpl Menudao;
-    EventItemsDaoImpl Eventdao; 
+    MenuDaoImpl menuDao;
+    EventItemsDaoImpl eventDao;
+
+
+    public Location(){
+        menuDao = new MenuDaoImpl();
+        eventDao = new EventItemsDaoImpl();
+    }
 
     @JsonCreator
     public Location(@JsonProperty("_id") ObjectId id,@JsonProperty("name") String name,@JsonProperty("genre")String genre,@JsonProperty("menu")ObjectId menu){
-
         id=this.id;
         name=this.name;
         genre=this.genre;
         menu=this.menu;
-
     }
-    public Location(){}
 
     public Menu getMenu() {
-        return Menudao.get(menu.toString());
+        Menu m = menuDao.get(this.menu.toString());
+        System.out.println(m);
+        return m;
     }
     
     public EventItems getEventList(){
-        return Eventdao.get(eventitemid.toString());
+        return eventDao.get(eventitemid.toString());
     }
     
     public ObjectId getMenuId(){

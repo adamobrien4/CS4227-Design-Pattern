@@ -4,17 +4,16 @@ import main.entities.EventItems;
 import main.entities.FoodItem;
 import main.entities.Menu;
 import main.entities.Event;
-import main.entities.Businesses.LocationTypes.Location;
+import main.entities.businesses.LocationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import main.Globals;
-import main.entities.Businesses.Owners.Owner;
+import main.entities.businesses.Owners.Owner;
 import main.dao.EventItemsDaoImpl;
 import main.dao.MenuDaoImpl;
 
@@ -80,8 +79,8 @@ public class OwnerMenuController {
         loggedInOwner = (Owner)Globals.getLoggedInUser();
         Location l = loggedInOwner.getLocation();
 
-        EventItems eventItems = eventItemsDao.get(l.getMenu().toString());
-        Menu menuitems = menuDao.get(l.getMenu().toString());
+        EventItems eventItems = eventItemsDao.get(l.getMenuId().toString());
+        Menu menuitems = menuDao.get(l.getMenuId().toString());
         food= menuitems.getListOfMainCoursesItems();
         items = eventItems.getListOfMainCoursesItems();
         SplitText.setText("Hello "+loggedInOwner.getName()+"!");

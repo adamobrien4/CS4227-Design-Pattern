@@ -1,11 +1,11 @@
 package main.framework.contexts;
 
 public class ErrorContext extends Context {
-    private Exception exception;
+    private final Exception exception;
 
     public ErrorContext(String message, Exception exception)
     {
-        this.message = message;
+        super(message);
         this.exception = exception;
     }
 
