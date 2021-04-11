@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import main.dao.RestaurantDaoImpl;
+import main.entities.Businesses.LocationTypes.FamilyFriendly;
 import main.entities.Businesses.LocationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,6 +56,8 @@ public class BrowseRestaurantController {
 
         // Get all restaurants from DB
         locations = restaurantDao.getAll();
+        System.out.println("-------------------------------");
+        System.out.println(locations);
 
         restaurant_list_anchor_pane.setPrefHeight((locations.size() + 1) * 50);
 

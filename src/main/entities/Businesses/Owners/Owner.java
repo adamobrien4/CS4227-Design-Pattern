@@ -34,15 +34,17 @@ public abstract class Owner{
         this.email = email;
         this.password = password;
     }
+    /*
     public boolean customerVerification(){
 
         return restaurant.customerVerification();
 
     }
+    
     public void review(){
         restaurant.review();
     }
-
+    */
 
     public void setMenu(ObjectId menu) {
         restaurant.setMenu(menu);

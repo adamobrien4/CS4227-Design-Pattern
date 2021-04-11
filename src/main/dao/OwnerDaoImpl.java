@@ -11,7 +11,7 @@ import main.services.POJOMapper;
 public class OwnerDaoImpl implements Dao<Owner>{
 
     @Override
-    public Owner get(String id) throws APIException {
+    public Owner get(String id) {
         // TODO Auto-generated method stub
         return null;
     }
