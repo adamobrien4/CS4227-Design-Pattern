@@ -4,7 +4,7 @@ import main.entities.EventItems;
 import main.entities.FoodItem;
 import main.entities.Menu;
 import main.entities.Event;
-import main.entities.businesses.LocationTypes.Location;
+import main.entities.businesses.locationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import main.Globals;
-import main.entities.businesses.Owners.Owner;
+import main.entities.businesses.owners.Owner;
 import main.dao.EventItemsDaoImpl;
 import main.dao.MenuDaoImpl;
 

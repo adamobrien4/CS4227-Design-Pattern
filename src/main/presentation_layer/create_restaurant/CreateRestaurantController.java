@@ -11,8 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.entities.businesses.LocationTypes.*;
-import main.entities.businesses.Owners.*;
+import main.entities.businesses.locationTypes.*;
+import main.entities.businesses.owners.*;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;

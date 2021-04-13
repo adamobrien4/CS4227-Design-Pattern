@@ -3,7 +3,7 @@ package main.dao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import main.Globals;
-import main.entities.businesses.Owners.Owner;
+import main.entities.businesses.owners.Owner;
 import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;

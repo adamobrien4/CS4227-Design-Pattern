@@ -1,6 +1,6 @@
 package main;
 
-import main.entities.businesses.LocationTypes.Location;
+import main.entities.businesses.locationTypes.Location;
 import main.entities.users.User;
 
 public class Globals {
