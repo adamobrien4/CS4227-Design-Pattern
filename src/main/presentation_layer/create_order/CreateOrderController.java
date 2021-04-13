@@ -64,10 +64,6 @@ public class CreateOrderController {
     @FXML
     private ResourceBundle resources;
 
-    private MenuDaoImpl menuDao;
-    private OrderDaoImpl orderDao;
-    private DiscountDaoImpl discountDao;
-
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
     ArrayList<FoodItem> sides;
@@ -171,7 +167,7 @@ public class CreateOrderController {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
         // TODO: Get dicsount from database
-        discount = discountDao.get(discount_code_entry_field.getText());
+        discount = DiscountDaoImpl.getInstance().get(discount_code_entry_field.getText());
 
         if(discount == null) {
             // Discount does not exist
@@ -222,7 +218,7 @@ public class CreateOrderController {
         order.setRestaurant(Globals.getRestaurant().getId());
 
         try {
-            orderDao.insert(order);
+            OrderDaoImpl.getInstance().insert(order);
             Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
             UseRemote.checkout();
         } catch (APIException | IOException e) {
@@ -236,10 +232,6 @@ public class CreateOrderController {
     public void initialize() {
         // Initialise the controller
         System.out.println("Initialise");
-
-        menuDao = new MenuDaoImpl();
-        orderDao = new OrderDaoImpl();
-        discountDao = new DiscountDaoImpl();
 
         main.entities.businesses.LocationTypes.Location location = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();

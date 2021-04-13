@@ -37,11 +37,6 @@ public class Customer implements User {
         this.address = address;
     }
 
-
-    public String toString() {
-        return "ID: " + id + "\nEmail: " + email + "\nAddress: " + address;
-    }
-
     public ObjectId getId() {
         return this.id;
     }
@@ -74,5 +69,14 @@ public class Customer implements User {
 
     public String getType() {
         return Customer.TYPE;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

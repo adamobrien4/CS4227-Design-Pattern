@@ -7,11 +7,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class HttpService {
-    private static final HttpClient client = HttpClient.newHttpClient();
+    private static HttpClient client = null;
 
     private HttpService(){}
 
     public static HttpClient getClient() {
+
+        if(client == null) {
+            client = HttpClient.newHttpClient();
+        }
         return client;
     }
 
@@ -27,6 +31,7 @@ public class HttpService {
     }
 
     public static String post(String uri, String queryBody) {
+        System.out.println("POSTING URI: " + uri);
         System.out.println(queryBody);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))

@@ -49,9 +49,7 @@ public abstract  class Location {
     }
 
     public Menu getMenu() {
-        Menu m = menuDao.get(this.menu.toString());
-        System.out.println(m);
-        return m;
+        return menuDao.get(this.menu.toString());
     }
     
     public EventItems getEventList(){
