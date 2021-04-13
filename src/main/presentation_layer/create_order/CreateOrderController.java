@@ -3,12 +3,15 @@ package main.presentation_layer.create_order;
 import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
-import main.entities.*;
 import main.exceptions.APIException;
-import main.presentation_layer.PresentationLoader;
+import main.framework.Framework;
+import main.framework.contexts.Context;
+import main.presentation_layer.presentation.*;
+import main.entities.*;
 import main.Globals;
 import main.entities.users.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -60,10 +63,6 @@ public class CreateOrderController {
     private URL location;
     @FXML
     private ResourceBundle resources;
-
-    private MenuDaoImpl menuDao;
-    private OrderDaoImpl orderDao;
-    private DiscountDaoImpl discountDao;
 
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
@@ -168,7 +167,7 @@ public class CreateOrderController {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
         // TODO: Get dicsount from database
-        discount = discountDao.get(discount_code_entry_field.getText());
+        discount = DiscountDaoImpl.getInstance().get(discount_code_entry_field.getText());
 
         if(discount == null) {
             // Discount does not exist
@@ -182,7 +181,14 @@ public class CreateOrderController {
 
     @FXML
     private void handleGoBackButton(ActionEvent evt) {
-        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+        //browse restaurat
+
+        try {
+            UseRemote.browserestaurants();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         evt.consume();
     }
 
@@ -193,7 +199,7 @@ public class CreateOrderController {
 
         Order order;
 
-        ArrayList<String> orderItems = new ArrayList<String>();
+        ArrayList<String> orderItems = new ArrayList<>();
 
         for (BasketItem item : basket.values()) {
             String s = item.getName();
@@ -204,20 +210,22 @@ public class CreateOrderController {
         }
 
         if (discountValue > 0) {
-            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, discount.getCode(), discountValue,
-                    orderItems, loggedInCustomer.getAddress());
+            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
         } else {
-            order = new Order(basketTotal, basketSubTotalPrice, deliveryCost, orderItems, loggedInCustomer.getAddress());
+            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
         }
 
         order.setRestaurant(Globals.getRestaurant().getId());
 
         try {
-            orderDao.insert(order);
-            PresentationLoader.getInstance().display(PresentationLoader.CHECKOUT_ORDER);
-        } catch (APIException e) {
+            OrderDaoImpl.getInstance().insert(order);
+            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
+            UseRemote.checkout();
+        } catch (APIException | IOException e) {
             e.printStackTrace();
         }
+
+        evt.consume();
     }
 
     @FXML
@@ -225,14 +233,10 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
-        menuDao = new MenuDaoImpl();
-        orderDao = new OrderDaoImpl();
-        discountDao = new DiscountDaoImpl();
-
-        Restaurant r = Globals.getRestaurant();
+        main.entities.businesses.LocationTypes.Location location = Globals.getRestaurant();
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
-        Menu restaurantMenu = menuDao.get(r.getMenu().toString());
+        Menu restaurantMenu = location.getMenu();
 
         // Testing
         mainCourses = restaurantMenu.getListOfMainCoursesItems();

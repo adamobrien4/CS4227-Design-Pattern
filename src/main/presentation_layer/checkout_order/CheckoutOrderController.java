@@ -1,19 +1,15 @@
 package main.presentation_layer.checkout_order;
 
-import com.mongodb.BasicDBObject;
+import java.io.IOException;
 
 import main.dao.OrderDaoImpl;
-import org.bson.Document;
-
+import main.framework.Framework;
+import main.framework.contexts.Context;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import main.Globals;
-import main.entities.users.Customer;
-import main.presentation_layer.PresentationLoader;
-
-import java.util.HashMap;
+import main.presentation_layer.presentation.*;
 
 public class CheckoutOrderController {
     
@@ -55,10 +51,15 @@ public class CheckoutOrderController {
 
         // TODO: Update checked out order
         if( orderDao.payForOrder() ){
+            Framework.getInstance().onLogEvent(new Context(String.format("Order has Been paid for with card:\n Card Number: %s\nCard Expiry: %s\nCard Name: %s\nCVV: %s",checkout_card_number.getText(),card_expiry.getText(),checkout_card_owner.getText(),checkout_cvv.getText())));
             new Alert(Alert.AlertType.INFORMATION, "Your Order has been placed").showAndWait();
         }
 
-        PresentationLoader.getInstance().display(PresentationLoader.BROWSE_RESTAURANT);
+        try {
+            UseRemote.browserestaurants();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         evt.consume();
     }

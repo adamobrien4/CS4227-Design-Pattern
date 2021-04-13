@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import main.Globals;
 import main.entities.Menu;
-import main.entities.users.Customer;
 import main.exceptions.APIException;
 import main.services.HttpService;
 import main.services.POJOMapper;
@@ -25,7 +24,18 @@ public class MenuDaoImpl implements Dao<Menu> {
 
     @Override
     public boolean insert(Menu menu) throws APIException {
-        return false;
+        String response = null;
+        try {
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/menu/add", POJOMapper.getMapper().writeValueAsString(menu));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if(response.equals("\"Menu Added\"")) {
+            return true;
+        } else {
+            throw new APIException(response);
+        }
     }
 
     @Override

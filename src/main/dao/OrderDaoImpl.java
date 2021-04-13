@@ -12,6 +12,16 @@ import org.bson.types.ObjectId;
 import java.util.HashMap;
 
 public class OrderDaoImpl implements Dao<Order> {
+
+    private static OrderDaoImpl instance = null;
+
+    public static OrderDaoImpl getInstance() {
+        if(instance == null) {
+            instance = new OrderDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     public Order get(String id) {
         return null;
@@ -24,6 +34,7 @@ public class OrderDaoImpl implements Dao<Order> {
             response = HttpService.post(Globals.APPLICATION_API_URL + "/order/add", POJOMapper.getMapper().writeValueAsString(order));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            throw new APIException("Order not added!");
         }
 
         if(response.equals("\"Order Added\"")) {

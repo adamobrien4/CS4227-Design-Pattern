@@ -1,11 +1,11 @@
 package main;
 
-import main.entities.Restaurant;
+import main.entities.businesses.LocationTypes.Location;
 import main.entities.users.User;
 
 public class Globals {
     private static User loggedInUser;
-    private static Restaurant restaurant;
+    private static Location restaurant;
 
     private Globals(){}
 
@@ -16,10 +16,10 @@ public class Globals {
         Globals.loggedInUser = user;
     }
 
-    public static Restaurant getRestaurant() {
+    public static Location getRestaurant() {
         return restaurant;
     }
-    public static void setRestaurant(Restaurant r) {
+    public static void setRestaurant(Location r) {
         Globals.restaurant = r;
     }
 

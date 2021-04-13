@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="main.presentation_layer.owner_menu.OwnerMenuController">
+   <children>
+      <VBox id="ItemsBox" prefHeight="400.0" prefWidth="282.0" spacing="15.0">
+         <children>
+            <Text id="GreetingText" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" />
+         </children>
+         <padding>
+            <Insets left="15.0" top="15.0" />
+         </padding>
+      </VBox>
+      <TabPane id="CreationTab" prefHeight="400.0" prefWidth="319.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Create Event">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button id="createEvent" fx:id="createEvent" layoutX="253.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleEventCreate" text="Create" />
+                        <TextField fx:id="eventName" layoutX="14.0" layoutY="14.0" promptText="Name" />
+                        <TextField fx:id="eventPrice" layoutX="14.0" layoutY="55.0" promptText="Price" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Create Food">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button id="createFood" layoutX="253.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleFoodCreate" text="Create" />
+                        <TextField id="foodName" fx:id="foodName" layoutX="14.0" layoutY="14.0" promptText="Name" />
+                        <TextField id="foodAlergens" fx:id="foodAlergens" layoutX="14.0" layoutY="56.0" promptText="Allergens" />
+                        <TextField id="foodPrice" fx:id="foodPrice" layoutX="14.0" layoutY="103.0" promptText="Price" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs></TabPane>
+   </children>
+</HBox>

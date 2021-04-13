@@ -1,9 +1,10 @@
 package main.presentation_layer.browse_restaurants;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import main.dao.RestaurantDaoImpl;
-
+import main.entities.businesses.LocationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,9 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.Globals;
-import main.entities.Restaurant;
-import main.presentation_layer.PresentationLoader;
-import org.bson.types.ObjectId;
+import main.framework.Framework;
+import main.framework.contexts.Context;
+import main.presentation_layer.presentation.*;
 
 
 public class BrowseRestaurantController {
@@ -21,7 +22,7 @@ public class BrowseRestaurantController {
     private AnchorPane restaurant_list_anchor_pane;
 
     private RestaurantDaoImpl restaurantDao;
-    ArrayList<Restaurant> restaurants;
+    ArrayList<Location> locations;
 
     @FXML
     EventHandler<ActionEvent> handleBrowseRestaurant = new EventHandler<ActionEvent>() {
@@ -30,9 +31,14 @@ public class BrowseRestaurantController {
             Button btn = (Button) evt.getSource();
             int btnId = Integer.parseInt(btn.getId());
 
-            Globals.setRestaurant(restaurants.get(btnId));
-
-            PresentationLoader.getInstance().display(PresentationLoader.CREATE_ORDER);
+            Globals.setRestaurant(locations.get(btnId));
+            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",locations.get(btnId).toString())));
+            // create order
+            try {
+                UseRemote.createorder();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             evt.consume();
         }
@@ -43,18 +49,20 @@ public class BrowseRestaurantController {
         System.out.println("Initialising Restaurant Listings");
         restaurantDao = new RestaurantDaoImpl();
 
-        restaurants = new ArrayList<Restaurant>();
+        locations = new ArrayList<Location>();
 
         restaurant_list_anchor_pane.getChildren().clear();
 
         // Get all restaurants from DB
-        restaurants = restaurantDao.getAll();
+        locations = restaurantDao.getAll();
+        System.out.println("-------------------------------");
+        System.out.println(locations);
 
-        restaurant_list_anchor_pane.setPrefHeight((restaurants.size() + 1) * 50);
+        restaurant_list_anchor_pane.setPrefHeight((locations.size() + 1) * 50);
 
         int index = 0;
 
-        for (Restaurant r : restaurants) {
+        for (Location r : locations) {
             /*
              * <Button layoutX="318.0" layoutY="14.0" mnemonicParsing="false"
              * prefHeight="25.0" prefWidth="118.0" text="Browse Menu" /> <Text

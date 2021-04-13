@@ -1,7 +1,7 @@
 package main.presentation_layer.signup;
 
+import main.presentation_layer.presentation.*;
 import main.entities.users.Customer;
-import main.presentation_layer.PresentationLoader;
 import main.services.SignupService;
 
 import java.io.IOException;
@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,7 +31,6 @@ public class SignupController {
     public Button createRestaurantBtn;
     @FXML
     private Button fXsignupButton;
-
     @FXML
     private TextField FXusernameField;
     @FXML
@@ -49,7 +49,7 @@ public class SignupController {
     private Label FXsignupmessageField;
 
     SignupService signupService;
-
+    UseRemote ur;
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
         
@@ -112,7 +112,11 @@ public class SignupController {
         System.out.println("This Ran after Signup.success results are:\t" + signupSuccess);
 
         if (signupSuccess) {
-            PresentationLoader.getInstance().display(PresentationLoader.LOGIN);
+            try {
+                UseRemote.login();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             msg.setText("Error signing up user");
         }
@@ -132,6 +136,13 @@ public class SignupController {
         }
         event.consume();
 
+
+    }
+    public void handleAge(ActionEvent event){
+        System.out.println("I ran");
+        //double age =ageslider.getValue();
+        //AgeText.setText("Age: "+age);
+       // event.consume();
 
     }
 
