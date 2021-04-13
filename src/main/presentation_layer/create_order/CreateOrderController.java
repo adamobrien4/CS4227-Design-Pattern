@@ -7,6 +7,7 @@ import main.exceptions.APIException;
 import main.framework.Framework;
 import main.framework.contexts.Context;
 import main.presentation_layer.presentation.*;
+import main.visitor.TaxVisitor;
 import main.entities.*;
 import main.Globals;
 import main.entities.users.Customer;
@@ -22,8 +23,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,6 +35,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.visitor.*;
 
 public class CreateOrderController {
     @FXML
@@ -42,12 +47,12 @@ public class CreateOrderController {
     @FXML
     private Text basket_total;
 
+    
+
     @FXML
     private TextField discount_code_entry_field;
-
     @FXML
     private Button discount_code_apply_btn;
-
     @FXML
     private AnchorPane main_course_tab_pane;
     @FXML
@@ -58,7 +63,7 @@ public class CreateOrderController {
     private AnchorPane drinks_tab_pane;
     @FXML
     private AnchorPane basket_pane;
-
+   
     @FXML
     private URL location;
     @FXML
@@ -77,6 +82,9 @@ public class CreateOrderController {
     Discount discount = null;
     double discountValue = 0;
     Customer loggedInCustomer;
+    TaxVisitor tax = new TaxVisitor();
+    Alert alert = new Alert(AlertType.INFORMATION);
+
 
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
@@ -347,7 +355,9 @@ public class CreateOrderController {
             if (item.getQuantity() > 1) {
                 title += " * " + item.getQuantity();
             }
-            double itemSubTotal = item.getPrice() * item.getQuantity();
+            System.out.println("Update Price");
+            double itemSubTotal = item.acceptPrice(tax) * item.getQuantity();
+            
             title += " (€" + String.format("%.2f", itemSubTotal) + ")";
 
             basketSubTotalPrice += itemSubTotal;
@@ -405,6 +415,7 @@ public class CreateOrderController {
         basket_sub_total.setText(String.format(NUM_FORMAT, basketSubTotalPrice));
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountValue));
+
 
         basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         

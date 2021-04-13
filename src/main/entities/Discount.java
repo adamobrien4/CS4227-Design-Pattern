@@ -15,6 +15,7 @@ public class Discount {
         ]
     */
 
+
     public Discount() {}
 
     public Discount(double amt, String cd, int typ) {
@@ -43,4 +44,17 @@ public class Discount {
                 ", type=" + type +
                 '}';
     }
+
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public void setType(int type) {
+        this.type = type;
+    }
+
+
 }
