@@ -62,7 +62,7 @@ public class LoginController {
         switch (Globals.getLoggedInUser().getType()) {
             case User.CUSTOMER:
                 try {
-                    UseRemote.browserestaurants();
+                    UseRemote.browseRestaurants();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -7,53 +7,34 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-
 import org.bson.types.ObjectId;
 
-import main.dao.EventItemsDaoImpl;
-import main.dao.MenuDaoImpl;
-import main.entities.EventItems;
-import main.entities.Menu;
 @JsonPropertyOrder({"_id", "name", "menu", "genre"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@Type (value = FamilyFriendly.class, name="Family_Friendly"), @Type(value = Over18s.class, name="Over_18"),@Type(value = VerifiedOnly.class, name = "Verfied_Only")})
+@JsonSubTypes({@Type (value = FamilyFriendly.class, name="Family_Friendly"), @Type(value = Over18s.class, name="Over_18"),@Type(value = VerifiedOnly.class, name = "Verified_Only")})
 
 
 public abstract  class Location {
 
     @JsonProperty("_id")
-    public ObjectId id;
+    private ObjectId id;
     @JsonProperty("name")
-    public String name;
+    private String name;
     @JsonProperty("menu")
-    public ObjectId menu;
+    private ObjectId menu;
     @JsonProperty("genre")
-    public String genre;
-    public EventItems eventitemid;
-    MenuDaoImpl menuDao;
-    EventItemsDaoImpl eventDao;
+    private String genre;
 
 
-    public Location(){
-        menuDao = new MenuDaoImpl();
-        eventDao = new EventItemsDaoImpl();
-    }
+    public Location(){ }
 
     @JsonCreator
-    public Location(@JsonProperty("_id") ObjectId id,@JsonProperty("name") String name,@JsonProperty("genre")String genre,@JsonProperty("menu")ObjectId menu){
-        id=this.id;
-        name=this.name;
-        genre=this.genre;
-        menu=this.menu;
-    }
-
-    public Menu getMenu() {
-        return menuDao.get(this.menu.toString());
-    }
-    
-    public EventItems getEventList(){
-        return eventDao.get(eventitemid.toString());
+    public Location(@JsonProperty("_id") ObjectId i_id, @JsonProperty("name") String i_name, @JsonProperty("genre")String i_genre, @JsonProperty("menu")ObjectId i_menu){
+        this.id = i_id;
+        this.name = i_name;
+        this.genre = i_genre;
+        this.menu = i_menu;
     }
     
     public ObjectId getMenuId(){
@@ -71,8 +52,15 @@ public abstract  class Location {
     public ObjectId getId() {
         return this.id;
     }
-    public String toString(){
-        return "Name: "+name+"\nGenre: "+genre;
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", menu=" + menu +
+                ", genre='" + genre + '\'' +
+                '}';
     }
 
     public abstract boolean customerVerification();

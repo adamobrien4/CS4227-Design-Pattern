@@ -6,11 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.framework.Framework;
-import main.framework.contexts.ScreenSwitchContext;
 import main.presentation_layer.browse_restaurants.BrowseRestaurantController;
 import main.presentation_layer.checkout_order.CheckoutOrderController;
-import main.presentation_layer.create_menu_list.CreateMenuListController;
+import main.presentation_layer.create_menu.CreateMenuController;
 import main.presentation_layer.create_order.CreateOrderController;
 import main.presentation_layer.Driver.DriverScreenController;
 import main.presentation_layer.login.LoginController;
@@ -100,11 +98,11 @@ public class PresentationLoader implements Presentation {
     }
 
     @Override
-    public void create_menu_list() throws IOException {
+    public void create_menu() throws IOException {
         Stage stg = PresentationLoader.stage;
-        Parent root =FXMLLoader.load(CreateMenuListController.class.getResource("create_menu_list.fxml"));
+        Parent root = FXMLLoader.load(CreateMenuController.class.getResource("CreateMenu.fxml"));
         stg.setTitle("Deliver Eats");
-        stg.setScene(new Scene(root,1000.0,800.0));
+        stg.setScene(new Scene(root,640.0,665.0));
         stg.show();
         
     }

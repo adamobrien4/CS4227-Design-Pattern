@@ -1,7 +1,6 @@
 package main.entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.types.ObjectId;
 

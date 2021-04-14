@@ -42,5 +42,8 @@ public class Driver implements User {
     public String getType() {
         return Driver.TYPE;
     }
+
+    @Override
+    public String getPassword() { return password; }
     
 }

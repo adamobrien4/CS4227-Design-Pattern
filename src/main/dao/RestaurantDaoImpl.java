@@ -11,9 +11,19 @@ import main.services.POJOMapper;
 
 import java.util.ArrayList;
 
-public class RestaurantDaoImpl implements Dao<FamilyFriendly> {
+public class RestaurantDaoImpl implements Dao<Location> {
+
+    protected static RestaurantDaoImpl instance;
+
+    public static RestaurantDaoImpl getInstance() {
+        if(instance == null) {
+            instance = new RestaurantDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
-    public FamilyFriendly get(String id) {
+    public Location get(String id) {
         String response = HttpService.get(Globals.APPLICATION_API_URL + "/restaurant/" + id);
 
         System.out.println("Response is:");
@@ -43,17 +53,28 @@ public class RestaurantDaoImpl implements Dao<FamilyFriendly> {
     }
 
     @Override
-    public boolean insert(FamilyFriendly restaurant) throws APIException {
-        return false;
+    public boolean insert(Location restaurant) throws APIException {
+        String response = null;
+        try {
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/restaurant/add/" + Globals.getLoggedInUser().getEmail(), POJOMapper.getMapper().writeValueAsString(restaurant));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if(response.equals("\"Restaurant Added\"")) {
+            return true;
+        } else {
+            throw new APIException(response);
+        }
     }
 
     @Override
-    public FamilyFriendly update(FamilyFriendly restaurant) throws APIException {
+    public Location update(Location restaurant) throws APIException {
         return null;
     }
 
     @Override
-    public boolean delete(FamilyFriendly restaurant) throws APIException {
+    public boolean delete(Location restaurant) throws APIException {
         return false;
     }
 }

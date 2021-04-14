@@ -35,7 +35,7 @@ public class BrowseRestaurantController {
             Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",locations.get(btnId).toString())));
             // create order
             try {
-                UseRemote.createorder();
+                UseRemote.createOrder();
             } catch (IOException e) {
                 e.printStackTrace();
             }
