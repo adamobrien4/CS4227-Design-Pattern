@@ -2,13 +2,11 @@ package main.visitor;
 import java.util.ArrayList;
 
 import main.entities.*;
-import main.entities.discount_visitor.DiscountVisitor;
 
 public class TaxVisitor implements Visitor{
     private double eventTax =0.09;
     private double foodItemTax =0.09;
     ArrayList<String> taxedDrinks = new ArrayList<String>();
-    DiscountVisitor discount = new DiscountVisitor();
 
 
 
