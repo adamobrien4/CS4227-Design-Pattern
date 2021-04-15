@@ -61,16 +61,34 @@ public class FoodItem {
     }
 
     public boolean hasAllergens() {
-        return allergens.isEmpty();
+        // allergens being null was the cause of a null pointer exception
+        if(allergens == null) {
+            return false;
+        }
+        else {
+            return allergens.isEmpty();
+        }
+
     }
 
     @Override
     public String toString() {
-        return "FoodItem{" +
-                "name='" + name + '\'' +
-                ", hasAllergens=" + this.hasAllergens() +
-                ", allergens=" + allergens.toString() +
-                ", price=" + price +
-                '}';
+        if(allergens != null) {
+
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + allergens.toString() +
+                    ", price=" + price +
+                    '}';
+        }
+        else {
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + "none" +
+                    ", price=" + price +
+                    '}';
+        }
     }
 }

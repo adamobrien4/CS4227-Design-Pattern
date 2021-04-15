@@ -42,9 +42,11 @@ public class BasketItem extends FoodItem {
         }
 
         public static BasketItem fromFoodItem(FoodItem item) {
-            if (item.hasAllergens()){
-                return new BasketItem.Builder().name(item.getName()).price(item.getPrice()).allergens(item.getAllergens()).build();
-            }
+        if (item.hasAllergens()){
+            return new BasketItem.Builder().name(item.getName()).price(item.getPrice()).allergens(item.getAllergens()).build();
+        }
+        else {
             return new BasketItem.Builder().name(item.getName()).price(item.getPrice()).build();
         }
     }
+}

@@ -28,9 +28,11 @@
          <children>
             <VBox prefHeight="750.0" prefWidth="300.0">
                <children>
-                  <Pane prefHeight="30.0" prefWidth="300.0">
+                  <Pane prefHeight="70.0" prefWidth="300.0">
                      <children>
-                        <Text layoutX="133.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Basket" />
+                         <Text layoutX="133.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Basket" textAlignment="CENTER"/>
+                         <Button fx:id="undo_btn" layoutX="50.0" layoutY="25.0" maxWidth="70.0" mnemonicParsing="false" onAction="#handleUndoBtn" text="Undo" />
+                         <Button fx:id="redo_btn" layoutX="200.0" layoutY="25.0" maxWidth="70.0" mnemonicParsing="false" onAction="#handleRedoBtn" text="Redo" />
                      </children>
                   </Pane>
                   <ScrollPane prefHeight="420.0" prefWidth="300.0">
