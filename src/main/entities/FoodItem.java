@@ -61,7 +61,7 @@ public class FoodItem {
     }
 
     public boolean hasAllergens() {
-        return allergens.isEmpty();
+        return allergens != null;
     }
 
     @Override

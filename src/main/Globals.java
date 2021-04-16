@@ -23,6 +23,6 @@ public class Globals {
         Globals.restaurant = r;
     }
 
-    public static final String APPLICATION_API_URL = "https://cs4227-design-pattern-api.herokuapp.com";
-    // public static final String APPLICATION_API_URL = "http://localhost:5000";
+    // public static final String APPLICATION_API_URL = "https://cs4227-design-pattern-api.herokuapp.com";
+    public static final String APPLICATION_API_URL = "http://localhost:5000";
 }
