@@ -3,7 +3,7 @@ package main.presentation_layer.create_order;
 import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
-import main.entities.businessesLocationTypes.Location;
+import main.entities.businesses.locationTypes.Location;
 import main.entities.users.User;
 import main.exceptions.APIException;
 import main.framework.Framework;
@@ -345,6 +345,9 @@ public class CreateOrderController {
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
         Menu restaurantMenu = MenuDaoImpl.getInstance().get(location.getMenuId().toHexString());
+
+        System.out.println("Location:" + location);
+        System.out.println("Menu:" + restaurantMenu);
 
         // Testing
         mainCourses = restaurantMenu.getListOfMainCoursesItems();
