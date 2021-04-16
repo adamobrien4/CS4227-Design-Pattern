@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="665.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.presentation_layer.create_menu.CreateMenuController">
+   <children>
+      <Pane prefHeight="154.0" prefWidth="640.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="265.0" layoutY="7.0" text="Menu Creator">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="26.0" text="Menu Name : " />
+            <TextField fx:id="menu_name_input" layoutX="96.0" layoutY="22.0" promptText="E.g. Evening Menu" />
+            <Label layoutX="170.0" layoutY="85.0" text="Item Price" />
+            <Label layoutX="14.0" layoutY="85.0" text="Item Name" />
+            <Label alignment="CENTER" layoutX="265.0" layoutY="56.0" text="Add Menu Items">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="item_name_add_input" layoutX="14.0" layoutY="102.0" promptText="Classic 8oz Burger" />
+            <TextField fx:id="item_price_add_input" layoutX="170.0" layoutY="102.0" promptText="14.99" />
+            <TextField fx:id="item_allergens_add_input" layoutX="329.0" layoutY="102.0" prefHeight="25.0" prefWidth="165.0" promptText="Wheat,Peanut (comma sep)" />
+            <Label layoutX="329.0" layoutY="85.0" text="Allergens" />
+            <Button fx:id="add_item_button" layoutX="570.0" layoutY="102.0" mnemonicParsing="false" onAction="#handleAddMenuItem" text="Add Item" />
+            <Label fx:id="add_item_error" layoutX="14.0" layoutY="129.0" text="Add Item Error" textFill="RED" />
+         </children>
+      </Pane>
+      <TabPane fx:id="add_item_tab_pane" prefHeight="451.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Mains">
+            <content>
+              <AnchorPane fx:id="main_course_pane" minHeight="0.0" minWidth="0.0" prefHeight="417.0" prefWidth="640.0" />
+            </content>
+          </Tab>
+          <Tab text="Sides">
+            <content>
+              <AnchorPane fx:id="sides_pane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Desserts">
+               <content>
+                  <AnchorPane fx:id="desserts_pane" minHeight="0.0" minWidth="0.0" prefHeight="325.0" prefWidth="640.0" />
+               </content>
+            </Tab>
+            <Tab text="Drinks">
+               <content>
+                  <AnchorPane fx:id="drinks_pane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Pane prefHeight="58.0" prefWidth="640.0">
+         <children>
+            <Button fx:id="create_menu_button" layoutX="128.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleCreateMenu" prefHeight="30.0" prefWidth="384.0" text="Create Menu">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="create_menu_error" alignment="CENTER" contentDisplay="CENTER" layoutX="255.0" layoutY="36.0" text="Create Menu Error Text" textAlignment="CENTER" textFill="RED" />
+         </children>
+      </Pane>
+   </children>
+</VBox>

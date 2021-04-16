@@ -3,9 +3,13 @@ package main.presentation_layer.create_order;
 import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
+import main.entities.businessesLocationTypes.Location;
+import main.entities.users.User;
 import main.exceptions.APIException;
 import main.framework.Framework;
 import main.framework.contexts.Context;
+import main.memento.OrderCaretaker;
+import main.memento.OrderMemento;
 import main.presentation_layer.presentation.*;
 import main.entities.*;
 import main.Globals;
@@ -13,8 +17,10 @@ import main.entities.users.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.Key;
 import java.util.*;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,6 +55,12 @@ public class CreateOrderController {
     private Button discount_code_apply_btn;
 
     @FXML
+    private Button undo_btn;
+
+    @FXML
+    private Button redo_btn;
+
+    @FXML
     private AnchorPane main_course_tab_pane;
     @FXML
     private AnchorPane desserts_tab_pane;
@@ -78,6 +90,11 @@ public class CreateOrderController {
     double discountValue = 0;
     Customer loggedInCustomer;
 
+    int saveFiles = 0;
+    int currentArticle = 0;
+
+    OrderCaretaker orderCaretaker = new OrderCaretaker();
+
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent evt) {
@@ -105,14 +122,35 @@ public class CreateOrderController {
                 break;
             }
 
+            try {
 
-            if (basket.containsKey(btnId)) {
-                System.out.println("Increasing Quantity");
-                basket.get(btnId).incrementQuantity();
-            } else {
-                System.out.println("Adding new item");
-                basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
+                if (basket.containsKey(btnId)) {
+                    System.out.println("Increasing Quantity");
+                    basket.get(btnId).incrementQuantity();
+                } else {
+                    System.out.println("Adding new item");
+                    basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
+                }
             }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+
+
+            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+            saveFiles++;
+            currentArticle++;
+
+            System.out.println("currentArticle = " + currentArticle);
+            System.out.println("-----------------\nORDER CARETAKER AFTER ADDING NEW ITEM/+ Quantity\n" +
+                    orderCaretaker.getMemento(currentArticle -1).getSavedArticle().toString());
+
+
+
 
             updateBasket();
             evt.consume();
@@ -131,6 +169,17 @@ public class CreateOrderController {
                     basket.remove(btnId);
                 }
             }
+
+            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+            saveFiles++;
+            currentArticle++;
+
+            System.out.println("-----------------\nORDER CARETAKER AFTER REDUCING QUANTITY OF AN ITEM\n");
+
+            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle().toString());
+
 
             updateBasket();
             evt.consume();
@@ -163,6 +212,52 @@ public class CreateOrderController {
     };
 
     @FXML
+    private void handleUndoBtn(ActionEvent evt) {
+        System.out.println("Undo button has been pressed");
+
+        if(currentArticle > 0) {
+            currentArticle--;
+
+            // basket is set to the memento one position back
+            System.out.println("-----------------\nORDER CARETAKER AFTER UNDO\n" + orderCaretaker);
+
+            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
+            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle());
+
+            redo_btn.setDisable(false);
+            updateBasket();
+        }
+        else {
+            System.out.println("Undo out of index");
+            undo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+    @FXML
+    private void handleRedoBtn(ActionEvent evt) {
+        System.out.println("Redo button has been pressed");
+
+        if(saveFiles -1 > currentArticle) {
+            currentArticle++;
+
+            System.out.println("-----------------\nORDER CARETAKER AFTER REDO\n" + orderCaretaker);
+            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
+
+            updateBasket();
+
+            undo_btn.setDisable(false);
+        }
+        else {
+            System.out.println("Redo out of index");
+            redo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+
+
+    @FXML
     private void handleApplyDiscount(ActionEvent evt) {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
@@ -184,7 +279,7 @@ public class CreateOrderController {
         //browse restaurat
 
         try {
-            UseRemote.browserestaurants();
+            UseRemote.browseRestaurants();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -233,10 +328,15 @@ public class CreateOrderController {
         // Initialise the controller
         System.out.println("Initialise");
 
-        main.entities.businesses.LocationTypes.Location location = Globals.getRestaurant();
+        Location location = Globals.getRestaurant();
+        if(Globals.getLoggedInUser().getType() != User.CUSTOMER) {
+            User u = Globals.getLoggedInUser();
+            Globals.setLoggedInUser(new Customer(u.getEmail(), u.getPassword(), "Unset Address"));
+        }
+
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
-        Menu restaurantMenu = location.getMenu();
+        Menu restaurantMenu = MenuDaoImpl.getInstance().get(location.getMenuId().toHexString());
 
         // Testing
         mainCourses = restaurantMenu.getListOfMainCoursesItems();
@@ -291,8 +391,18 @@ public class CreateOrderController {
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
 
-        updateBasket();
-    }
+            // When screen loads first basket will be empty
+            undo_btn.setDisable(true);
+            redo_btn.setDisable(true);
+
+            updateBasket();
+
+            // We need to treat the initial state (an empty basket) as a saved state also as we may want to return to this position via undo btn
+            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+
+            saveFiles++;
+        }
+
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {
         Text name = new Text();
@@ -409,5 +519,23 @@ public class CreateOrderController {
         basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
+    }
+
+    public Map<String,BasketItem> hardCopyOfBasket(Map<String,BasketItem> originalBasket) {
+        Map<String, BasketItem> basketCopy = new HashMap<>();
+
+        System.out.println("-----------------COPYING BASKET----------------");
+        for(String key : originalBasket.keySet()) {
+            basketCopy.put(key,originalBasket.get(key));
+            System.out.println(key + " : " + originalBasket.get(key));
+
+
+
+        }
+
+
+
+
+        return basketCopy;
     }
 }

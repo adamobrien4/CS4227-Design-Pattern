@@ -56,7 +56,7 @@ public class CheckoutOrderController {
         }
 
         try {
-            UseRemote.browserestaurants();
+            UseRemote.browseRestaurants();
         } catch (IOException e) {
             e.printStackTrace();
         }

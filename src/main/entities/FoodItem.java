@@ -1,7 +1,6 @@
 package main.entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.types.ObjectId;
 
@@ -62,16 +61,27 @@ public class FoodItem {
     }
 
     public boolean hasAllergens() {
-        return allergens.isEmpty();
+        return allergens != null;
     }
 
     @Override
     public String toString() {
-        return "FoodItem{" +
-                "name='" + name + '\'' +
-                ", hasAllergens=" + this.hasAllergens() +
-                ", allergens=" + allergens.toString() +
-                ", price=" + price +
-                '}';
+        if(allergens != null) {
+
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + allergens.toString() +
+                    ", price=" + price +
+                    '}';
+        }
+        else {
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + "none" +
+                    ", price=" + price +
+                    '}';
+        }
     }
 }

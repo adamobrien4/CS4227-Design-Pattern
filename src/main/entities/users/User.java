@@ -19,4 +19,6 @@ public interface User {
 
     // Returns the current users type
     public String getType();
+
+    public String getPassword();
 }

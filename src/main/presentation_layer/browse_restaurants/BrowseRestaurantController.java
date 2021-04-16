@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import main.dao.RestaurantDaoImpl;
-import main.entities.businesses.LocationTypes.Location;
+import main.entities.businesses.locationTypes.Location;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,7 +35,7 @@ public class BrowseRestaurantController {
             Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",locations.get(btnId).toString())));
             // create order
             try {
-                UseRemote.createorder();
+                UseRemote.createOrder();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -29,19 +29,19 @@ public class UseRemote {
         onSwap.change();
     }
 
-    public static void browserestaurants() throws IOException {
+    public static void browseRestaurants() throws IOException {
         PresBrowseRestaurants onCommand = new PresBrowseRestaurants(newDevice);
         Screen onSwap = new Screen(onCommand);
         onSwap.change();
     }
 
-    public static void createorder() throws IOException {
+    public static void createOrder() throws IOException {
         PresCreateOrder onCommand = new PresCreateOrder(newDevice);
         Screen onSwap = new Screen(onCommand);
         onSwap.change();
     }
-    public static void create_menu_list() throws IOException{
-        PresCreateMenuList onCommand = new PresCreateMenuList(newDevice);
+    public static void createMenu() throws IOException{
+        PresCreateMenu onCommand = new PresCreateMenu(newDevice);
         Screen onSwap = new Screen(onCommand);
         onSwap.change();
     }

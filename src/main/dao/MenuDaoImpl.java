@@ -9,9 +9,21 @@ import main.services.HttpService;
 import main.services.POJOMapper;
 
 public class MenuDaoImpl implements Dao<Menu> {
+
+    private static MenuDaoImpl instance = null;
+
+    public static MenuDaoImpl  getInstance() {
+        if(instance == null) {
+            instance = new MenuDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     public Menu get(String id) {
         String response = HttpService.get(Globals.APPLICATION_API_URL + "/menu/" + id);
+
+        System.out.println(response);
 
         try {
             return POJOMapper.getMapper().readValue(response, new TypeReference<Menu>() {});
@@ -26,7 +38,7 @@ public class MenuDaoImpl implements Dao<Menu> {
     public boolean insert(Menu menu) throws APIException {
         String response = null;
         try {
-            response = HttpService.post(Globals.APPLICATION_API_URL + "/menu/add", POJOMapper.getMapper().writeValueAsString(menu));
+            response = HttpService.post(Globals.APPLICATION_API_URL + "/menu/add/" + Globals.getLoggedInUser().getEmail(), POJOMapper.getMapper().writeValueAsString(menu));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

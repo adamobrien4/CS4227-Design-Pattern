@@ -9,9 +9,7 @@ import javafx.stage.Stage;
 public class CreateRestaurantMain extends Application {
 
     public void start(Stage primaryStage) throws Exception{
-        System.out.println(getClass().getResource("CreateRestaurant.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("CreateRestaurant.fxml"));
-
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();

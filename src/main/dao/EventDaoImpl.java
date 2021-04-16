@@ -13,6 +13,15 @@ import java.util.HashMap;
 
 public class EventDaoImpl implements Dao<Event> {
 
+    protected static EventDaoImpl instance;
+
+    public static EventDaoImpl getInstance() {
+        if(instance == null) {
+            instance = new EventDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     public Event get(String id) {
         String response = HttpService.get(Globals.APPLICATION_API_URL + "/event/" + id);

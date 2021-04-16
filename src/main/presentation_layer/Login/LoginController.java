@@ -57,12 +57,10 @@ public class LoginController {
 
         System.out.println("User is loggged in");
 
-        System.out.println("User is loggged in");
-
         switch (Globals.getLoggedInUser().getType()) {
             case User.CUSTOMER:
                 try {
-                    UseRemote.browserestaurants();
+                    UseRemote.browseRestaurants();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -76,6 +74,11 @@ public class LoginController {
 
                 break;
             case User.RESTAURANT_OWNER:
+                try {
+                    UseRemote.createMenu();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 //login
