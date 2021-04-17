@@ -2,6 +2,12 @@ package main.entities.payment_bridge;
 
 //Abstraction  
 public abstract class MakePayment {  
-    PaymentSystem payment; //instance  
-    public abstract void makePayment(); //method responsible to makePayment  
+    public PaymentSystem makePayment; //instance
+    
+    String checkoutCardNumber;
+    String cardExpiery;
+    String checkoutCardOwner;
+    String checkoutCvv;
+
+    public abstract void makeCustomerPayment(); //method responsible to makePayment  
 }  

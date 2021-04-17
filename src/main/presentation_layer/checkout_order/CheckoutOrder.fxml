@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.presentation_layer.checkout_order.CheckoutOrderController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.presentation_layer.checkout_order.CheckoutOrderController">
    <children>
       <ImageView fitHeight="427.0" fitWidth="534.0" layoutX="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -47,5 +48,6 @@
          </font>
       </Label>
       <Label layoutX="449.0" layoutY="267.0" text="CVV" />
+      <ComboBox id="card_type" fx:id="card_type" layoutX="397.0" layoutY="35.0" prefWidth="150.0" promptText="Enter Card Type" />
    </children>
 </Pane>

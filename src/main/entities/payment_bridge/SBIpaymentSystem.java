@@ -1,5 +1,10 @@
 package main.entities.payment_bridge;  
-public class SBIpaymentSystem implements PaymentSystem {  
+public class SBIpaymentSystem implements PaymentSystem { 
+    
+
+    public SBIpaymentSystem() {
+    }
+    
     @Override  
     public void ProcessPayment(String string) {  
         // TODO Auto-generated method stub  

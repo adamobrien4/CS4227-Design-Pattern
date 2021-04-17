@@ -15,7 +15,7 @@ public class TaxVisitor implements Visitor{
 
     //Add an updated price too food item
     public double visitPrice(FoodItem foodItem){
-        taxedDrinks.add("CokeCola");
+        taxedDrinks.add("coke");
         taxedDrinks.add("Fanta");
         if(taxedDrinks.contains(foodItem.getName())){ 
         System.out.println("Food Item original price = " + foodItem.getPrice() + "\n new price is" + (foodItem.getPrice()*foodItemTax)+foodItem.getPrice() + "Name is " + foodItem.getName());
