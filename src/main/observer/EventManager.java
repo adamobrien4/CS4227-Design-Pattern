@@ -33,7 +33,7 @@ public class EventManager {
         // Send a notification to all listeners of the selected event type
         List<EventListener> users = listeners.get(eventType);
         for (EventListener listener : users) {
-            listener.update(eventType);
+            listener.update(eventType, item);
         }
     }
 }

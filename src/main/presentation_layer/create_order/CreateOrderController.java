@@ -12,6 +12,7 @@ import main.memento.OrderCaretaker;
 import main.memento.OrderMemento;
 import main.observer.OrderEditor;
 import main.observer.listeners.BasketItemAddedListener;
+import main.observer.listeners.BasketItemRemovedListener;
 import main.presentation_layer.presentation.*;
 import main.visitor.TaxVisitor;
 import main.entities.*;
@@ -145,6 +146,7 @@ public class CreateOrderController {
                 System.out.println(e.getMessage());
             }
 
+            // Notify listeners that an item was added to the basket
             orderEditor.addOrderItem(basket.get(btnId));
 
             orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
@@ -169,6 +171,9 @@ public class CreateOrderController {
         public void handle(ActionEvent evt) {
             Button btn = (Button) evt.getSource();
             String btnId = btn.getId();
+
+            // Notify listeners that an item was removed from the basket
+            orderEditor.removeOrderItem(basket.get(btnId));
 
             if (basket.containsKey(btnId)) {
                 System.out.println("Decreasing Quantity");
@@ -335,6 +340,7 @@ public class CreateOrderController {
 
         // Setup Listeners
         orderEditor.events.subscribe("added", new BasketItemAddedListener());
+        orderEditor.events.subscribe("removed", new BasketItemRemovedListener());
 
         Location location = Globals.getRestaurant();
         if(!Globals.getLoggedInUser().getType().equals(User.CUSTOMER)) {

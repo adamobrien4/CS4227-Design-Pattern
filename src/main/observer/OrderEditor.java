@@ -12,4 +12,6 @@ public class OrderEditor {
     public void addOrderItem(BasketItem item) {
         events.notify("added", item);
     }
+
+    public void removeOrderItem(BasketItem item) {events.notify("removed", item);}
 }
