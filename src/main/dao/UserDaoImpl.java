@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class UserDaoImpl {
 
-    private UserFactory userFactory;
+    private final UserFactory userFactory;
 
     public UserDaoImpl() {
         this.userFactory = new UserFactory();
@@ -39,19 +39,12 @@ public class UserDaoImpl {
 
         User user = null;
 
-        System.out.println(response);
-
         try {
             // Get type of user
-            Map<String, String> userMap = POJOMapper.getMapper().readValue(response, Map.class);
-
+            Map userMap = POJOMapper.getMapper().readValue(response, Map.class);
             user = userFactory.createUser(userMap);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return null;
-        }
-
-        if(user == null) {
             return null;
         }
 

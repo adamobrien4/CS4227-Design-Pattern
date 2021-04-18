@@ -56,6 +56,7 @@ public class RestaurantDaoImpl implements Dao<Location> {
     public boolean insert(Location restaurant) throws APIException {
         String response = null;
         try {
+            System.out.println(HttpService.post(Globals.APPLICATION_API_URL + "/restaurant/add/" + Globals.getLoggedInUser().getEmail(), POJOMapper.getMapper().writeValueAsString(restaurant)));
             response = HttpService.post(Globals.APPLICATION_API_URL + "/restaurant/add/" + Globals.getLoggedInUser().getEmail(), POJOMapper.getMapper().writeValueAsString(restaurant));
         } catch (JsonProcessingException e) {
             e.printStackTrace();

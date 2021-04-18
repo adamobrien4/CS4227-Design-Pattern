@@ -49,4 +49,8 @@ public class RestaurantOwner implements User {
     public String getPassword() {
         return password;
     }
+
+    public boolean equals(RestaurantOwner user) {
+        return this.id.toHexString().equals(user.getId().toHexString()) && this.email.equals(user.getEmail());
+    }
 }

@@ -71,6 +71,10 @@ public class Customer implements User {
         return Customer.TYPE;
     }
 
+    public boolean equals(Customer user) {
+        return this.id.toHexString().equals(user.getId().toHexString()) && this.email.equals(user.getEmail()) && this.address.equals(user.getAddress());
+    }
+
     @Override
     public String toString() {
         return "Customer{" +

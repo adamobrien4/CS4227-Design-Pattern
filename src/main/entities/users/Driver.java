@@ -45,5 +45,9 @@ public class Driver implements User {
 
     @Override
     public String getPassword() { return password; }
+
+    public boolean equals(Driver user) {
+        return this.id.toHexString().equals(user.getId().toHexString()) && this.email.equals(user.getEmail());
+    }
     
 }

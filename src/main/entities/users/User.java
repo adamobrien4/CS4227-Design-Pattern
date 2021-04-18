@@ -4,21 +4,21 @@ import org.bson.types.ObjectId;
 
 public interface User {
 
-    public static final String CUSTOMER = "customer";
-    public static final String RESTAURANT_OWNER = "restaurantOwner";
-    public static final String DRIVER = "driver";
+    String CUSTOMER = "customer";
+    String RESTAURANT_OWNER = "restaurantOwner";
+    String DRIVER = "driver";
 
     // Stringify the entity
-    public String toString();
+   String toString();
 
     // Returns the curent users email
-    public String getEmail();
+    String getEmail();
 
     // Returns the users id
-    public ObjectId getId();
+    ObjectId getId();
 
     // Returns the current users type
-    public String getType();
+    String getType();
 
-    public String getPassword();
+    String getPassword();
 }
