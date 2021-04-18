@@ -10,6 +10,9 @@ import main.framework.Framework;
 import main.framework.contexts.Context;
 import main.memento.OrderCaretaker;
 import main.memento.OrderMemento;
+import main.observer.OrderEditor;
+import main.observer.listeners.BasketItemAddedListener;
+import main.observer.listeners.BasketItemRemovedListener;
 import main.presentation_layer.presentation.*;
 import main.visitor.TaxVisitor;
 import main.entities.*;
@@ -17,7 +20,6 @@ import main.Globals;
 import main.entities.users.Customer;
 
 import java.io.IOException;
-import java.net.URL;
 import java.security.Key;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -31,7 +33,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -75,9 +76,7 @@ public class CreateOrderController {
     private AnchorPane drinks_tab_pane;
     @FXML
     private AnchorPane basket_pane;
-   
-    @FXML
-    private URL location;
+
     @FXML
     private ResourceBundle resources;
 
@@ -87,6 +86,8 @@ public class CreateOrderController {
     ArrayList<FoodItem> drinks;
 
     Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
+
+    OrderEditor orderEditor = new OrderEditor();
 
     double basketTotal = 0.00;
     double deliveryCost = 4.00;
@@ -145,6 +146,8 @@ public class CreateOrderController {
                 System.out.println(e.getMessage());
             }
 
+            // Notify listeners that an item was added to the basket
+            orderEditor.addOrderItem(basket.get(btnId));
 
             orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
 
@@ -158,8 +161,6 @@ public class CreateOrderController {
                     orderCaretaker.getMemento(currentArticle -1).getSavedArticle().toString());
 
 
-
-
             updateBasket();
             evt.consume();
         }
@@ -170,6 +171,9 @@ public class CreateOrderController {
         public void handle(ActionEvent evt) {
             Button btn = (Button) evt.getSource();
             String btnId = btn.getId();
+
+            // Notify listeners that an item was removed from the basket
+            orderEditor.removeOrderItem(basket.get(btnId));
 
             if (basket.containsKey(btnId)) {
                 System.out.println("Decreasing Quantity");
@@ -263,8 +267,6 @@ public class CreateOrderController {
         evt.consume();
     };
 
-
-
     @FXML
     private void handleApplyDiscount(ActionEvent evt) {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
@@ -334,10 +336,14 @@ public class CreateOrderController {
     @FXML
     public void initialize() {
         // Initialise the controller
-        System.out.println("Initialise");
+        System.out.println("Initialise CreateOrderController");
+
+        // Setup Listeners
+        orderEditor.events.subscribe("added", new BasketItemAddedListener());
+        orderEditor.events.subscribe("removed", new BasketItemRemovedListener());
 
         Location location = Globals.getRestaurant();
-        if(Globals.getLoggedInUser().getType() != User.CUSTOMER) {
+        if(!Globals.getLoggedInUser().getType().equals(User.CUSTOMER)) {
             User u = Globals.getLoggedInUser();
             Globals.setLoggedInUser(new Customer(u.getEmail(), u.getPassword(), "Unset Address"));
         }
@@ -371,7 +377,6 @@ public class CreateOrderController {
             desserts_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < desserts.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(desserts.get(i), y, "ds", i);
@@ -383,7 +388,6 @@ public class CreateOrderController {
             sides_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < sides.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(sides.get(i), y, "sd", i);
@@ -395,24 +399,22 @@ public class CreateOrderController {
             drinks_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < drinks.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(drinks.get(i), y, "dk", i);
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
 
-            // When screen loads first basket will be empty
-            undo_btn.setDisable(true);
-            redo_btn.setDisable(true);
+        // When screen loads first basket will be empty
+        undo_btn.setDisable(true);
+        redo_btn.setDisable(true);
 
-            updateBasket();
+        updateBasket();
 
-            // We need to treat the initial state (an empty basket) as a saved state also as we may want to return to this position via undo btn
-            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
-
-            saveFiles++;
-        }
+        // We need to treat the initial state (an empty basket) as a saved state also as we may want to return to this position via undo btn
+        orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+        saveFiles++;
+    }
 
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {
@@ -542,13 +544,7 @@ public class CreateOrderController {
         for(String key : originalBasket.keySet()) {
             basketCopy.put(key,originalBasket.get(key));
             System.out.println(key + " : " + originalBasket.get(key));
-
-
-
         }
-
-
-
 
         return basketCopy;
     }
