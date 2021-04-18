@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import org.bson.types.ObjectId;
 
+import main.entities.users.Customer;
+
 @JsonTypeName("Over_18")
 public class Over18s extends Location {
 
@@ -15,15 +17,10 @@ public class Over18s extends Location {
     }
 
     @Override
-    public boolean customerVerification() {
+    public boolean customerVerification(Customer c) {
         System.out.println("Checking Age...");
         return true;
     }
 
-    @Override
-    public void review() {
-        System.out.println("Leaving Reivew");
-
-    }
 
 }

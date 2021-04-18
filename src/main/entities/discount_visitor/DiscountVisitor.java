@@ -1,9 +1,8 @@
 package main.entities.discount_visitor;
 
 import java.util.ArrayList;
-
 import main.entities.*;
-import main.visitor.TaxVisitor;
+import main.visitor.*;
 
 public class DiscountVisitor implements Visitor {
     public DiscountVisitor() {

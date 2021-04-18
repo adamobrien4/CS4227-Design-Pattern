@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import org.bson.types.ObjectId;
 
+import main.entities.users.Customer;
+
 @JsonPropertyOrder({ "_id", "name", "menu", "genre" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -64,8 +66,8 @@ public abstract class Location {
                 + '}';
     }
 
-    public abstract boolean customerVerification();
+    public abstract boolean customerVerification(Customer c);
 
-    public abstract void review();
+
 
 }
