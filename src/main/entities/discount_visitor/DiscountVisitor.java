@@ -1,19 +1,15 @@
 package main.entities.discount_visitor;
+
 import java.util.ArrayList;
 
 import main.entities.*;
 import main.visitor.TaxVisitor;
 
-public class DiscountVisitor implements Visitor{
-    public DiscountVisitor(){
+public class DiscountVisitor implements Visitor {
+    public DiscountVisitor() {
     }
+
     TaxVisitor tax = new TaxVisitor();
-
-    
-
-    
-
-
 
     @Override
     public String visitDiscount(Discount discount, FoodItem foodItem) {
@@ -22,6 +18,5 @@ public class DiscountVisitor implements Visitor{
         discount.setType(1);
         return null;
     }
-    
 
 }

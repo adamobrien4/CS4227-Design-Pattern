@@ -3,8 +3,9 @@ package main.entities.businesses.locationTypes;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import org.bson.types.ObjectId;
+
 @JsonTypeName("Verified_Only")
-public class VerifiedOnly extends Location{
+public class VerifiedOnly extends Location {
 
     @Override
     public boolean customerVerification() {
@@ -14,11 +15,14 @@ public class VerifiedOnly extends Location{
     @Override
     public void review() {
         // TODO Auto-generated method stub
-        
+
     }
-    VerifiedOnly(){}
-    public VerifiedOnly(ObjectId id, String name, String genre,ObjectId menu){
+
+    VerifiedOnly() {
+    }
+
+    public VerifiedOnly(ObjectId id, String name, String genre, ObjectId menu) {
         super(id, name, genre, menu);
     }
-    
+
 }

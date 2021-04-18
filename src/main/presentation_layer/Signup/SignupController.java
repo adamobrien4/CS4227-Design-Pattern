@@ -50,9 +50,10 @@ public class SignupController {
 
     SignupService signupService;
     UseRemote ur;
+
     public void handleAlreadyaUser(ActionEvent event) throws IOException {
         System.out.println("Button pressed");
-        
+
         Button btn = (Button) event.getSource();
         Scene scene = btn.getScene();
         try {
@@ -78,31 +79,31 @@ public class SignupController {
 
         Label msg = FXsignupmessageField;
         msg.setTextFill(Color.RED);
-        msg.setBackground(new Background(
-            new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
+        msg.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5.0), new Insets(-5.0))));
 
         // Signup Form Validation
-        if (email.isEmpty()){
+        if (email.isEmpty()) {
             msg.setText("Email is empty");
             return;
-        } else if(address.isEmpty()) {
+        } else if (address.isEmpty()) {
             msg.setText("Address is empty");
             return;
-        } else if(password.isEmpty()) {
+        } else if (password.isEmpty()) {
             msg.setText("Password is empty");
             return;
-        } else if(confirmPassword.isEmpty()) {
+        } else if (confirmPassword.isEmpty()) {
             msg.setText("Confirm Password is empty");
             return;
-        } else if(!password.equals(confirmPassword)) {
+        } else if (!password.equals(confirmPassword)) {
             msg.setText("Password Mismatch");
             return;
         }
 
         boolean signupSuccess = false;
 
-        try{
-            signupSuccess = signupService.signupUser(new Customer(email, PasswordUtils.encryptPassword(password), address));
+        try {
+            signupSuccess = signupService
+                    .signupUser(new Customer(email, PasswordUtils.encryptPassword(password), address));
         } catch (Exception ex) {
             ex.printStackTrace();
             msg.setText(ex.getMessage());
@@ -136,13 +137,13 @@ public class SignupController {
         }
         event.consume();
 
-
     }
-    public void handleAge(ActionEvent event){
+
+    public void handleAge(ActionEvent event) {
         System.out.println("I ran");
-        //double age =ageslider.getValue();
-        //AgeText.setText("Age: "+age);
-       // event.consume();
+        // double age =ageslider.getValue();
+        // AgeText.setText("Age: "+age);
+        // event.consume();
 
     }
 

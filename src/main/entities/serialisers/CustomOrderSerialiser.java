@@ -24,7 +24,7 @@ public class CustomOrderSerialiser extends StdSerializer<Order> {
         try {
 
             String driverValue;
-            if(order.getDriver() == null) {
+            if (order.getDriver() == null) {
                 driverValue = "Unset";
             } else {
                 driverValue = order.getDriver().toHexString();
@@ -41,7 +41,8 @@ public class CustomOrderSerialiser extends StdSerializer<Order> {
             jsonGenerator.writeStringField("deliveryCost", Double.toString(order.getDeliveryCost()));
             jsonGenerator.writeStringField("discountCode", order.getDiscountCode());
             jsonGenerator.writeStringField("discountAmount", Double.toString(order.getDiscountAmount()));
-            jsonGenerator.writeStringField("orderItems", POJOMapper.getMapper().writeValueAsString(order.getOrderItems()));
+            jsonGenerator.writeStringField("orderItems",
+                    POJOMapper.getMapper().writeValueAsString(order.getOrderItems()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

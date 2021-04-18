@@ -10,7 +10,8 @@ public class OrderCaretaker {
         savedArticles.add(m);
         System.out.println(savedArticles);
     }
-    public OrderMemento getMemento(int index){
+
+    public OrderMemento getMemento(int index) {
         return savedArticles.get(index);
     }
 }

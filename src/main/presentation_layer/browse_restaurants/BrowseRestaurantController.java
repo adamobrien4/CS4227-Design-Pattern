@@ -16,7 +16,6 @@ import main.framework.Framework;
 import main.framework.contexts.Context;
 import main.presentation_layer.presentation.*;
 
-
 public class BrowseRestaurantController {
     @FXML
     private AnchorPane restaurant_list_anchor_pane;
@@ -32,7 +31,8 @@ public class BrowseRestaurantController {
             int btnId = Integer.parseInt(btn.getId());
 
             Globals.setRestaurant(locations.get(btnId));
-            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",locations.get(btnId).toString())));
+            Framework.getInstance()
+                    .onLogEvent(new Context(String.format("'%s' Has been visited", locations.get(btnId).toString())));
             // create order
             try {
                 UseRemote.createOrder();

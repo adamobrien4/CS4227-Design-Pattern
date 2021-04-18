@@ -13,12 +13,12 @@ public class Originator {
     public OrderMemento storeInMemento() {
         System.out.println("From Originator: Saving to Memento");
 
-        //return new OrderMemento(article);
+        // return new OrderMemento(article);
         return null;
     }
 
     public String restoreFromMemento(OrderMemento orderMemento) {
-        //article = orderMemento.getSavedArticle();
+        // article = orderMemento.getSavedArticle();
 
         System.out.println("From Originator: Previous Article Saved In Memento\n" + article);
 

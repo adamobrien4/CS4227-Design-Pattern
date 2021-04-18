@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import main.Globals;
 import main.dao.OrderDaoImpl;
 import main.entities.payment_bridge.CreditCardPayment;
 import main.entities.payment_bridge.DebitCardPayment;
@@ -45,11 +46,11 @@ public class CheckoutOrderController extends MakePayment {
         System.out.println("Checking out");
         System.out.println(card_type.getValue());
 
-        if (card_type.getValue().equals("")) {
-            new Alert(Alert.AlertType.WARNING, "Please select a payment method").showAndWait();
+        if (card_type.getValue() == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Card Type").showAndWait();
             return;
         }
-        
+
         if (checkout_card_number.getText().length() == 0) {
             new Alert(Alert.AlertType.WARNING, "Please enter a CARD NUMBER").showAndWait();
             return;
@@ -77,7 +78,7 @@ public class CheckoutOrderController extends MakePayment {
                     checkout_card_number.getText(), card_expiry.getText(), checkout_card_owner.getText(),
                     checkout_cvv.getText())));
 
-            if (card_type.getValue().equals("Credit Card")) {
+            if (card_type.getValue().equals(Globals.CREDIT_CARD)) {
                 MakePayment customerPayment = new CreditCardPayment();
                 customerPayment.makePayment = new SBIpaymentSystem();
                 customerPayment.makeCustomerPayment();
@@ -102,7 +103,7 @@ public class CheckoutOrderController extends MakePayment {
     public void initialize() {
         System.out.println("Initialising Checkout Screen");
         orderDao = new OrderDaoImpl();
-        card_type.getItems().addAll("Credit Card", "Debit Card");
+        card_type.getItems().addAll(Globals.CARD_TYPES);
     }
 
     @Override
