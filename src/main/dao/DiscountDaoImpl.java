@@ -8,6 +8,16 @@ import main.services.HttpService;
 import main.services.POJOMapper;
 
 public class DiscountDaoImpl implements Dao<Discount> {
+
+    private static DiscountDaoImpl instance = null;
+
+    public static DiscountDaoImpl  getInstance() {
+        if(instance == null) {
+            instance = new DiscountDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     public Discount get(String code) {
         String response = HttpService.get(Globals.APPLICATION_API_URL + "/discount/" + code);

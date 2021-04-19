@@ -16,5 +16,5 @@ public interface Presentation{
 
     public void create_order() throws IOException;
 
-    public void create_menu_list() throws IOException;
+    public void create_menu() throws IOException;
 }

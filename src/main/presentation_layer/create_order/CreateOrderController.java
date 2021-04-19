@@ -3,20 +3,27 @@ package main.presentation_layer.create_order;
 import main.dao.DiscountDaoImpl;
 import main.dao.MenuDaoImpl;
 import main.dao.OrderDaoImpl;
+import main.entities.businesses.locationTypes.Location;
+import main.entities.users.User;
 import main.exceptions.APIException;
 import main.framework.Framework;
 import main.framework.contexts.Context;
+import main.memento.OrderCaretaker;
+import main.memento.OrderMemento;
+import main.observer.*;
+import main.observer.listeners.*;
+
 import main.presentation_layer.presentation.*;
+import main.visitor.TaxVisitor;
 import main.entities.*;
 import main.Globals;
 import main.entities.users.Customer;
 
 import java.io.IOException;
-import java.net.URL;
+import java.security.Key;
 import java.util.*;
 import java.util.ResourceBundle;
-
-import javax.tools.DocumentationTool.Location;
+import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,8 +31,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +42,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.visitor.*;
 
 public class CreateOrderController {
     @FXML
@@ -43,13 +53,14 @@ public class CreateOrderController {
     private Text delivery_total;
     @FXML
     private Text basket_total;
-
     @FXML
     private TextField discount_code_entry_field;
-
     @FXML
     private Button discount_code_apply_btn;
-
+    @FXML
+    private Button undo_btn;
+    @FXML
+    private Button redo_btn;
     @FXML
     private AnchorPane main_course_tab_pane;
     @FXML
@@ -62,13 +73,7 @@ public class CreateOrderController {
     private AnchorPane basket_pane;
 
     @FXML
-    private URL location;
-    @FXML
     private ResourceBundle resources;
-
-    private MenuDaoImpl menuDao;
-    private OrderDaoImpl orderDao;
-    private DiscountDaoImpl discountDao;
 
     ArrayList<FoodItem> mainCourses;
     ArrayList<FoodItem> desserts;
@@ -77,12 +82,22 @@ public class CreateOrderController {
 
     Map<String, BasketItem> basket = new HashMap<String, BasketItem>();
 
+    OrderEditor orderEditor = new OrderEditor();
+
     double basketTotal = 0.00;
     double deliveryCost = 4.00;
     double basketSubTotalPrice = 0.00;
     Discount discount = null;
     double discountValue = 0;
     Customer loggedInCustomer;
+    TaxVisitor tax = new TaxVisitor();
+    Alert alert = new Alert(AlertType.INFORMATION);
+
+
+    int saveFiles = 0;
+    int currentArticle = 0;
+
+    OrderCaretaker orderCaretaker = new OrderCaretaker();
 
     EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
         @Override
@@ -111,14 +126,35 @@ public class CreateOrderController {
                 break;
             }
 
+            try {
 
-            if (basket.containsKey(btnId)) {
-                System.out.println("Increasing Quantity");
-                basket.get(btnId).incrementQuantity();
-            } else {
-                System.out.println("Adding new item");
-                basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
+                if (basket.containsKey(btnId)) {
+                    System.out.println("Increasing Quantity");
+                    basket.get(btnId).incrementQuantity();
+                } else {
+                    System.out.println("Adding new item");
+                    basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
+                }
             }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+
+            // Notify listeners that an item was added to the basket
+            orderEditor.addOrderItem(basket.get(btnId));
+
+            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+            saveFiles++;
+            currentArticle++;
+
+            System.out.println("currentArticle = " + currentArticle);
+            System.out.println("-----------------\nORDER CARETAKER AFTER ADDING NEW ITEM/+ Quantity\n" +
+                    orderCaretaker.getMemento(currentArticle -1).getSavedArticle().toString());
+
 
             updateBasket();
             evt.consume();
@@ -131,12 +167,26 @@ public class CreateOrderController {
             Button btn = (Button) evt.getSource();
             String btnId = btn.getId();
 
+            // Notify listeners that an item was removed from the basket
+            orderEditor.removeOrderItem(basket.get(btnId));
+
             if (basket.containsKey(btnId)) {
                 System.out.println("Decreasing Quantity");
                 if (basket.get(btnId).decrementQuantity()) {
                     basket.remove(btnId);
                 }
             }
+
+            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+            saveFiles++;
+            currentArticle++;
+
+            System.out.println("-----------------\nORDER CARETAKER AFTER REDUCING QUANTITY OF AN ITEM\n");
+
+            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle().toString());
+
 
             updateBasket();
             evt.consume();
@@ -169,11 +219,55 @@ public class CreateOrderController {
     };
 
     @FXML
+    private void handleUndoBtn(ActionEvent evt) {
+        System.out.println("Undo button has been pressed");
+
+        if(currentArticle > 0) {
+            currentArticle--;
+
+            // basket is set to the memento one position back
+            System.out.println("-----------------\nORDER CARETAKER AFTER UNDO\n" + orderCaretaker);
+
+            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
+            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle());
+
+            redo_btn.setDisable(false);
+            updateBasket();
+        }
+        else {
+            System.out.println("Undo out of index");
+            undo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+    @FXML
+    private void handleRedoBtn(ActionEvent evt) {
+        System.out.println("Redo button has been pressed");
+
+        if(saveFiles -1 > currentArticle) {
+            currentArticle++;
+
+            System.out.println("-----------------\nORDER CARETAKER AFTER REDO\n" + orderCaretaker);
+            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
+
+            updateBasket();
+
+            undo_btn.setDisable(false);
+        }
+        else {
+            System.out.println("Redo out of index");
+            redo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+    @FXML
     private void handleApplyDiscount(ActionEvent evt) {
         System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
 
         // TODO: Get dicsount from database
-        discount = discountDao.get(discount_code_entry_field.getText());
+        discount = DiscountDaoImpl.getInstance().get(discount_code_entry_field.getText());
 
         if(discount == null) {
             // Discount does not exist
@@ -190,7 +284,7 @@ public class CreateOrderController {
         //browse restaurat
 
         try {
-            UseRemote.browserestaurants();
+            UseRemote.browseRestaurants();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,7 +318,7 @@ public class CreateOrderController {
         order.setRestaurant(Globals.getRestaurant().getId());
 
         try {
-            orderDao.insert(order);
+            OrderDaoImpl.getInstance().insert(order);
             Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
             UseRemote.checkout();
         } catch (APIException | IOException e) {
@@ -237,16 +331,24 @@ public class CreateOrderController {
     @FXML
     public void initialize() {
         // Initialise the controller
-        System.out.println("Initialise");
+        System.out.println("Initialise CreateOrderController");
 
-        menuDao = new MenuDaoImpl();
-        orderDao = new OrderDaoImpl();
-        discountDao = new DiscountDaoImpl();
+        // Setup Listeners
+        orderEditor.events.subscribe("added", new BasketItemAddedListener());
+        orderEditor.events.subscribe("removed", new BasketItemRemovedListener());
 
-        main.entities.Businesses.LocationTypes.Location r = Globals.getRestaurant();
+        Location location = Globals.getRestaurant();
+        if(!Globals.getLoggedInUser().getType().equals(User.CUSTOMER)) {
+            User u = Globals.getLoggedInUser();
+            Globals.setLoggedInUser(new Customer(u.getEmail(), u.getPassword(), "Unset Address"));
+        }
+
         loggedInCustomer = (Customer)Globals.getLoggedInUser();
 
-        Menu restaurantMenu = menuDao.get(r.getMenu().toString());
+        Menu restaurantMenu = MenuDaoImpl.getInstance().get(location.getMenuId().toHexString());
+
+        System.out.println("Location:" + location);
+        System.out.println("Menu:" + restaurantMenu);
 
         // Testing
         mainCourses = restaurantMenu.getListOfMainCoursesItems();
@@ -270,7 +372,6 @@ public class CreateOrderController {
             desserts_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < desserts.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(desserts.get(i), y, "ds", i);
@@ -282,7 +383,6 @@ public class CreateOrderController {
             sides_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < sides.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(sides.get(i), y, "sd", i);
@@ -294,15 +394,23 @@ public class CreateOrderController {
             drinks_tab_pane.getChildren().add(noFoodItemsMessage());
         }
         for (int i = 0; i < drinks.size(); i++) {
-
             // Add food item to drinks tab
             double y = 27.0 + (33.0 * i);
             Node[] foodListing = makeFoodListing(drinks.get(i), y, "dk", i);
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
 
+        // When screen loads first basket will be empty
+        undo_btn.setDisable(true);
+        redo_btn.setDisable(true);
+
         updateBasket();
+
+        // We need to treat the initial state (an empty basket) as a saved state also as we may want to return to this position via undo btn
+        orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+        saveFiles++;
     }
+
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {
         Text name = new Text();
@@ -357,7 +465,9 @@ public class CreateOrderController {
             if (item.getQuantity() > 1) {
                 title += " * " + item.getQuantity();
             }
-            double itemSubTotal = item.getPrice() * item.getQuantity();
+            System.out.println("Update Price");
+            double itemSubTotal = item.acceptPrice(tax) * item.getQuantity();
+            
             title += " (€" + String.format("%.2f", itemSubTotal) + ")";
 
             basketSubTotalPrice += itemSubTotal;
@@ -416,8 +526,21 @@ public class CreateOrderController {
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountValue));
 
+
         basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
+    }
+
+    public Map<String,BasketItem> hardCopyOfBasket(Map<String,BasketItem> originalBasket) {
+        Map<String, BasketItem> basketCopy = new HashMap<>();
+
+        System.out.println("-----------------COPYING BASKET----------------");
+        for(String key : originalBasket.keySet()) {
+            basketCopy.put(key,originalBasket.get(key));
+            System.out.println(key + " : " + originalBasket.get(key));
+        }
+
+        return basketCopy;
     }
 }

@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import main.dao.RestaurantDaoImpl;
-import main.entities.Businesses.LocationTypes.Location;
+import main.entities.businesses.locationTypes.Location;
+import main.entities.users.Customer;
+import main.entities.users.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -15,7 +18,6 @@ import main.Globals;
 import main.framework.Framework;
 import main.framework.contexts.Context;
 import main.presentation_layer.presentation.*;
-
 
 public class BrowseRestaurantController {
     @FXML
@@ -30,16 +32,22 @@ public class BrowseRestaurantController {
         public void handle(ActionEvent evt) {
             Button btn = (Button) evt.getSource();
             int btnId = Integer.parseInt(btn.getId());
-
+            User loggedInUser = Globals.getLoggedInUser();
+            Location r = locations.get(btnId);
+            if(!r.customerVerification((Customer) loggedInUser)){
+                new Alert(Alert.AlertType.INFORMATION, "You are not autherized to order from this here.\n Please choose another loction.").showAndWait();
+            }
+            else{
             Globals.setRestaurant(locations.get(btnId));
-            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has been visited",locations.get(btnId).toString())));
+            Framework.getInstance()
+                    .onLogEvent(new Context(String.format("'%s' Has been visited", locations.get(btnId).toString())));
             // create order
             try {
-                UseRemote.createorder();
+                UseRemote.createOrder();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+        }
             evt.consume();
         }
     };
@@ -55,6 +63,8 @@ public class BrowseRestaurantController {
 
         // Get all restaurants from DB
         locations = restaurantDao.getAll();
+        System.out.println("-------------------------------");
+        System.out.println(locations);
 
         restaurant_list_anchor_pane.setPrefHeight((locations.size() + 1) * 50);
 

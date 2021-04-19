@@ -1,5 +1,6 @@
 package main.framework;
 
+
 import main.framework.contexts.Context;
 import main.framework.contexts.ScreenSwitchContext;
 import main.framework.dispatchers.LoggingDispatcher;

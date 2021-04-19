@@ -22,9 +22,17 @@ public class CustomOrderSerialiser extends StdSerializer<Order> {
     @Override
     public void serialize(Order order, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) {
         try {
+
+            String driverValue;
+            if (order.getDriver() == null) {
+                driverValue = "Unset";
+            } else {
+                driverValue = order.getDriver().toHexString();
+            }
+
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("customer", Globals.getLoggedInUser().getId().toString());
-            jsonGenerator.writeStringField("driver", order.getDriver().toHexString());
+            jsonGenerator.writeStringField("driver", driverValue);
             jsonGenerator.writeStringField("restaurant", order.getRestaurant().toHexString());
             jsonGenerator.writeStringField("status", order.getStatus());
             jsonGenerator.writeStringField("address", order.getAddress());
@@ -33,7 +41,8 @@ public class CustomOrderSerialiser extends StdSerializer<Order> {
             jsonGenerator.writeStringField("deliveryCost", Double.toString(order.getDeliveryCost()));
             jsonGenerator.writeStringField("discountCode", order.getDiscountCode());
             jsonGenerator.writeStringField("discountAmount", Double.toString(order.getDiscountAmount()));
-            jsonGenerator.writeStringField("orderItems", POJOMapper.getMapper().writeValueAsString(order.getOrderItems()));
+            jsonGenerator.writeStringField("orderItems",
+                    POJOMapper.getMapper().writeValueAsString(order.getOrderItems()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

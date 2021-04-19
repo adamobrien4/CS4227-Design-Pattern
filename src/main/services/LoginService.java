@@ -3,7 +3,6 @@ package main.services;
 import main.dao.UserDaoImpl;
 import main.Globals;
 import main.entities.users.User;
-import main.utils.PasswordUtils;
 
 public class LoginService {
     UserDaoImpl userDaoImpl;

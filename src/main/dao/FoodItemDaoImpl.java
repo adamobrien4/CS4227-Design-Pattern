@@ -12,7 +12,7 @@ import main.services.POJOMapper;
 public class FoodItemDaoImpl implements Dao<FoodItem>{
 
     @Override
-    public FoodItem get(String id) throws APIException {
+    public FoodItem get(String id) {
         String response = HttpService.get(Globals.APPLICATION_API_URL + "/FoodItem/" + id);
 
         try {

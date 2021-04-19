@@ -34,14 +34,6 @@ public class RestaurantOwner implements User {
         return "ID: " + id + "\nEmail: " + email + "\n";
     }
 
-    public String toJson() {
-        return "Customer Entity formatted in Json";
-    }
-
-    public static RestaurantOwner fromDocument(Document document) {
-        return new RestaurantOwner(document.getObjectId("_id"), document.getObjectId("restaurant_id"),document.getString("email"), document.getString("password"));
-    }
-
     public ObjectId getId() {
         return this.id;
     }
@@ -56,5 +48,9 @@ public class RestaurantOwner implements User {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean equals(RestaurantOwner user) {
+        return this.id.toHexString().equals(user.getId().toHexString()) && this.email.equals(user.getEmail());
     }
 }

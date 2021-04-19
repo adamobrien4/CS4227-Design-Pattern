@@ -1,11 +1,13 @@
 package main.entities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.types.ObjectId;
+import main.visitor.*;
 
-public class FoodItem {
+
+//Uses Visitor pattern to update any fields
+public class FoodItem implements Visitable {
     @JsonProperty("_id")
     private ObjectId id;
     @JsonProperty("name")
@@ -39,9 +41,6 @@ public class FoodItem {
         public FoodItem build(){
             return new FoodItem(this);
         }
-
-
-
     }
     public FoodItem(Builder<?> builder) {
         name=builder.name;
@@ -62,16 +61,32 @@ public class FoodItem {
     }
 
     public boolean hasAllergens() {
-        return allergens.isEmpty();
+        return allergens != null;
     }
 
     @Override
     public String toString() {
-        return "FoodItem{" +
-                "name='" + name + '\'' +
-                ", hasAllergens=" + this.hasAllergens() +
-                ", allergens=" + allergens.toString() +
-                ", price=" + price +
-                '}';
+        if(allergens != null) {
+
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + allergens.toString() +
+                    ", price=" + price +
+                    '}';
+        }
+        else {
+            return "FoodItem{" +
+                    "name='" + name + '\'' +
+                    ", hasAllergens=" + this.hasAllergens() +
+                    ", allergens=" + "none" +
+                    ", price=" + price +
+                    '}';
+        }
     }
+
+    public double acceptPrice(Visitor visitor) {
+        return visitor.visitPrice(this);
+    }
+
 }

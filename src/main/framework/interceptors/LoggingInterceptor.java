@@ -2,7 +2,6 @@ package main.framework.interceptors;
 
 import main.adapters.AdapterType;
 import main.adapters.ConsoleAdapter;
-import main.adapters.GraylogAdapter;
 import main.adapters.LogAdapter;
 import main.framework.contexts.Context;
 import main.framework.contexts.ErrorContext;
@@ -26,7 +25,6 @@ public class LoggingInterceptor implements Interceptor {
             switch (adapterType)
             {
                 case CONSOLE:   instance = new LoggingInterceptor(new ConsoleAdapter());    break;
-                case GRAYLOG:   instance = new LoggingInterceptor(new GraylogAdapter());    break;
             }
         }
         return instance;

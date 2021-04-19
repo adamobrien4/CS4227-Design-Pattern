@@ -73,7 +73,7 @@ public class Order {
         }
 
         public T address(String val) {
-            status = val;
+            address = val;
             return (T) this;
         }
 
@@ -227,6 +227,9 @@ public class Order {
                 ", foodCost=" + foodCost +
                 ", deliveryCost=" + deliveryCost +
                 ", totalCost=" + totalCost +
+                ", discountCode='" + discountCode + '\'' +
+                ", discountAmount=" + discountAmount +
+                ", orderItems=" + orderItems +
                 '}';
     }
 }
