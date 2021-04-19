@@ -2,9 +2,8 @@ package main.entities.businesses.locationTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import main.entities.users.User;
 import org.bson.types.ObjectId;
-
-import main.entities.users.Customer;
 
 @JsonTypeName("Family_Friendly")
 public class FamilyFriendly extends Location {
@@ -12,15 +11,18 @@ public class FamilyFriendly extends Location {
     public FamilyFriendly() {
     }
 
+    public FamilyFriendly(ObjectId id, String name, String genre, ObjectId menu) {
+        super(id, name, genre, menu);
+    }
+
     @Override
-    public boolean customerVerification(Customer c) {
+    public boolean customerVerification(User user) {
         return true;
     }
 
+    @Override
+    public void review() {
 
-
-    public FamilyFriendly(ObjectId id, String name, String genre, ObjectId menu) {
-        super(id, name, genre, menu);
     }
 
 }

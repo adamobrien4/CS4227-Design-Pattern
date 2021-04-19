@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import main.entities.users.User;
 import org.bson.types.ObjectId;
 
 import main.entities.users.Customer;
@@ -70,7 +71,7 @@ public abstract class Location {
         return this.id.equals(l.getId()) && this.name.equals(l.getName()) && this.menu.equals(l.getMenuId()) && this.genre.equals(l.getGenre());
     }
 
-    public abstract boolean customerVerification();
+    public abstract boolean customerVerification(User user);
     public abstract void review();
     
 }

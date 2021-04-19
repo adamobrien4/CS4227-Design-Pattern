@@ -2,6 +2,7 @@ package main.entities.businesses.locationTypes;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import main.entities.users.User;
 import org.bson.types.ObjectId;
 
 import main.entities.users.Customer;
@@ -17,10 +18,13 @@ public class Over18s extends Location {
     }
 
     @Override
-    public boolean customerVerification(Customer c) {
+    public boolean customerVerification(User user) {
         System.out.println("Checking Age...");
         return true;
     }
 
+    @Override
+    public void review() {
 
+    }
 }
