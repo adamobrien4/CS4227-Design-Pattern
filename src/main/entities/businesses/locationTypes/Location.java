@@ -70,10 +70,6 @@ public abstract class Location {
         return this.id.equals(l.getId()) && this.name.equals(l.getName()) && this.menu.equals(l.getMenuId()) && this.genre.equals(l.getGenre());
     }
 
-    public boolean equals(Location l) {
-        return this.id.equals(l.getId()) && this.name.equals(l.getName()) && this.menu.equals(l.getMenuId()) && this.genre.equals(l.getGenre());
-    }
-
     public abstract boolean customerVerification();
     public abstract void review();
     
