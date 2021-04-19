@@ -1,5 +1,6 @@
 package main.presentation_layer.checkout_order;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,6 +23,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.presentation_layer.presentation.*;
 
 public class CheckoutOrderController extends MakePayment {
@@ -36,6 +39,10 @@ public class CheckoutOrderController extends MakePayment {
     private TextField checkout_cvv;
     @FXML
     private ComboBox<String> card_type;
+    @FXML
+    private ImageView card_image_view;
+
+    private static final String IMAGE_LOCATION = "main/images/credit-card.png";
 
     private OrderDaoImpl orderDao;
     // private ObservableList<String> list =
@@ -104,10 +111,11 @@ public class CheckoutOrderController extends MakePayment {
         System.out.println("Initialising Checkout Screen");
         orderDao = new OrderDaoImpl();
         card_type.getItems().addAll(Globals.CARD_TYPES);
+        Image image = new Image((IMAGE_LOCATION));
+        card_image_view.setImage(image);
     }
 
     @Override
     public void makeCustomerPayment() {
     }
-
 }

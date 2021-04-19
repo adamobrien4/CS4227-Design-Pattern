@@ -4,50 +4,51 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.presentation_layer.checkout_order.CheckoutOrderController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.presentation_layer.checkout_order.CheckoutOrderController">
    <children>
-      <ImageView fitHeight="427.0" fitWidth="534.0" layoutX="33.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../assets/credit_card.png" />
-         </image>
-      </ImageView>
-      <Button layoutX="249.0" layoutY="343.0" mnemonicParsing="false" onAction="#handlePayNow" prefHeight="37.0" prefWidth="102.0" text="Pay Now" />
-      <TextField fx:id="checkout_card_owner" layoutX="76.0" layoutY="287.0" prefHeight="25.0" prefWidth="183.0" promptText="John Doe">
+      <Button layoutX="325.0" layoutY="516.0" mnemonicParsing="false" onAction="#handlePayNow" prefHeight="37.0" prefWidth="102.0" text="Pay Now" />
+      <TextField fx:id="checkout_card_owner" layoutX="23.0" layoutY="383.0" prefHeight="25.0" prefWidth="183.0" promptText="John Doe">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="card_expiry" layoutX="277.0" layoutY="244.0" prefHeight="25.0" prefWidth="87.0" promptText="09/21">
+      <TextField fx:id="card_expiry" layoutX="325.0" layoutY="376.0" prefHeight="25.0" prefWidth="87.0" promptText="09/21">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <TextField fx:id="checkout_card_number" layoutX="95.0" layoutY="182.0" prefHeight="39.0" prefWidth="410.0" promptText="1234 - 5678 - 9876 - 5432">
+      <TextField fx:id="checkout_card_number" layoutX="25.0" layoutY="241.0" prefHeight="39.0" prefWidth="410.0" promptText="1234 - 5678 - 9876 - 5432">
          <font>
             <Font size="18.0" />
          </font>
       </TextField>
-      <TextField fx:id="checkout_cvv" layoutX="449.0" layoutY="282.0" prefHeight="25.0" prefWidth="80.0" promptText="123">
+      <TextField fx:id="checkout_cvv" layoutX="559.0" layoutY="380.0" prefHeight="37.0" prefWidth="87.0" promptText="123">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="81.0" layoutY="265.0" text="Card Owner">
+      <Label layoutX="31.0" layoutY="347.0" text="Card Owner">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="175.0" layoutY="158.0" text="Card Number">
+      <Label layoutX="31.0" layoutY="209.0" text="Card Number">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="449.0" layoutY="267.0" text="CVV" />
-      <ComboBox id="card_type" fx:id="card_type" layoutX="397.0" layoutY="35.0" prefWidth="150.0" promptText="Enter Card Type" />
+      <Label layoutX="559.0" layoutY="349.0" text="CVV" />
+      <ComboBox id="card_type" fx:id="card_type" layoutX="23.0" layoutY="105.0" prefHeight="25.0" prefWidth="194.0" promptText="Enter Card Type" />
+      <Label layoutX="325.0" layoutY="349.0" text="Expiry Date" />
+      <Label layoutX="25.0" layoutY="11.0" prefHeight="59.0" prefWidth="354.0" text="Please Enter Your Details Below." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="card_image_view" fitHeight="184.0" fitWidth="246.0" layoutX="517.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </Pane>

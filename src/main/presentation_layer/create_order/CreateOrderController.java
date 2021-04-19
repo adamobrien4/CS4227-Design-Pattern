@@ -10,9 +10,9 @@ import main.framework.Framework;
 import main.framework.contexts.Context;
 import main.memento.OrderCaretaker;
 import main.memento.OrderMemento;
-import main.observer.OrderEditor;
-import main.observer.listeners.BasketItemAddedListener;
-import main.observer.listeners.BasketItemRemovedListener;
+import main.observer.*;
+import main.observer.listeners.*;
+
 import main.presentation_layer.presentation.*;
 import main.visitor.TaxVisitor;
 import main.entities.*;
@@ -53,19 +53,14 @@ public class CreateOrderController {
     private Text delivery_total;
     @FXML
     private Text basket_total;
-
-    
-
     @FXML
     private TextField discount_code_entry_field;
     @FXML
     private Button discount_code_apply_btn;
     @FXML
     private Button undo_btn;
-
     @FXML
     private Button redo_btn;
-
     @FXML
     private AnchorPane main_course_tab_pane;
     @FXML
