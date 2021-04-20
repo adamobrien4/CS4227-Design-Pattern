@@ -20,10 +20,8 @@ import main.Globals;
 import main.entities.users.Customer;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.*;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +40,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.visitor.*;
 
 public class CreateOrderController {
     @FXML
@@ -93,240 +90,10 @@ public class CreateOrderController {
     TaxVisitor tax = new TaxVisitor();
     Alert alert = new Alert(AlertType.INFORMATION);
 
-
     int saveFiles = 0;
-    int currentArticle = 0;
+    int mementoIndex = 0;
 
     OrderCaretaker orderCaretaker = new OrderCaretaker();
-
-    EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent evt) {
-            Button btn = (Button) evt.getSource();
-            String btnId = btn.getId();
-            String abb = btnId.substring(0, 2);
-            int index = Integer.parseInt(btnId.substring(2));
-
-            ArrayList<FoodItem> course = null;
-
-            switch(abb) {
-                case "mc":
-                    course = mainCourses;
-                break;
-                case "ds":
-                    course = desserts;
-                break;
-                case "sd":
-                    course = sides;
-                break;
-                case "dk":
-                    course = drinks;
-                break;
-                default:
-                break;
-            }
-
-            try {
-
-                if (basket.containsKey(btnId)) {
-                    System.out.println("Increasing Quantity");
-                    basket.get(btnId).incrementQuantity();
-                } else {
-                    System.out.println("Adding new item");
-                    basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-            }
-
-            // Notify listeners that an item was added to the basket
-            orderEditor.addOrderItem(basket.get(btnId));
-
-            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
-
-            undo_btn.setDisable(false);
-            redo_btn.setDisable(false);
-            saveFiles++;
-            currentArticle++;
-
-            System.out.println("currentArticle = " + currentArticle);
-            System.out.println("-----------------\nORDER CARETAKER AFTER ADDING NEW ITEM/+ Quantity\n" +
-                    orderCaretaker.getMemento(currentArticle -1).getSavedArticle().toString());
-
-
-            updateBasket();
-            evt.consume();
-        }
-    };
-
-    EventHandler<ActionEvent> removeFromBasketHandler = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent evt) {
-            Button btn = (Button) evt.getSource();
-            String btnId = btn.getId();
-
-            // Notify listeners that an item was removed from the basket
-            orderEditor.removeOrderItem(basket.get(btnId));
-
-            if (basket.containsKey(btnId)) {
-                System.out.println("Decreasing Quantity");
-                if (basket.get(btnId).decrementQuantity()) {
-                    basket.remove(btnId);
-                }
-            }
-
-            orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
-            undo_btn.setDisable(false);
-            redo_btn.setDisable(false);
-            saveFiles++;
-            currentArticle++;
-
-            System.out.println("-----------------\nORDER CARETAKER AFTER REDUCING QUANTITY OF AN ITEM\n");
-
-            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle().toString());
-
-
-            updateBasket();
-            evt.consume();
-        }
-    };
-
-    EventHandler<MouseEvent> nameClickHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent evt) {
-            Image image = new Image(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Emojione_1F62D.svg/64px-Emojione_1F62D.svg.png");
-            ImageView imageView = new ImageView(image);
-
-            // Our image will sit in the middle of our popup.
-            BorderPane pane = new BorderPane();
-            pane.setCenter(imageView);
-            Scene scene = new Scene(pane);
-
-            // Create the actual window and display it.
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            // Without this, the audio won't stop!
-            stage.setOnCloseRequest(e -> {
-                e.consume();
-                stage.close();
-            });
-            stage.showAndWait();
-            evt.consume();
-        }
-    };
-
-    @FXML
-    private void handleUndoBtn(ActionEvent evt) {
-        System.out.println("Undo button has been pressed");
-
-        if(currentArticle > 0) {
-            currentArticle--;
-
-            // basket is set to the memento one position back
-            System.out.println("-----------------\nORDER CARETAKER AFTER UNDO\n" + orderCaretaker);
-
-            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
-            System.out.println(orderCaretaker.getMemento(currentArticle).getSavedArticle());
-
-            redo_btn.setDisable(false);
-            updateBasket();
-        }
-        else {
-            System.out.println("Undo out of index");
-            undo_btn.setDisable(true);
-        }
-        evt.consume();
-    };
-
-    @FXML
-    private void handleRedoBtn(ActionEvent evt) {
-        System.out.println("Redo button has been pressed");
-
-        if(saveFiles -1 > currentArticle) {
-            currentArticle++;
-
-            System.out.println("-----------------\nORDER CARETAKER AFTER REDO\n" + orderCaretaker);
-            basket = orderCaretaker.getMemento(currentArticle).getSavedArticle();
-
-            updateBasket();
-
-            undo_btn.setDisable(false);
-        }
-        else {
-            System.out.println("Redo out of index");
-            redo_btn.setDisable(true);
-        }
-        evt.consume();
-    };
-
-    @FXML
-    private void handleApplyDiscount(ActionEvent evt) {
-        System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
-
-        // TODO: Get dicsount from database
-        discount = DiscountDaoImpl.getInstance().get(discount_code_entry_field.getText());
-
-        if(discount == null) {
-            // Discount does not exist
-            discount_code_entry_field.clear();
-            return;
-        }
-
-        evt.consume();
-        updateBasket();
-    };
-
-    @FXML
-    private void handleGoBackButton(ActionEvent evt) {
-        //browse restaurat
-
-        try {
-            UseRemote.browseRestaurants();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        evt.consume();
-    }
-
-    @FXML
-    private void handleCheckout(ActionEvent evt) {
-        System.out.println("Handling Checkout");
-        evt.consume();
-
-        Order order;
-
-        ArrayList<String> orderItems = new ArrayList<>();
-
-        for (BasketItem item : basket.values()) {
-            String s = item.getName();
-            if (item.getQuantity() > 0) {
-                s += " * " + item.getQuantity();
-            }
-            orderItems.add(s);
-        }
-
-        if (discountValue > 0) {
-            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
-        } else {
-            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
-        }
-
-        order.setRestaurant(Globals.getRestaurant().getId());
-
-        try {
-            OrderDaoImpl.getInstance().insert(order);
-            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
-            UseRemote.checkout();
-        } catch (APIException | IOException e) {
-            e.printStackTrace();
-        }
-
-        evt.consume();
-    }
 
     @FXML
     public void initialize() {
@@ -399,7 +166,6 @@ public class CreateOrderController {
             Node[] foodListing = makeFoodListing(drinks.get(i), y, "dk", i);
             drinks_tab_pane.getChildren().addAll(foodListing[0], foodListing[2], foodListing[3]);
         }
-
         // When screen loads first basket will be empty
         undo_btn.setDisable(true);
         redo_btn.setDisable(true);
@@ -407,10 +173,217 @@ public class CreateOrderController {
         updateBasket();
 
         // We need to treat the initial state (an empty basket) as a saved state also as we may want to return to this position via undo btn
-        orderCaretaker.addMemento(new OrderMemento(hardCopyOfBasket(basket)));
+        orderCaretaker.addMemento(new OrderMemento(makeDeepCopyOfBasket(basket)));
         saveFiles++;
     }
 
+    EventHandler<ActionEvent> addToBasketHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent evt) {
+            Button btn = (Button) evt.getSource();
+            String btnId = btn.getId();
+            String abb = btnId.substring(0, 2);
+            int index = Integer.parseInt(btnId.substring(2));
+
+            ArrayList<FoodItem> course = null;
+
+            switch(abb) {
+                case "mc":
+                    course = mainCourses;
+                break;
+                case "ds":
+                    course = desserts;
+                break;
+                case "sd":
+                    course = sides;
+                break;
+                case "dk":
+                    course = drinks;
+                break;
+                default:
+                break;
+            }
+
+            try {
+                if (basket.containsKey(btnId)) {
+                    System.out.println("Increasing Quantity");
+                    basket.get(btnId).incrementQuantity();
+                } else {
+                    System.out.println("Adding new item");
+                    basket.put(btnId, BasketItem.fromFoodItem(course.get(index)));
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+            // Notify listeners that an item was added to the basket
+            orderEditor.addOrderItem(basket.get(btnId));
+
+            // When an item is added/ quantity increased
+            orderCaretaker.addMemento(new OrderMemento(makeDeepCopyOfBasket(basket)));
+
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+
+            saveFiles++;
+            mementoIndex++;
+
+            updateBasket();
+            evt.consume();
+        }
+    };
+
+    EventHandler<ActionEvent> removeFromBasketHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent evt) {
+            Button btn = (Button) evt.getSource();
+            String btnId = btn.getId();
+
+            // Notify listeners that an item was removed from the basket
+            orderEditor.removeOrderItem(basket.get(btnId));
+
+            if (basket.containsKey(btnId)) {
+                System.out.println("Decreasing Quantity");
+                if (basket.get(btnId).decrementQuantity()) {
+                    basket.remove(btnId);
+                }
+            }
+            // Item removed / quantity decreased
+            orderCaretaker.addMemento(new OrderMemento(makeDeepCopyOfBasket(basket)));
+
+            undo_btn.setDisable(false);
+            redo_btn.setDisable(false);
+
+            saveFiles++;
+            mementoIndex++;
+
+            updateBasket();
+            evt.consume();
+        }
+    };
+
+    EventHandler<MouseEvent> nameClickHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent evt) {
+            Image image = new Image(
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Emojione_1F62D.svg/64px-Emojione_1F62D.svg.png");
+            ImageView imageView = new ImageView(image);
+
+            // Our image will sit in the middle of our popup.
+            BorderPane pane = new BorderPane();
+            pane.setCenter(imageView);
+            Scene scene = new Scene(pane);
+
+            // Create the actual window and display it.
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            // Without this, the audio won't stop!
+            stage.setOnCloseRequest(e -> {
+                e.consume();
+                stage.close();
+            });
+            stage.showAndWait();
+            evt.consume();
+        }
+    };
+
+    @FXML
+    private void handleUndoBtn(ActionEvent evt) {
+
+        if(mementoIndex >= 1) {
+            mementoIndex--;
+            // basket is set to the memento one position back
+            basket = makeDeepCopyOfBasket(orderCaretaker.getMemento(mementoIndex).getSavedArticle());
+
+            redo_btn.setDisable(false);
+            updateBasket();
+        }
+        else {
+            System.out.println("Undo out of index");
+            undo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+    @FXML
+    private void handleRedoBtn(ActionEvent evt) {
+
+        if(saveFiles -1 > mementoIndex) {
+            mementoIndex++;
+            basket = makeDeepCopyOfBasket(orderCaretaker.getMemento(mementoIndex).getSavedArticle());
+            updateBasket();
+            undo_btn.setDisable(false);
+        }
+        else {
+            System.out.println("Redo out of index");
+            redo_btn.setDisable(true);
+        }
+        evt.consume();
+    };
+
+    @FXML
+    private void handleApplyDiscount(ActionEvent evt) {
+        System.out.println("Apply Discount Code : " + discount_code_entry_field.getText());
+
+        // TODO: Get discount from database
+        discount = DiscountDaoImpl.getInstance().get(discount_code_entry_field.getText());
+
+        if(discount == null) {
+            // Discount does not exist
+            discount_code_entry_field.clear();
+            return;
+        }
+
+        evt.consume();
+        updateBasket();
+    };
+
+    @FXML
+    private void handleGoBackButton(ActionEvent evt) {
+        //browse restaurant
+        try {
+            UseRemote.browseRestaurants();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        evt.consume();
+    }
+
+    @FXML
+    private void handleCheckout(ActionEvent evt) {
+        System.out.println("Handling Checkout");
+        evt.consume();
+
+        Order order;
+
+        ArrayList<String> orderItems = new ArrayList<>();
+
+        for (BasketItem item : basket.values()) {
+            String s = item.getName();
+            if (item.getQuantity() > 0) {
+                s += " * " + item.getQuantity();
+            }
+            orderItems.add(s);
+        }
+
+        if (discountValue > 0) {
+            order = new Order.Builder<>().totalCost(basketTotal).discountCode(discount.getCode()).discountAmount(discountValue).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
+        } else {
+            order = new Order.Builder<>().totalCost(basketTotal).deliveryCost(deliveryCost).orderItems(orderItems).address(loggedInCustomer.getAddress()).build();
+        }
+
+        order.setRestaurant(Globals.getRestaurant().getId());
+
+        try {
+            OrderDaoImpl.getInstance().insert(order);
+            Framework.getInstance().onLogEvent(new Context(String.format("'%s' Has Now been Placed",order.toString())));
+            UseRemote.checkout();
+        } catch (APIException | IOException e) {
+            e.printStackTrace();
+        }
+        evt.consume();
+    }
 
     private Node[] makeFoodListing(FoodItem item, double y, String abb, int btnIndex) {
         Text name = new Text();
@@ -518,7 +491,6 @@ public class CreateOrderController {
         } else {
             discountValue = 0.0;
         }
-        
 
         // Update Cost details
         String NUM_FORMAT = "€%.2f";
@@ -526,21 +498,17 @@ public class CreateOrderController {
         delivery_total.setText(String.format(NUM_FORMAT, deliveryCost));
         discount_amount.setText(String.format(NUM_FORMAT, discountValue));
 
-
         basketTotal = basketSubTotalPrice + deliveryCost - discountValue;
         
         basket_total.setText(String.format(NUM_FORMAT, basketTotal));
     }
 
-    public Map<String,BasketItem> hardCopyOfBasket(Map<String,BasketItem> originalBasket) {
+    public Map<String,BasketItem> makeDeepCopyOfBasket(Map<String,BasketItem> originalBasket) {
         Map<String, BasketItem> basketCopy = new HashMap<>();
 
-        System.out.println("-----------------COPYING BASKET----------------");
         for(String key : originalBasket.keySet()) {
             basketCopy.put(key,originalBasket.get(key));
-            System.out.println(key + " : " + originalBasket.get(key));
         }
-
         return basketCopy;
     }
 }
